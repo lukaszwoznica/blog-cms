@@ -4,17 +4,24 @@
  */
 
 /**
- * Loads
+ * Autoloader
  */
-require_once __DIR__ . '/../Core/Router.php';
+spl_autoload_register(function ($class) {
+   $root = dirname(__DIR__);
+   $file = $root . '/' . str_replace('\\', '/', $class) . '.php';
+   if (is_readable($file)){
+       require_once $root . '/' . str_replace('\\', '/', $class) . '.php';
+   }
+});
 
 /**
  * Routing
  */
-$router = new Router();
+$router = new Core\Router();
 
 // Add the routes
-$router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
+$router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 
+$router->dispatch($_SERVER['QUERY_STRING']);
