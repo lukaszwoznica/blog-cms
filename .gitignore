@@ -1,1 +1,3 @@
 .idea/*
+vendor/*
+App/Views/compilation_cache/*

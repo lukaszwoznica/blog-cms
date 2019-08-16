@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Core\Controller;
+use Core\View;
 
 /**
  * Home Controller
@@ -19,6 +20,8 @@ class Home extends Controller {
     }
 
      public function indexAction(): void {
-        echo "Hello form the index in Home controller!";
+        View::renderTemplate('Home/index', [
+            'name' => "Łukasz"
+        ]);
     }
 }
