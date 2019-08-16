@@ -16,4 +16,32 @@ abstract class Controller {
     public function __construct(array $route_params){
         $this->route_params = $route_params;
     }
+
+    /**
+     * Execute before and after filter methods on action methods
+     * @param string $name
+     * @param array $args
+     */
+
+    public function __call(string $name, array $args): void {
+        $method = $name . 'Action';
+
+        if (method_exists($this, $method)){
+            if ($this->before() !== false){
+                call_user_func_array([$this, $method], $args);
+                $this->after();
+            }
+        }
+        else {
+            echo "Method $method not found in ". get_class($this) . " controller";
+        }
+    }
+
+    protected function before(){
+
+    }
+
+    protected function after(){
+
+    }
 }
