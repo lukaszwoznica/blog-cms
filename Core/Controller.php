@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Exception;
+
 /**
  * Base Controller
  */
@@ -23,6 +25,7 @@ abstract class Controller
      * Execute before and after filter methods on action methods
      * @param string $name
      * @param array $args
+     * @throws Exception
      */
 
     public function __call(string $name, array $args): void
@@ -35,7 +38,7 @@ abstract class Controller
                 $this->after();
             }
         } else {
-            echo "Method $method not found in ". get_class($this) . " controller";
+            throw new Exception("Method $method not found in ". get_class($this) . " controller");
         }
     }
 

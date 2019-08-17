@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -10,7 +11,13 @@ use Twig\Loader\FilesystemLoader;
 
 class View
 {
-
+    /**
+     * Render a view file
+     *
+     * @param string $view
+     * @param array $data
+     * @throws Exception
+     */
     public static function render(string $view, array $data = []): void
     {
         extract($data, EXTR_SKIP);
@@ -19,10 +26,16 @@ class View
         if (is_readable($view_file))
             require_once $view_file;
         else
-            echo "$view_file not found!";
+            throw new Exception("$view_file not found");
     }
 
-    public static function renderTemplate($template, $data = []): void
+    /**
+     * Render a view template using Twig
+     *
+     * @param string $template
+     * @param array $data
+     */
+    public static function renderTemplate(string $template, $data = []): void
     {
         static $twig = null;
 
@@ -34,11 +47,11 @@ class View
         try {
             echo $twig->render($template . '.twig', $data);
         } catch (LoaderError $e) {
-            echo $e->getMessage();
+            Error::exceptionHandler($e);
         } catch (RuntimeError $e) {
-            echo $e->getMessage();
+            Error::exceptionHandler($e);
         } catch (SyntaxError $e) {
-            echo $e->getMessage();
+            Error::exceptionHandler($e);
         }
     }
 }
