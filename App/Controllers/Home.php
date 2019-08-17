@@ -9,17 +9,21 @@ use Core\View;
  * Home Controller
  */
 
-class Home extends Controller {
+class Home extends Controller
+{
 
-    protected function before(){
-
-    }
-
-    protected function after(){
+    protected function before()
+    {
 
     }
 
-     public function indexAction(): void {
+    protected function after()
+    {
+
+    }
+
+     public function indexAction(): void
+     {
         View::renderTemplate('Home/index', [
             'name' => "Łukasz"
         ]);

@@ -2,7 +2,8 @@
 
 namespace Core;
 
-class Router {
+class Router
+{
     /**
      * The routes table
      */
@@ -13,7 +14,8 @@ class Router {
      */
     private $params = [];
 
-    public  function addRoute(string $route, array $params = []): void {
+    public  function addRoute(string $route, array $params = []): void
+    {
         // Convert the route to a regular expression: escape forward slashes
         $route = preg_replace('/\//', '\\/', $route);
         // Convert variables e.g. {controller}
@@ -26,7 +28,8 @@ class Router {
         $this->routes[$route] = $params;
     }
 
-    public function match(string $url): bool {
+    public function match(string $url): bool
+    {
         foreach ($this->routes as $route => $params){
             if (preg_match($route, $url, $matches)){
                 foreach ($matches as $key => $match){
@@ -41,16 +44,19 @@ class Router {
         return false;
     }
 
-    public function getRoutes(): array {
+    public function getRoutes(): array
+    {
         return $this->routes;
     }
 
 
-    public function getParams(): array {
+    public function getParams(): array
+    {
         return $this->params;
     }
 
-    protected function convertToCamelCase(string $str, bool $capitalizeFirstChar = false): string {
+    protected function convertToCamelCase(string $str, bool $capitalizeFirstChar = false): string
+    {
         $cc_str = str_replace('-', '', ucwords($str, '-'));
 
         if (!$capitalizeFirstChar) {
@@ -60,7 +66,8 @@ class Router {
         return $cc_str;
     }
 
-    protected function removeQueryStringVariables(string $url): string {
+    protected function removeQueryStringVariables(string $url): string
+    {
         if($url != ''){
             $parts = explode('&', $url, 2);
             if (strpos($parts[0], '=') === false)
@@ -72,7 +79,8 @@ class Router {
         return $url;
     }
 
-    protected function getNamespace(): string {
+    protected function getNamespace(): string
+    {
         $namespace = 'App\Controllers\\';
         if (array_key_exists('namespace', $this->params))
             $namespace .= $this->params['namespace'] . '\\';
@@ -80,7 +88,8 @@ class Router {
         return $namespace;
     }
 
-    public function dispatch($url): void {
+    public function dispatch($url): void
+    {
         $url = $this->removeQueryStringVariables($url);
 
         if ($this->match($url)){
@@ -96,12 +105,10 @@ class Router {
                     $controller_object->$action();
                 else
                     echo "Method $action (in controller $controller) not found";
-            }
-            else {
+            } else {
                 echo "Controller class $controller not found";
             }
-        }
-        else {
+        } else {
             echo 'No route matched.';
         }
     }
