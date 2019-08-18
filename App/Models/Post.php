@@ -22,7 +22,7 @@ class Post extends Model
             $stmt = $db->query("SELECT * FROM posts");
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e){
-            Error::exceptionHandler($e);
+            Error::exceptionHandler($e, true);
         }
 
         return $result;

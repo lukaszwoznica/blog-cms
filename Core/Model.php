@@ -21,7 +21,7 @@ abstract class Model
                 $db = new PDO($dsn, Config::DB_USERNAME, Config::DB_PASSWORD);
                 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                Error::exceptionHandler($e);
+                Error::exceptionHandler($e, true);
             }
         }
 
