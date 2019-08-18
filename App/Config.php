@@ -11,7 +11,6 @@ class Config
    /*
     * Database settings
     */
-
     const DB_HOST = 'localhost';
     const DB_NAME = 'blog_db';
     const DB_USERNAME = 'root';
@@ -20,6 +19,5 @@ class Config
     /*
      * Show or hide error messages
      */
-
     const SHOW_ERRORS = true;
 }

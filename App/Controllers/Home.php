@@ -9,10 +9,8 @@ use Core\View;
 /**
  * Home Controller
  */
-
 class Home extends Controller
 {
-
     protected function before()
     {
 
@@ -23,8 +21,8 @@ class Home extends Controller
 
     }
 
-     public function indexAction(): void
-     {
+    public function indexAction(): void
+    {
         $posts = Post::getAllPosts();
 
         View::renderTemplate('Home/index', [

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Core\Error;
 use Core\Model;
 use PDO;
-use PDOException;
 
 /**
  * Post Model
