@@ -22,6 +22,7 @@ abstract class Model
                 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 Error::exceptionHandler($e, true);
+                die();
             }
         }
 
