@@ -3,6 +3,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Core\Controller;
 use Core\View;
 
@@ -15,9 +16,8 @@ class SignUp extends Controller
 
     public function createAction(): void
     {
-        echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';
+        $user = new User($_POST);
+        $user->create();
     }
 
 
