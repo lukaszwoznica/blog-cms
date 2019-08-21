@@ -6,7 +6,16 @@
 
     <h1>Sign up</h1>
 
-    <form action="signup/create" method="post">
+    {% if user.getValidationErrors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.getValidationErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="/signup/create" method="post">
         <div>
             <label for="inputUsername">Username</label>
             <input id="inputUsername" name="username" placeholder="Username" autofocus required/>

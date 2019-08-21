@@ -11,21 +11,21 @@ abstract class Model
     /**
      * Get the database connection
      */
-    protected static function getDatabase()
+    protected static function getDatabase(): PDO
     {
-        static $db = null;
+        static $conn = null;
 
-        if ($db === null){
+        if ($conn === null){
             try {
                 $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
-                $db = new PDO($dsn, Config::DB_USERNAME, Config::DB_PASSWORD);
-                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $conn = new PDO($dsn, Config::DB_USERNAME, Config::DB_PASSWORD);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 Error::exceptionHandler($e, true);
                 die();
             }
         }
 
-        return $db;
+        return $conn;
     }
 }
