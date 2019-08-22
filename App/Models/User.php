@@ -47,7 +47,7 @@ class User extends Model
         if (strlen($this->username) < 3) {
             $this->validation_errors[] = "Username must be at least 3 characters";
         }
-        if ($this->usernameExist()) {
+        if (static::usernameExist($this->username)) {
             $this->validation_errors[] = "Username is already taken";
         }
 
@@ -55,7 +55,7 @@ class User extends Model
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
             $this->validation_errors[] = "Invalid email";
         }
-        if ($this->emailExist()) {
+        if (static::emailExist($this->email)) {
             $this->validation_errors[] = "Email is already taken";
         }
 
@@ -78,27 +78,37 @@ class User extends Model
         return $this->validation_errors;
     }
 
-    public function usernameExist(): bool
+    public static function usernameExist($username): bool
     {
         $db = Model::getDatabase();
         $sql = "SELECT * FROM users WHERE username = :username";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":username", $this->username);
+        $stmt->bindParam(":username", $username);
         $stmt->execute();
 
         return $stmt->fetch() !== false;
     }
 
-    public function emailExist(): bool
+    public static function emailExist($email): bool
     {
         $db = Model::getDatabase();
         $sql = "SELECT * FROM users WHERE email = :email";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":email", $email);
         $stmt->execute();
 
         return $stmt->fetch() !== false;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

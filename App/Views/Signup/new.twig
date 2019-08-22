@@ -2,6 +2,11 @@
 
 {% block title %}New account{% endblock %}
 
+{% block scripts %}
+    <script src="/assets/js/hideShowPassword.min.js"></script>
+    <script src="/assets/js/signupFormValidation.js"></script>
+{% endblock %}
+
 {% block body %}
 
     <h1>Sign up</h1>
@@ -15,14 +20,14 @@
         </ul>
     {% endif %}
 
-    <form action="/signup/create" method="post">
+    <form id="formSignup" action="/signup/create" method="post">
         <div>
             <label for="inputUsername">Username</label>
-            <input id="inputUsername" name="username" placeholder="Username" autofocus required/>
+            <input id="inputUsername" name="username" placeholder="Username" value="{{ user.getUsername }}" autofocus required/>
         </div>
         <div>
             <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" required/>
+            <input type="email" id="inputEmail" name="email" placeholder="Email address" value="{{ user.getEmail }}" required/>
         </div>
         <div>
             <label for="inputPassword">Password</label>
