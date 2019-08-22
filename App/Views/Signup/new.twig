@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block title %}New account{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/hideShowPassword.min.js"></script>
+    <script src="/assets/js/signupFormValidation.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Sign up</h1>
+
+    {% if user.getValidationErrors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.getValidationErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form id="formSignup" action="/signup/create" method="post">
+        <div>
+            <label for="inputUsername">Username</label>
+            <input id="inputUsername" name="username" placeholder="Username" value="{{ user.getUsername }}" autofocus required/>
+        </div>
+        <div>
+            <label for="inputEmail">Email address</label>
+            <input type="email" id="inputEmail" name="email" placeholder="Email address" value="{{ user.getEmail }}" required/>
+        </div>
+        <div>
+            <label for="inputPassword">Password</label>
+            <input type="password" id="inputPassword" name="password" placeholder="Password" required/>
+        </div>
+
+        <button type="submit">Sign up</button>
+
+    </form>
+
+{% endblock %}

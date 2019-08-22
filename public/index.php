@@ -24,5 +24,7 @@ $router = new Core\Router();
 $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
 $router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
+$router->addRoute('{controller}', ['action' => 'index']);
+$router->addRoute('{controller}/', ['action' => 'index']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);
