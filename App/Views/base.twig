@@ -10,8 +10,12 @@
 <body>
     <nav>
         <a href="/">Home</a>
-        <a href="/signup">Sign up</a>
-        <a href="/login">Login</a>
+        {% if session.user_id is empty %}
+            <a href="/signup">Sign up</a>
+            <a href="/login">Login</a>
+        {% else %}
+            <a href="/login/logout">Logout</a>
+        {% endif %}
     </nav>
 
     {% block body %}

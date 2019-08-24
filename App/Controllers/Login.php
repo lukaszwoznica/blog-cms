@@ -16,8 +16,18 @@ class Login extends Controller
 
     public function createAction(): void
     {
-        $user = User::findByUsernameOrEmail($_POST['login']);
+        $user = User::authenticate($_POST['login'], $_POST['password']);
 
-        var_dump($user);
+        if ($user) {
+            $_SESSION['user_id'] = $user->getId();
+            $_SESSION['user_name'] = $user->getUsername();
+
+            $this->redirectTo('/');
+        } else {
+            View::renderTemplate('Login/login', [
+                'login' => $_POST['login']
+            ]);
+        }
+
     }
 }

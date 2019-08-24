@@ -9,10 +9,13 @@ use PDO;
 
 class User extends Model
 {
+    private $id;
     private $username;
     private $email;
     private $password;
+
     private $validation_errors = [];
+
 
     public function __construct(array $user_data = [])
     {
@@ -73,11 +76,6 @@ class User extends Model
         }
     }
 
-    public function getValidationErrors(): array
-    {
-        return $this->validation_errors;
-    }
-
     public static function findByUsernameOrEmail(string $username_or_email): ?User
     {
         $db = Model::getDatabase();
@@ -108,6 +106,31 @@ class User extends Model
         return false;
     }
 
+    /**
+     * Authenticate a user by username/email and password.
+     * @param string $login
+     * @param string $password
+     * @return User|null
+     */
+    public static function authenticate(string $login, string $password): ?User
+    {
+        $user = static::findByUsernameOrEmail($login);
+
+        if ($user && password_verify($password, $user->password))
+            return $user;
+
+        return null;
+    }
+
+    /*
+     * Getters
+     */
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
@@ -116,5 +139,10 @@ class User extends Model
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getValidationErrors(): array
+    {
+        return $this->validation_errors;
     }
 }
