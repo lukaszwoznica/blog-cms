@@ -26,9 +26,14 @@ session_start();
 $router = new Core\Router;
 
 // Add the routes
+
+// Fixed routes
+$router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
+$router->addRoute('logout', ['controller' => 'Login', 'action' => 'destroy']);
+
+// Variable routes
 $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
-$router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/', ['action' => 'index']);
 
