@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Auth;
 use Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -44,7 +45,7 @@ class View
             $twig = new Environment($loader);
 
             // Twig globals
-            $twig->addGlobal('session', $_SESSION);
+            $twig->addGlobal('is_logged_in', Auth::isLoggedIn());
         }
 
         try {

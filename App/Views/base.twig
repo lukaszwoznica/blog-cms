@@ -10,7 +10,7 @@
 <body>
     <nav>
         <a href="/">Home</a>
-        {% if session.user_id is empty %}
+        {% if is_logged_in == false %}
             <a href="/signup">Sign up</a>
             <a href="/login">Login</a>
         {% else %}
