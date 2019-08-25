@@ -9,12 +9,15 @@ use PDO;
 
 class User extends Model
 {
+    private $id;
     private $username;
     private $email;
     private $password;
+
     private $validation_errors = [];
 
-    public function __construct(array $user_data)
+
+    public function __construct(array $user_data = [])
     {
         foreach ($user_data as $key => $value) {
             $this->$key = $value;
@@ -73,42 +76,73 @@ class User extends Model
         }
     }
 
-    public function getValidationErrors(): array
-    {
-        return $this->validation_errors;
-    }
-
-    public static function usernameExist($username): bool
+    public static function findByUsernameOrEmail(string $username_or_email): ?User
     {
         $db = Model::getDatabase();
-        $sql = "SELECT * FROM users WHERE username = :username";
+        $sql = "SELECT * FROM users WHERE username = :login OR email = :login";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":login", $username_or_email);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
 
-        return $stmt->fetch() !== false;
+        $result = $stmt->fetch();
+        if (!$result)
+            return null;
+        return $result;
     }
 
-    public static function emailExist($email): bool
+    public static function usernameExist(string $username): bool
     {
-        $db = Model::getDatabase();
-        $sql = "SELECT * FROM users WHERE email = :email";
-
-        $stmt = $db->prepare($sql);
-        $stmt->bindParam(":email", $email);
-        $stmt->execute();
-
-        return $stmt->fetch() !== false;
+        if (static::findByUsernameOrEmail($username) !== null)
+            return true;
+        return false;
     }
 
-    public function getUsername()
+    public static function emailExist(string $email): bool
+    {
+        if (static::findByUsernameOrEmail($email) !== null)
+            return true;
+        return false;
+    }
+
+    /**
+     * Authenticate a user by username/email and password.
+     * @param string $login
+     * @param string $password
+     * @return User|null
+     */
+    public static function authenticate(string $login, string $password): ?User
+    {
+        $user = static::findByUsernameOrEmail($login);
+
+        if ($user && password_verify($password, $user->password))
+            return $user;
+
+        return null;
+    }
+
+    /*
+     * Getters
+     */
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getValidationErrors(): array
+    {
+        return $this->validation_errors;
     }
 }

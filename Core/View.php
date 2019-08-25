@@ -42,6 +42,9 @@ class View
         if ($twig === null){
             $loader = new FilesystemLoader(dirname(__DIR__) . "/App/Views");
             $twig = new Environment($loader);
+
+            // Twig globals
+            $twig->addGlobal('session', $_SESSION);
         }
 
         try {
