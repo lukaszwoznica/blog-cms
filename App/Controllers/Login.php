@@ -12,11 +12,19 @@ class Login extends Controller
 {
     public function indexAction(): void
     {
+        if (Auth::isLoggedIn()) {
+            $this->redirectTo('/');
+        }
+
         View::renderTemplate('Login/login');
     }
 
     public function createAction(): void
     {
+        if (Auth::isLoggedIn()) {
+            $this->redirectTo('/');
+        }
+
         $user = User::authenticate($_POST['login'], $_POST['password']);
 
         if ($user) {
