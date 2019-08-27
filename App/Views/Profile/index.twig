@@ -1,0 +1,11 @@
+{% extends "base.twig" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+    <h1>Profile</h1>
+    <p>{{ current_user.getUsername }}</p>
+
+
+{% endblock %}

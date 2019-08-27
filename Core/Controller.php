@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Auth;
 use Exception;
 
 /**
@@ -27,7 +28,6 @@ abstract class Controller
      * @param array $args
      * @throws Exception
      */
-
     public function __call(string $name, array $args): void
     {
         $method = $name . 'Action';
@@ -56,5 +56,16 @@ abstract class Controller
     {
         header('Location: http://' . $_SERVER['HTTP_HOST'] . $url, true, 303);
         exit();
+    }
+
+    /**
+     * Require the user to login before giving access to the requested page
+     */
+    public function requireLogin(): void
+    {
+        if (!Auth::isLoggedIn()) {
+            Auth::rememberRequestedPage();
+            $this->redirectTo('/login');
+        }
     }
 }

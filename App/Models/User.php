@@ -92,6 +92,22 @@ class User extends Model
         return $result;
     }
 
+    public static function findByID(int $user_id): ?User
+    {
+        $db = Model::getDatabase();
+        $sql = "SELECT * FROM users WHERE id = :user_id";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if (!$result)
+            return null;
+        return $result;
+    }
+
     public static function usernameExist(string $username): bool
     {
         if (static::findByUsernameOrEmail($username) !== null)

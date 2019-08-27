@@ -11,16 +11,6 @@ use Core\View;
  */
 class Home extends Controller
 {
-    protected function before()
-    {
-
-    }
-
-    protected function after()
-    {
-
-    }
-
     public function indexAction(): void
     {
         $posts = Post::getAllPosts();

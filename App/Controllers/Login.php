@@ -21,7 +21,7 @@ class Login extends Controller
 
         if ($user) {
             Auth::login($user);
-            $this->redirectTo('/');
+            $this->redirectTo(Auth::getReturnPage());
         } else {
             View::renderTemplate('Login/login', [
                 'login' => $_POST['login']
