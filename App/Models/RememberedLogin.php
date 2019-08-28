@@ -56,7 +56,11 @@ class RememberedLogin extends Model
      */
     public function hasExpired(): bool
     {
-        return strtotime($this->expiration_time) < time();
+        if (strtotime($this->expiration_time) < time()) {
+            $this->delete();
+            return true;
+        }
+        return false;
     }
 
     /**

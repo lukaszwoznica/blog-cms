@@ -9,7 +9,6 @@ use App\Models\User;
 /**
  * Authentication class
  */
-
 class Auth
 {
     public static function login(User $user, bool $remember_me): void
@@ -53,7 +52,15 @@ class Auth
         session_destroy();
 
         // Forget remembered login
-        static::forgetLogin();
+        $cookie = $_COOKIE['remember_me'] ?? null;
+
+        if ($cookie) {
+            $remembered_login = RememberedLogin::findByToken($cookie);
+            if ($remembered_login) {
+                $remembered_login->delete();
+            }
+            setcookie('remember_me', '', time() - 3600);
+        }
     }
 
     /**
@@ -111,22 +118,4 @@ class Auth
         return null;
     }
 
-    /**
-     * Forget the remembered login, if present
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public static function forgetLogin(): void
-    {
-        $cookie = $_COOKIE['remember_me'] ?? null;
-
-        if ($cookie) {
-            $remembered_login = RememberedLogin::findByToken($cookie);
-            if ($remembered_login) {
-                $remembered_login->delete();
-            }
-            setcookie('remember_me', '', time() - 3600);
-        }
-    }
 }
