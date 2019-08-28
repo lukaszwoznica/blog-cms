@@ -27,14 +27,16 @@ class Login extends Controller
         }
 
         $user = User::authenticate($_POST['login'], $_POST['password']);
+        $remember_me = isset($_POST['remember_me']);
 
         if ($user) {
-            Auth::login($user);
+            Auth::login($user, $remember_me);
             $this->redirectTo(Auth::getReturnPage());
         } else {
-            Flash::addMessage('Login failed, please try again', Flash::ERROR);
+            Flash::addMessage('Incorrect login or password, please try again', Flash::ERROR);
             View::renderTemplate('Login/login', [
-                'login' => $_POST['login']
+                'login' => $_POST['login'],
+                'remember_me' => $remember_me
             ]);
         }
     }

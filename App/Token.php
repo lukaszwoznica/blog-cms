@@ -32,7 +32,7 @@ class Token
 
     public function getHash(): string
     {
-        return hash_hmac('sha-256', $this->token_value, Config::SECRET_KEY);
+        return hash_hmac('sha256', $this->token_value, Config::SECRET_KEY);
     }
 
 }

@@ -11,12 +11,14 @@ use App\Models\User;
 
 class Auth
 {
-    public static function login(User $user): void
+    public static function login(User $user, bool $remember_me): void
     {
         session_regenerate_id();
-
         $_SESSION['user_id'] = $user->getId();
-        $_SESSION['user_name'] = $user->getUsername();
+
+        if ($remember_me) {
+            $user->rememberLogin();
+        }
     }
 
     public static function logout(): void
