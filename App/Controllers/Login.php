@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Flash;
 use App\Models\User;
 use Core\Controller;
 use Core\View;
@@ -31,6 +32,7 @@ class Login extends Controller
             Auth::login($user);
             $this->redirectTo(Auth::getReturnPage());
         } else {
+            Flash::addMessage('Login failed, please try again', Flash::ERROR);
             View::renderTemplate('Login/login', [
                 'login' => $_POST['login']
             ]);
