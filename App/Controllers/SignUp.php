@@ -12,7 +12,7 @@ class SignUp extends Controller
 {
     protected function before()
     {
-        if (Auth::isLoggedIn()) {
+        if (Auth::getUser()) {
             $this->redirectTo('/');
         }
     }

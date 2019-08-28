@@ -13,7 +13,7 @@ class Login extends Controller
 {
     public function indexAction(): void
     {
-        if (Auth::isLoggedIn()) {
+        if (Auth::getUser()) {
             $this->redirectTo('/');
         }
 
@@ -22,7 +22,7 @@ class Login extends Controller
 
     public function createAction(): void
     {
-        if (Auth::isLoggedIn()) {
+        if (Auth::getUser()) {
             $this->redirectTo('/');
         }
 

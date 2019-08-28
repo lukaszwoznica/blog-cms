@@ -16,6 +16,7 @@ class User extends Model
     private $password;
     private $validation_errors = [];
     private $remember_token;
+    private $remember_token_expire_time;
 
     public function __construct(array $user_data = [])
     {
@@ -78,7 +79,7 @@ class User extends Model
 
     public static function findByUsernameOrEmail(string $username_or_email): ?User
     {
-        $db = Model::getDatabase();
+        $db = static::getDatabase();
         $sql = "SELECT * FROM users WHERE username = :login OR email = :login";
 
         $stmt = $db->prepare($sql);
@@ -94,7 +95,7 @@ class User extends Model
 
     public static function findByID(int $user_id): ?User
     {
-        $db = Model::getDatabase();
+        $db = static::getDatabase();
         $sql = "SELECT * FROM users WHERE id = :user_id";
 
         $stmt = $db->prepare($sql);
@@ -148,7 +149,7 @@ class User extends Model
         $token = new Token();
         $hashed_token = $token->getHash();
         $this->remember_token = $token->getValue();
-        $expiration_timestamp = time() + 60 * 60 * 24 * 30; // 30 days
+        $this->remember_token_expire_time = time() + 60 * 60 * 24 * 30; // 30 days
         $db = static::getDatabase();
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expiration_time)
                 VALUES (:token_hash, :user_id, :expiration_time)';
@@ -156,7 +157,7 @@ class User extends Model
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
         $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT);
-        $stmt->bindValue(':expiration_time', date('Y-m-d H:i:s', $expiration_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':expiration_time', date('Y-m-d H:i:s', $this->remember_token_expire_time), PDO::PARAM_STR);
 
         return $stmt->execute();
     }
@@ -183,5 +184,15 @@ class User extends Model
     public function getValidationErrors(): array
     {
         return $this->validation_errors;
+    }
+
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function getRememberTokenExpireTime()
+    {
+        return $this->remember_token_expire_time;
     }
 }

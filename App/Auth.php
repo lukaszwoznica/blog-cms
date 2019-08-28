@@ -3,6 +3,7 @@
 
 namespace App;
 
+use App\Models\RememberedLogin;
 use App\Models\User;
 
 /**
@@ -17,7 +18,14 @@ class Auth
         $_SESSION['user_id'] = $user->getId();
 
         if ($remember_me) {
-            $user->rememberLogin();
+            if ($user->rememberLogin()){
+                setcookie(
+                    'remember_me',
+                    $user->getRememberToken(),
+                    $user->getRememberTokenExpireTime(),
+                    '/'
+                );
+            }
         }
     }
 
@@ -46,17 +54,6 @@ class Auth
     }
 
     /**
-     * Check if the user is logged in
-     */
-    public static function isLoggedIn(): bool
-    {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Remember the originally-requested page in the session
      */
     public static function rememberRequestedPage(): void
@@ -73,13 +70,41 @@ class Auth
     }
 
     /**
-     * Get the current logged-in user
+     * Get the current logged-in user from a session or the remember_me cookie
+     *
+     * @return User|null
+     * @throws \Exception
      */
     public static function getUser(): ?User
     {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
             return User::findByID($_SESSION['user_id']);
         }
+
+        return static::loginFromRememberCookie();
+    }
+
+
+    /**
+     * Login the user from a remembered login cookie
+     *
+     * @return User|null
+     * @throws \Exception
+     */
+    private static function loginFromRememberCookie(): ?User
+    {
+        $cookie = $_COOKIE['remember_me'] ?? null;
+
+        if ($cookie) {
+            $remembered_login = RememberedLogin::findByToken($cookie);
+
+            if ($remembered_login && !$remembered_login->hasExpired()) {
+                $user = $remembered_login->getUser();
+                static::login($user, false);
+                return $user;
+            }
+        }
+
         return null;
     }
 }
