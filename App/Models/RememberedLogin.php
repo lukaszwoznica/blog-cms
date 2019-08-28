@@ -10,6 +10,7 @@ use PDO;
 
 class RememberedLogin extends Model
 {
+    private $token_hash;
     private $user_id;
     private $expiration_time;
 
@@ -56,5 +57,21 @@ class RememberedLogin extends Model
     public function hasExpired(): bool
     {
         return strtotime($this->expiration_time) < time();
+    }
+
+    /**
+     * Delete this model
+     *
+     * @return void
+     */
+    public function delete(): void
+    {
+        $db = static::getDatabase();
+        $sql = 'DELETE FROM remembered_logins WHERE token_hash = :token_hash';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token_hash', $this->token_hash, PDO::PARAM_STR);
+
+        $stmt->execute();
     }
 }

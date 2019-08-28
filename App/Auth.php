@@ -51,6 +51,9 @@ class Auth
 
         // Finally destroy the session
         session_destroy();
+
+        // Forget remembered login
+        static::forgetLogin();
     }
 
     /**
@@ -106,5 +109,24 @@ class Auth
         }
 
         return null;
+    }
+
+    /**
+     * Forget the remembered login, if present
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public static function forgetLogin(): void
+    {
+        $cookie = $_COOKIE['remember_me'] ?? null;
+
+        if ($cookie) {
+            $remembered_login = RememberedLogin::findByToken($cookie);
+            if ($remembered_login) {
+                $remembered_login->delete();
+            }
+            setcookie('remember_me', '', time() - 3600);
+        }
     }
 }
