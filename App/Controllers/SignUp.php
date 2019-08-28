@@ -3,12 +3,20 @@
 
 namespace App\Controllers;
 
+use App\Auth;
 use App\Models\User;
 use Core\Controller;
 use Core\View;
 
 class SignUp extends Controller
 {
+    protected function before()
+    {
+        if (Auth::isLoggedIn()) {
+            $this->redirectTo('/');
+        }
+    }
+
     public function indexAction(): void
     {
         View::renderTemplate('Signup/new');
@@ -32,9 +40,11 @@ class SignUp extends Controller
      */
     public function validateUsernameAction(): void
     {
-        $username_valid = !User::usernameExist($_GET['username']);
-        header('Content-Type: application/json');
-        echo json_encode($username_valid);
+        if (isset($_GET['username']) && !empty($_GET['username'])) {
+            $username_valid = !User::usernameExist($_GET['username']);
+            header('Content-Type: application/json');
+            echo json_encode($username_valid);
+        }
     }
 
     /**
@@ -42,9 +52,11 @@ class SignUp extends Controller
      */
     public function validateEmailAction(): void
     {
-        $email_valid = !User::emailExist($_GET['email']);
-        header('Content-Type: application/json');
-        echo json_encode($email_valid);
+        if (isset($_GET['email']) && !empty($_GET['email'])){
+            $email_valid = !User::emailExist($_GET['email']);
+            header('Content-Type: application/json');
+            echo json_encode($email_valid);
+        }
     }
 
     public function successAction(): void
