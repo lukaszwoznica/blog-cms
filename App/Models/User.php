@@ -4,6 +4,7 @@
 namespace App\Models;
 
 
+use App\Token;
 use Core\Model;
 use PDO;
 
@@ -13,9 +14,9 @@ class User extends Model
     private $username;
     private $email;
     private $password;
-
     private $validation_errors = [];
-
+    private $remember_token;
+    private $remember_token_expire_time;
 
     public function __construct(array $user_data = [])
     {
@@ -78,11 +79,11 @@ class User extends Model
 
     public static function findByUsernameOrEmail(string $username_or_email): ?User
     {
-        $db = Model::getDatabase();
+        $db = static::getDatabase();
         $sql = "SELECT * FROM users WHERE username = :login OR email = :login";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":login", $username_or_email);
+        $stmt->bindValue(":login", $username_or_email);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
 
@@ -94,11 +95,11 @@ class User extends Model
 
     public static function findByID(int $user_id): ?User
     {
-        $db = Model::getDatabase();
+        $db = static::getDatabase();
         $sql = "SELECT * FROM users WHERE id = :user_id";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
 
@@ -138,6 +139,29 @@ class User extends Model
         return null;
     }
 
+    /**
+     * Remember login by inserting a unique token into remembered_logins table in database.
+     * @return bool
+     * @throws \Exception
+     */
+    public function rememberLogin(): bool
+    {
+        $token = new Token();
+        $hashed_token = $token->getHash();
+        $this->remember_token = $token->getValue();
+        $this->remember_token_expire_time = time() + 60 * 60 * 24 * 30; // 30 days
+        $db = static::getDatabase();
+        $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expiration_time)
+                VALUES (:token_hash, :user_id, :expiration_time)';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT);
+        $stmt->bindValue(':expiration_time', date('Y-m-d H:i:s', $this->remember_token_expire_time), PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
     /*
      * Getters
      */
@@ -160,5 +184,15 @@ class User extends Model
     public function getValidationErrors(): array
     {
         return $this->validation_errors;
+    }
+
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function getRememberTokenExpireTime()
+    {
+        return $this->remember_token_expire_time;
     }
 }

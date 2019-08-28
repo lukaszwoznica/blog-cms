@@ -3,6 +3,7 @@
 
 namespace App;
 
+use App\Models\RememberedLogin;
 use App\Models\User;
 
 /**
@@ -11,12 +12,21 @@ use App\Models\User;
 
 class Auth
 {
-    public static function login(User $user): void
+    public static function login(User $user, bool $remember_me): void
     {
         session_regenerate_id();
-
         $_SESSION['user_id'] = $user->getId();
-        $_SESSION['user_name'] = $user->getUsername();
+
+        if ($remember_me) {
+            if ($user->rememberLogin()){
+                setcookie(
+                    'remember_me',
+                    $user->getRememberToken(),
+                    $user->getRememberTokenExpireTime(),
+                    '/'
+                );
+            }
+        }
     }
 
     public static function logout(): void
@@ -41,17 +51,9 @@ class Auth
 
         // Finally destroy the session
         session_destroy();
-    }
 
-    /**
-     * Check if the user is logged in
-     */
-    public static function isLoggedIn(): bool
-    {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-            return true;
-        }
-        return false;
+        // Forget remembered login
+        static::forgetLogin();
     }
 
     /**
@@ -71,13 +73,60 @@ class Auth
     }
 
     /**
-     * Get the current logged-in user
+     * Get the current logged-in user from a session or the remember_me cookie
+     *
+     * @return User|null
+     * @throws \Exception
      */
     public static function getUser(): ?User
     {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
             return User::findByID($_SESSION['user_id']);
         }
+
+        return static::loginFromRememberCookie();
+    }
+
+
+    /**
+     * Login the user from a remembered login cookie
+     *
+     * @return User|null
+     * @throws \Exception
+     */
+    private static function loginFromRememberCookie(): ?User
+    {
+        $cookie = $_COOKIE['remember_me'] ?? null;
+
+        if ($cookie) {
+            $remembered_login = RememberedLogin::findByToken($cookie);
+
+            if ($remembered_login && !$remembered_login->hasExpired()) {
+                $user = $remembered_login->getUser();
+                static::login($user, false);
+                return $user;
+            }
+        }
+
         return null;
+    }
+
+    /**
+     * Forget the remembered login, if present
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public static function forgetLogin(): void
+    {
+        $cookie = $_COOKIE['remember_me'] ?? null;
+
+        if ($cookie) {
+            $remembered_login = RememberedLogin::findByToken($cookie);
+            if ($remembered_login) {
+                $remembered_login->delete();
+            }
+            setcookie('remember_me', '', time() - 3600);
+        }
     }
 }

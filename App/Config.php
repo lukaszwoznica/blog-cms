@@ -20,4 +20,9 @@ class Config
      * Show or hide error messages
      */
     const SHOW_ERRORS = true;
+
+    /*
+     * Secret key for hashing
+     */
+    const SECRET_KEY = '3xRKxebnuVfQhoMMZfyZbv9XU4VaICVP';
 }

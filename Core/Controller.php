@@ -63,7 +63,7 @@ abstract class Controller
      */
     public function requireLogin(): void
     {
-        if (!Auth::isLoggedIn()) {
+        if (!Auth::getUser()) {
             Auth::rememberRequestedPage();
             $this->redirectTo('/login');
         }
