@@ -36,5 +36,6 @@ $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/', ['action' => 'index']);
+$router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);

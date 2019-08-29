@@ -162,6 +162,15 @@ class User extends Model
         return $stmt->execute();
     }
 
+    public static function passwordReset($login): void
+    {
+        $user = static::findByUsernameOrEmail($login);
+
+        if ($user) {
+            // TODO Password reset process
+        }
+    }
+
     /*
      * Getters
      */
