@@ -4,8 +4,10 @@
 namespace App\Models;
 
 
+use App\Mail;
 use App\Token;
 use Core\Model;
+use Core\View;
 use PDO;
 
 class User extends Model
@@ -17,6 +19,8 @@ class User extends Model
     private $validation_errors = [];
     private $remember_token;
     private $remember_token_expire_time;
+    private $password_reset_hash;
+    private $password_reset_expiry;
 
     public function __construct(array $user_data = [])
     {
@@ -162,13 +166,68 @@ class User extends Model
         return $stmt->execute();
     }
 
-    public static function passwordReset($login): void
+    /**
+     * Generate password reset token and send an email with instructions to the user.
+     *
+     * @param string $login
+     * @throws \Exception
+     */
+    public static function passwordReset(string $login): void
     {
         $user = static::findByUsernameOrEmail($login);
 
         if ($user) {
-            // TODO Password reset process
+            if ($user->generatePasswordResetToken()){
+                $user->sendPasswordResetEmail();
+            }
         }
+    }
+
+    /**
+     * Generate a new token for password reset process.
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    private function generatePasswordResetToken(): bool
+    {
+        $token = new Token();
+        $token_hash = $token->getHash();
+        $this->password_reset_hash = $token->getValue();
+        $expiry_timestamp = time() + 60 * 60 * 4; // 4 hours
+        $db = static::getDatabase();
+        $sql = 'UPDATE users 
+                SET password_reset_hash = :token_hash, 
+                    password_reset_expiry = :expiry_time
+                WHERE id = :id';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token_hash', $token_hash, PDO::PARAM_STR);
+        $stmt->bindValue(':expiry_time', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $this->id);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Send password reset link in an email to the user.
+     *
+     * @throws \Exception
+     */
+    private function sendPasswordResetEmail(): void
+    {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_hash;
+
+        $html_body = View::getTemplate('User/Password/reset-email', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+        $plaintext_body = View::getTemplate('User/Password/reset-email.txt', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+
+        Mail::send($this->email, 'Password reset', $html_body, $plaintext_body);
     }
 
     /*
