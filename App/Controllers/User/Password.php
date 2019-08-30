@@ -23,4 +23,5 @@ class Password extends Controller
             View::renderTemplate('User/Password/reset-requested');
         }
     }
+    
 }

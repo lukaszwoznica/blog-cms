@@ -19,7 +19,6 @@ class RememberedLogin extends Model
      *
      * @param string $token_value
      * @return RememberedLogin|null
-     * @throws \Exception
      */
     public static function findByToken(string $token_value): ?RememberedLogin
     {

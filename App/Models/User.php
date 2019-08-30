@@ -145,8 +145,8 @@ class User extends Model
 
     /**
      * Remember login by inserting a unique token into remembered_logins table in database.
+     *
      * @return bool
-     * @throws \Exception
      */
     public function rememberLogin(): bool
     {
@@ -170,7 +170,6 @@ class User extends Model
      * Generate password reset token and send an email with instructions to the user.
      *
      * @param string $login
-     * @throws \Exception
      */
     public static function passwordReset(string $login): void
     {
@@ -187,7 +186,6 @@ class User extends Model
      * Generate a new token for password reset process.
      *
      * @return bool
-     * @throws \Exception
      */
     private function generatePasswordResetToken(): bool
     {
@@ -211,8 +209,6 @@ class User extends Model
 
     /**
      * Send password reset link in an email to the user.
-     *
-     * @throws \Exception
      */
     private function sendPasswordResetEmail(): void
     {

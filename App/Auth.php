@@ -83,7 +83,6 @@ class Auth
      * Get the current logged-in user from a session or the remember_me cookie
      *
      * @return User|null
-     * @throws \Exception
      */
     public static function getUser(): ?User
     {
@@ -99,7 +98,6 @@ class Auth
      * Login the user from a remembered login cookie
      *
      * @return User|null
-     * @throws \Exception
      */
     private static function loginFromRememberCookie(): ?User
     {

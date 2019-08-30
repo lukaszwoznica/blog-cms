@@ -37,7 +37,6 @@ class View
      * @param string $template
      * @param array $data
      * @return string
-     * @throws Exception
      */
     public static function getTemplate(string $template, array $data = []): string
     {
@@ -70,7 +69,6 @@ class View
      *
      * @param string $template
      * @param array $data
-     * @throws Exception
      */
     public static function renderTemplate(string $template, array $data = []): void
     {
