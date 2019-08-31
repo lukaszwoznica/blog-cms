@@ -32,9 +32,20 @@ $router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 $router->addRoute('logout', ['controller' => 'Login', 'action' => 'destroy']);
 
 // Variable routes
-$router->addRoute('{controller}/{action}');
-$router->addRoute('{controller}/{id:\d+}/{action}');
+
+// App\Controllers namespace
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/', ['action' => 'index']);
+$router->addRoute('{controller}/{action}');
+$router->addRoute('{controller}/{id:\d+}/{action}');
+
+// App\Controllers\User namespace
+$router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
+$router->addRoute('user/password/reset/{token:[\da-f]+}', [
+    'controller' => 'Password',
+    'action' => 'reset',
+    'namespace' => 'user'
+]);
+
 
 $router->dispatch($_SERVER['QUERY_STRING']);

@@ -32,12 +32,13 @@ class View
     }
 
     /**
-     * Render a view template using Twig
+     * Get the content of a view template using Twig
      *
      * @param string $template
      * @param array $data
+     * @return string
      */
-    public static function renderTemplate(string $template, $data = []): void
+    public static function getTemplate(string $template, array $data = []): string
     {
         static $twig = null;
 
@@ -51,13 +52,26 @@ class View
         }
 
         try {
-            echo $twig->render($template . '.twig', $data);
+            return $twig->render($template . '.twig', $data);
         } catch (LoaderError $e) {
-            Error::exceptionHandler($e);
+            Error::exceptionHandler($e, true);
         } catch (RuntimeError $e) {
-            Error::exceptionHandler($e);
+            Error::exceptionHandler($e, true);
         } catch (SyntaxError $e) {
-            Error::exceptionHandler($e);
+            Error::exceptionHandler($e, true);
         }
+
+        return '';
+    }
+
+    /**
+     * Render a view template using Twig
+     *
+     * @param string $template
+     * @param array $data
+     */
+    public static function renderTemplate(string $template, array $data = []): void
+    {
+        echo static::getTemplate($template, $data);
     }
 }
