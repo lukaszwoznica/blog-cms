@@ -23,5 +23,15 @@ class Password extends Controller
             View::renderTemplate('User/Password/reset-requested');
         }
     }
-    
+
+    public function resetAction(): void
+    {
+        $token = $this->route_params['token'];
+        $user = User::findByPasswordResetToken($token);
+
+        if ($user) {
+            View::renderTemplate('User/Password/reset');
+        } else
+            echo "Token is invalid";
+    }
 }
