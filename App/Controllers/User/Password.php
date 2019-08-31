@@ -27,11 +27,35 @@ class Password extends Controller
     public function resetAction(): void
     {
         $token = $this->route_params['token'];
-        $user = User::findByPasswordResetToken($token);
+        $this->getUserOrExit($token);
 
+        View::renderTemplate('User/Password/reset', [
+            'token' => $token
+        ]);
+    }
+
+    public function resetPasswordAction(): void
+    {
+        $user = $this->getUserOrExit($_POST['token']);
+        if ($user->resetPassword($_POST['password'])) {
+            View::renderTemplate('User/Password/reset-success');
+        } else {
+            View::renderTemplate('User/Password/reset', [
+                'token' => $_POST['token'],
+                'user' => $user
+            ]);
+        }
+
+    }
+
+    private function getUserOrExit(string $token): ?User
+    {
+        $user = User::findByPasswordResetToken($token);
         if ($user) {
-            View::renderTemplate('User/Password/reset');
-        } else
-            echo "Token is invalid";
+            return $user;
+        }
+
+        View::renderTemplate('User/Password/token-invalid');
+        exit();
     }
 }

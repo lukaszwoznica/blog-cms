@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block title %}Invalid password reset token{% endblock %}
+
+{% block body %}
+
+    <h1>Password reset error</h1>
+
+    <p>
+        Password reset link is invalid or expired.
+        Please click <a href="/user/password/forgot">here</a> to request another one.
+    </p>
+
+{% endblock %}

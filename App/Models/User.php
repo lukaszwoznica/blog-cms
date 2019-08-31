@@ -55,7 +55,7 @@ class User extends Model
         if (strlen($this->username) < 3) {
             $this->validation_errors[] = "Username must be at least 3 characters";
         }
-        if (static::usernameExist($this->username)) {
+        if (static::usernameExist($this->username, $this->id ?? null)) {
             $this->validation_errors[] = "Username is already taken";
         }
 
@@ -63,13 +63,13 @@ class User extends Model
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
             $this->validation_errors[] = "Invalid email";
         }
-        if (static::emailExist($this->email)) {
+        if (static::emailExist($this->email, $this->id ?? null)) {
             $this->validation_errors[] = "Email is already taken";
         }
 
         // Password
         if (strlen($this->password) < 6) {
-            $this->validation_errors[] = "Password must be at least 8 characters";
+            $this->validation_errors[] = "Password must be at least 6 characters";
         }
 
         if (preg_match("/.*[a-z]+.*/i", $this->password) === 0) {
@@ -113,16 +113,18 @@ class User extends Model
         return $result;
     }
 
-    public static function usernameExist(string $username): bool
+    public static function usernameExist(string $username, int $ignore_id = null): bool
     {
-        if (static::findByUsernameOrEmail($username) !== null)
+        $user = static::findByUsernameOrEmail($username);
+        if ($user && $user->id != $ignore_id)
             return true;
         return false;
     }
 
-    public static function emailExist(string $email): bool
+    public static function emailExist(string $email, int $ignore_id = null): bool
     {
-        if (static::findByUsernameOrEmail($email) !== null)
+        $user = static::findByUsernameOrEmail($email);
+        if ($user && $user->id != $ignore_id)
             return true;
         return false;
     }
@@ -244,6 +246,30 @@ class User extends Model
         }
 
         return null;
+    }
+
+    public function resetPassword(string $password): bool
+    {
+        $this->password = $password;
+        $this->validate();
+
+        if (empty($this->validation_errors)) {
+            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            $db = static::getDatabase();
+            $sql = 'UPDATE users
+                    SET password = :password_hash,
+                        password_reset_hash = NULL,
+                        password_reset_expiry = NULL
+                    WHERE id = :id';
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+
+        return false;
     }
 
     /*
