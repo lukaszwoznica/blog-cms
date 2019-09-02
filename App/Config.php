@@ -29,9 +29,9 @@ class Config
     /*
      * PHPMailer settings
      */
-    const SMTP_HOST = 'smtp.gmail.com';
-    const SMTP_USERNAME = 'blogcms1@gmail.com';
-    const SMTP_PASSWORD = 'Blog1234';
-    const SENDER_ADDRESS = 'blogcms1@gmail.com';
-    const SENDER_NAME = 'Blog.pl';
+    const SMTP_HOST = '';
+    const SMTP_USERNAME = '';
+    const SMTP_PASSWORD = '';
+    const SENDER_ADDRESS = '';
+    const SENDER_NAME = '';
 }

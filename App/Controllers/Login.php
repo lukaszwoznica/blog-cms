@@ -30,10 +30,20 @@ class Login extends Controller
         $remember_me = isset($_POST['remember_me']);
 
         if ($user) {
-            Auth::login($user, $remember_me);
-            $this->redirectTo(Auth::getReturnPage());
+            if ($user->getIsActive()) {
+                Auth::login($user, $remember_me);
+                $this->redirectTo(Auth::getReturnPage());
+            } else {
+                Flash::addMessage('Before you can login, you must activate your account.',
+                    Flash::ERROR
+                );
+                View::renderTemplate('Login/login', [
+                    'login' => $_POST['login'],
+                    'remember_me' => $remember_me
+                ]);
+            }
         } else {
-            Flash::addMessage('Incorrect login or password, please try again', Flash::ERROR);
+            Flash::addMessage('Incorrect login or password, please try again.', Flash::ERROR);
             View::renderTemplate('Login/login', [
                 'login' => $_POST['login'],
                 'remember_me' => $remember_me
