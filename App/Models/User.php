@@ -22,6 +22,7 @@ class User extends Model
     private $password_reset_token;
     private $password_reset_expiry;
     private $activation_token;
+    private $is_active;
 
     public function __construct(array $user_data = [])
     {
@@ -40,8 +41,8 @@ class User extends Model
             $token = new Token();
             $this->activation_token = $token->getValue();
 
-            $sql_query = "INSERT INTO users (username, email, password, activation_hash) 
-                          VALUES (:username, :email, :password, :activation_hash)";
+            $sql_query = "INSERT INTO users (username, email, password, is_active, activation_hash) 
+                          VALUES (:username, :email, :password, 0, :activation_hash)";
 
             $stmt = $db->prepare($sql_query);
             $stmt->bindValue(":username", $this->username, PDO::PARAM_STR);
@@ -144,7 +145,6 @@ class User extends Model
     public static function authenticate(string $login, string $password): ?User
     {
         $user = static::findByUsernameOrEmail($login);
-
         if ($user && password_verify($password, $user->password))
             return $user;
 
@@ -297,6 +297,31 @@ class User extends Model
         Mail::send($this->email, 'Account activation', $html_body, $plaintext_body);
     }
 
+    /**
+     * Activate the user account with the activation token.
+     *
+     * @param $token_value
+     * @return bool
+     */
+    public static function activate(string $token_value): bool
+    {
+        $token = new Token($token_value);
+        $db = self::getDatabase();
+        $sql = 'UPDATE users
+                SET is_active = 1,
+                activation_hash = null
+                WHERE activation_hash = :token_hash';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token_hash', $token->getHash(), PDO::PARAM_STR);
+        $stmt->execute();
+
+        if ($stmt->rowCount() === 1) {
+            return true;
+        }
+        return false;
+    }
+
     /*
      * Getters
      */
@@ -329,5 +354,10 @@ class User extends Model
     public function getRememberTokenExpireTime()
     {
         return $this->remember_token_expire_time;
+    }
+
+    public function getIsActive()
+    {
+        return $this->is_active;
     }
 }

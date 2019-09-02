@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use App\Auth;
+use App\Flash;
 use App\Models\User;
 use Core\Controller;
 use Core\View;
@@ -65,5 +66,13 @@ class SignUp extends Controller
         View::renderTemplate('Signup/success');
     }
 
+    public function activateAction(): void
+    {
+        if (User::activate($this->route_params['token'])){
+            Flash::addMessage("Success! Your account is active. You can log in now.",
+                Flash::SUCCESS);
+            $this->redirectTo('/');
+        }
+    }
 
 }
