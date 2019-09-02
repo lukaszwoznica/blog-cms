@@ -27,6 +27,7 @@ class SignUp extends Controller
         $user = new User($_POST);
 
         if ($user->saveToDatabase()) {
+            $user->sendActivationEmail();
             $this->redirectTo('/signup/success');
         } else {
             View::renderTemplate('Signup/new', [

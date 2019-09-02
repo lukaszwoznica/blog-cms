@@ -19,8 +19,9 @@ class User extends Model
     private $validation_errors = [];
     private $remember_token;
     private $remember_token_expire_time;
-    private $password_reset_hash;
+    private $password_reset_token;
     private $password_reset_expiry;
+    private $activation_token;
 
     public function __construct(array $user_data = [])
     {
@@ -36,12 +37,17 @@ class User extends Model
         if (empty($this->validation_errors)) {
             $db = static::getDatabase();
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-            $sql_query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+            $token = new Token();
+            $this->activation_token = $token->getValue();
+
+            $sql_query = "INSERT INTO users (username, email, password, activation_hash) 
+                          VALUES (:username, :email, :password, :activation_hash)";
 
             $stmt = $db->prepare($sql_query);
             $stmt->bindValue(":username", $this->username, PDO::PARAM_STR);
             $stmt->bindValue(":email", $this->email, PDO::PARAM_STR);
             $stmt->bindValue(":password", $password_hash, PDO::PARAM_STR);
+            $stmt->bindValue(':activation_hash', $token->getHash(), PDO::PARAM_STR);
 
             return $stmt->execute();
         }
@@ -193,7 +199,7 @@ class User extends Model
     {
         $token = new Token();
         $token_hash = $token->getHash();
-        $this->password_reset_hash = $token->getValue();
+        $this->password_reset_token = $token->getValue();
         $expiry_timestamp = time() + 60 * 60 * 4; // 4 hours
         $db = static::getDatabase();
         $sql = 'UPDATE users 
@@ -214,7 +220,7 @@ class User extends Model
      */
     private function sendPasswordResetEmail(): void
     {
-        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_hash;
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_token;
 
         $html_body = View::getTemplate('User/Password/reset-email', [
             'url' => $url,
@@ -270,6 +276,25 @@ class User extends Model
         }
 
         return false;
+    }
+
+    /**
+     * Send account activation link in an email to the user.
+     */
+    public function sendActivationEmail(): void
+    {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
+
+        $html_body = View::getTemplate('Signup/activation-email', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+        $plaintext_body = View::getTemplate('Signup/activation-email.txt', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+
+        Mail::send($this->email, 'Account activation', $html_body, $plaintext_body);
     }
 
     /*
