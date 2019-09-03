@@ -5,6 +5,7 @@
 {% block scripts %}
     <script src="/assets/js/hideShowPassword.min.js"></script>
     <script src="/assets/js/passwordValidationMethod.js"></script>
+    <script>const user_id = '{{ current_user.getId }}'</script>
     <script src="/assets/js/profileEditFormValidation.js"></script>
 {% endblock %}
 
@@ -12,16 +13,16 @@
 
     <h1>Edit profile</h1>
 
-    {% if current_user.getValidationErrors is not empty %}
+    {% if errors is not empty %}
         <p>Errors:</p>
         <ul>
-            {% for error in current_user.getValidationErrors %}
+            {% for error in errors %}
                 <li>{{ error }}</li>
             {% endfor %}
         </ul>
     {% endif %}
 
-    <form id="formEditProfile" action="#" method="post">
+    <form id="formEditProfile" action="/user/profile/update" method="post">
         <div>
             <label for="inputUsername">Username</label>
             <input id="inputUsername" name="username" placeholder="Username" value="{{ current_user.getUsername }}" required />
@@ -32,7 +33,8 @@
         </div>
         <div>
             <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" />
+            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock"/>
+            <span id="helpBlock">Leave blank to keep current password</span>
         </div>
 
         <button type="submit">Save</button>

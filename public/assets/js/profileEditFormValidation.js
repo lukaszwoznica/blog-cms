@@ -5,15 +5,28 @@ $(document).ready(function () {
                 required: true,
                 minlength: 3,
                 maxlength: 50,
-                remote: '/signup/validate-username'
+                remote: {
+                    url: '/user/account/validate-username',
+                    data: {
+                        ignore_id: function () {
+                            return user_id;
+                        }
+                    }
+                }
             },
             email: {
                 required: true,
                 email: true,
-                remote: '/signup/validate-email'
+                remote: {
+                    url: '/user/account/validate-email',
+                    data: {
+                        ignore_id: function () {
+                            return user_id;
+                        }
+                    }
+                }
             },
             password: {
-                required: true,
                 minlength: 6,
                 validPassword: true
            }

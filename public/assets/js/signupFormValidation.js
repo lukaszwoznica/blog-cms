@@ -5,12 +5,12 @@ $(document).ready(function () {
                 required: true,
                 minlength: 3,
                 maxlength: 50,
-                remote: '/signup/validate-username'
+                remote: '/user/account/validate-username'
             },
             email: {
                 required: true,
                 email: true,
-                remote: '/signup/validate-email'
+                remote: '/user/account/validate-email'
             },
             password: {
                 required: true,
