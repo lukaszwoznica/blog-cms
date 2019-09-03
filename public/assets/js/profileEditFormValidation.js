@@ -1,19 +1,32 @@
 $(document).ready(function () {
-    $('#formSignup').validate({
+    $('#formEditProfile').validate({
         rules: {
             username: {
                 required: true,
                 minlength: 3,
                 maxlength: 50,
-                remote: '/user/account/validate-username'
+                remote: {
+                    url: '/user/account/validate-username',
+                    data: {
+                        ignore_id: function () {
+                            return user_id;
+                        }
+                    }
+                }
             },
             email: {
                 required: true,
                 email: true,
-                remote: '/user/account/validate-email'
+                remote: {
+                    url: '/user/account/validate-email',
+                    data: {
+                        ignore_id: function () {
+                            return user_id;
+                        }
+                    }
+                }
             },
             password: {
-                required: true,
                 minlength: 6,
                 validPassword: true
            }
