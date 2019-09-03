@@ -12,7 +12,7 @@ class Password extends Controller
 {
     public function forgotAction(): void
     {
-        View::renderTemplate('User/Password/forgot');
+        View::renderTemplate('User/Password/forgot.html');
     }
 
     public function requestResetAction(): void
@@ -20,7 +20,7 @@ class Password extends Controller
         if(isset($_POST['login'])) {
             User::passwordReset($_POST['login']);
 
-            View::renderTemplate('User/Password/reset-requested');
+            View::renderTemplate('User/Password/reset-requested.html');
         }
     }
 
@@ -29,7 +29,7 @@ class Password extends Controller
         $token = $this->route_params['token'];
         $this->getUserOrExit($token);
 
-        View::renderTemplate('User/Password/reset', [
+        View::renderTemplate('User/Password/reset.html', [
             'token' => $token
         ]);
     }
@@ -38,9 +38,9 @@ class Password extends Controller
     {
         $user = $this->getUserOrExit($_POST['token']);
         if ($user->resetPassword($_POST['password'])) {
-            View::renderTemplate('User/Password/reset-success');
+            View::renderTemplate('User/Password/reset-success.html');
         } else {
-            View::renderTemplate('User/Password/reset', [
+            View::renderTemplate('User/Password/reset.html', [
                 'token' => $_POST['token'],
                 'user' => $user
             ]);
@@ -55,7 +55,7 @@ class Password extends Controller
             return $user;
         }
 
-        View::renderTemplate('User/Password/token-invalid');
+        View::renderTemplate('User/Password/token-invalid.html');
         exit();
     }
 }

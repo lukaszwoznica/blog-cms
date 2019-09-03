@@ -230,7 +230,7 @@ class User extends Model
     {
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_token;
 
-        $html_body = View::getTemplate('User/Password/reset-email', [
+        $html_body = View::getTemplate('User/Password/reset-email.html', [
             'url' => $url,
             'username' => $this->username
         ]);
@@ -293,7 +293,7 @@ class User extends Model
     {
         $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
 
-        $html_body = View::getTemplate('Signup/activation-email', [
+        $html_body = View::getTemplate('Signup/activation-email.html', [
             'url' => $url,
             'username' => $this->username
         ]);

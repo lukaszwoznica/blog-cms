@@ -20,7 +20,7 @@ class SignUp extends Controller
 
     public function indexAction(): void
     {
-        View::renderTemplate('Signup/new');
+        View::renderTemplate('Signup/new.html');
     }
 
     public function createAction(): void
@@ -31,7 +31,7 @@ class SignUp extends Controller
             $user->sendActivationEmail();
             $this->redirectTo('/signup/success');
         } else {
-            View::renderTemplate('Signup/new', [
+            View::renderTemplate('Signup/new.html', [
                 'user' => $user
             ]);
         }
@@ -39,7 +39,7 @@ class SignUp extends Controller
 
     public function successAction(): void
     {
-        View::renderTemplate('Signup/success');
+        View::renderTemplate('Signup/success.html');
     }
 
     public function activateAction(): void

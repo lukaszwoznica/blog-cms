@@ -17,7 +17,7 @@ class Login extends Controller
             $this->redirectTo('/');
         }
 
-        View::renderTemplate('Login/login');
+        View::renderTemplate('Login/login.html');
     }
 
     public function createAction(): void
@@ -37,14 +37,14 @@ class Login extends Controller
                 Flash::addMessage('Before you can login, you must activate your account.',
                     Flash::ERROR
                 );
-                View::renderTemplate('Login/login', [
+                View::renderTemplate('Login/login.html', [
                     'login' => $_POST['login'],
                     'remember_me' => $remember_me
                 ]);
             }
         } else {
             Flash::addMessage('Incorrect login or password, please try again.', Flash::ERROR);
-            View::renderTemplate('Login/login', [
+            View::renderTemplate('Login/login.html', [
                 'login' => $_POST['login'],
                 'remember_me' => $remember_me
             ]);

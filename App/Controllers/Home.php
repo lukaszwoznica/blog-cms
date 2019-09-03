@@ -15,7 +15,7 @@ class Home extends Controller
     {
         $posts = Post::getAllPosts();
 
-        View::renderTemplate('Home/index', [
+        View::renderTemplate('Home/index.html', [
             'posts' => $posts
         ]);
     }

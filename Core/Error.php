@@ -63,7 +63,7 @@ class Error
 
             error_log($error_details);
 
-            View::renderTemplate("Errors/$error_code");
+            View::renderTemplate("Errors/$error_code.html");
         }
 
 
