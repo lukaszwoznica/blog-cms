@@ -41,12 +41,13 @@ $router->addRoute('{controller}/{id:\d+}/{action}');
 $router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 
 // App\Controllers\User namespace
-$router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 $router->addRoute('user/password/reset/{token:[\da-f]+}', [
     'controller' => 'Password',
     'action' => 'reset',
     'namespace' => 'user'
 ]);
+$router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
+
 
 
 $router->dispatch($_SERVER['QUERY_STRING']);

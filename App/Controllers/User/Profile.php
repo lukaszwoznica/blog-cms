@@ -8,9 +8,14 @@ use Core\View;
 
 class Profile extends Authenticated
 {
-    public function indexAction(): void
+    public function showAction(): void
     {
         $this->requireLogin();
-        View::renderTemplate('User/Profile/index');
+        View::renderTemplate('User/Profile/show');
+    }
+
+    public function editAction(): void
+    {
+        View::renderTemplate('User/Profile/edit');
     }
 }
