@@ -4,7 +4,9 @@ $(document).ready(function () {
             username: {
                 required: true,
                 minlength: 3,
-                maxlength: 50,
+                maxlength: 25,
+                validUsernameCharsRange: true,
+                validUsernameStartAndEnd: true,
                 remote: {
                     url: '/user/account/validate-username',
                     data: {

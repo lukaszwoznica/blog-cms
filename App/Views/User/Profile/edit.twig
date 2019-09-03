@@ -1,10 +1,10 @@
 {% extends "base.twig" %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}Edit profile{% endblock %}
 
 {% block scripts %}
     <script src="/assets/js/hideShowPassword.min.js"></script>
-    <script src="/assets/js/passwordValidationMethod.js"></script>
+    <script src="/assets/js/customValidationMethods.js"></script>
     <script>const user_id = '{{ current_user.getId }}'</script>
     <script src="/assets/js/profileEditFormValidation.js"></script>
 {% endblock %}

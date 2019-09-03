@@ -59,8 +59,14 @@ class User extends Model
     public function validate(): void
     {
         // Username
-        if (strlen($this->username) < 3) {
-            $this->validation_errors[] = "Username must be at least 3 characters";
+        if (strlen($this->username) < 3 || strlen($this->username) > 25) {
+            $this->validation_errors[] = "Username must be between 3 and 25 characters";
+        }
+        if (preg_match("/^[a-z0-9_]+$/i",  $this->username) === 0) {
+            $this->validation_errors[] = "Username can only contain alphanumeric characters (letters A-Z, numbers 0-9) and underscore";
+        }
+        if (preg_match("/^([a-z]+).*([a-z0-9]+)$/i", $this->username) === 0) {
+            $this->validation_errors[] = "Username must start with a letter and end with a letter or number";
         }
         if (static::usernameExist($this->username, $this->id ?? null)) {
             $this->validation_errors[] = "Username is already taken";
@@ -96,7 +102,7 @@ class User extends Model
         $sql = "SELECT * FROM users WHERE username = :login OR email = :login";
 
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(":login", $username_or_email);
+        $stmt->bindValue(':login', $username_or_email);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
         $stmt->execute();
 
