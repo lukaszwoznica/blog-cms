@@ -16,6 +16,7 @@ class Post extends Model
     private $content;
     private $category_id;
     private $user_id;
+    private $create_time;
 
     public function __construct(array $post_data = [])
     {
@@ -55,28 +56,33 @@ class Post extends Model
      * Getters
      */
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getCategoryId()
+    public function getCategoryId(): int
     {
         return $this->category_id;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user_id;
+    }
+
+    public function getCreateTime(): string
+    {
+        return $this->create_time;
     }
 }

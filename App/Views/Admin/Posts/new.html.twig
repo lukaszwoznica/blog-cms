@@ -1,0 +1,25 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Add new post</h1> {% endblock %}
+
+{% block body %}
+    <form action="/admin/posts/create" method="post">
+        <div>
+            <label for="inputTitle">Title</label>
+            <input type="text" id="inputTitle" name="title">
+        </div>
+        <div>
+            <label for="textareaContent">Title</label>
+            <textarea name="content" id="textareaContent" rows="10" cols="30"></textarea>
+        </div>
+        <div>
+            <label for="selectCategory">Category</label>
+            <select id="selectCategory" name="category_id">
+                <option value="0">Uncategorized</option>
+            </select>
+        </div>
+        <button type="submit">Add post</button>
+    </form>
+{% endblock %}

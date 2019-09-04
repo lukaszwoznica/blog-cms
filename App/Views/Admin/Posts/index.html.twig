@@ -1,0 +1,34 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Posts management</h1> {% endblock %}
+
+{% block body %}
+    <a href="/admin/posts/new">New post</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.getId }}</td>
+                <td>{{ post.getTitle }}</td>
+                <td>{{ post.getCategoryId }}</td>
+                <td>{{ post.getUserId }}</td>
+                <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
+                <td>Edit/Delete</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
