@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Forgot password{% endblock %}
+
+{% block body %}
+
+    <h1>Password reset</h1>
+
+    <p>
+        Forgotten your password? Enter your username or email address,
+        and we'll send you an email with instructions for setting a new one.
+    </p>
+
+    <form method="post" action="/user/password/request-reset">
+        <div>
+            <label for="inputLogin">Username or email</label>
+            <input type="text" id="inputLogin" name="login" autofocus required />
+        </div>
+        <button type="submit">Reset my password</button>
+    </form>
+
+{% endblock %}

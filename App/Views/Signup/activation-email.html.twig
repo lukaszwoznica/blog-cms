@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Password reset</title>
+</head>
+<body style="font-family: Calibri, Arial, sans-serif;">
+    <h1>Activate your account</h1>
+    
+    <h3>Hi {{ username }},</h3>
+    <p>
+        Thank you for signing up. Please click the button below to activate your account.
+    </p>
+
+
+    <a style="
+            border: 0;
+            background: #1076ff;
+            padding: 10px;
+            display: inline-block;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+        "
+       href="{{ url }}">Activate account</a>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        {% if current_user == null %}
+            <a href="/signup">Sign up</a>
+            <a href="/login">Login</a>
+        {% else %}
+            <a href="/user/profile/show">Profile</a>
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </nav>
+
+    {% for message in flash_messages %}
+        <div class="alert alert-{{ message.type }}">
+            {{ message.body }}
+        </div>
+    {% endfor %}
+
+    {% block body %}
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+    <h1>Profile</h1>
+
+    <dl>
+        <dt>Username</dt>
+        <dd>{{ current_user.getUsername }}</dd>
+        <dt>Email</dt>
+        <dd>{{ current_user.getEmail }}</dd>
+    </dl>
+
+    <a href="/user/profile/edit">Edit</a>
+
+{% endblock %}
