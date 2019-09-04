@@ -30,6 +30,11 @@ $router = new Core\Router;
 // Fixed routes
 $router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 $router->addRoute('logout', ['controller' => 'Login', 'action' => 'destroy']);
+$router->addRoute('admin/dashboard', [
+    'namespace' => 'Admin',
+    'controller' => 'Dashboard',
+    'action' => 'index'
+]);
 
 // Variable routes
 
@@ -44,7 +49,7 @@ $router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp',
 $router->addRoute('user/password/reset/{token:[\da-f]+}', [
     'controller' => 'Password',
     'action' => 'reset',
-    'namespace' => 'user'
+    'namespace' => 'User'
 ]);
 $router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 
