@@ -23,6 +23,7 @@ class User extends Model
     private $password_reset_expiry;
     private $activation_token;
     private $is_active;
+    private $role_id;
 
     public function __construct(array $user_data = [])
     {
@@ -41,8 +42,8 @@ class User extends Model
             $token = new Token();
             $this->activation_token = $token->getValue();
 
-            $sql_query = "INSERT INTO users (username, email, password, is_active, activation_hash) 
-                          VALUES (:username, :email, :password, 0, :activation_hash)";
+            $sql_query = "INSERT INTO users (username, email, password, is_active, activation_hash, role_id) 
+                          VALUES (:username, :email, :password, 0, :activation_hash, 2)";
 
             $stmt = $db->prepare($sql_query);
             $stmt->bindValue(":username", $this->username, PDO::PARAM_STR);
@@ -389,18 +390,23 @@ class User extends Model
         return $this->validation_errors;
     }
 
-    public function getRememberToken()
+    public function getRememberToken(): string
     {
         return $this->remember_token;
     }
 
-    public function getRememberTokenExpireTime()
+    public function getRememberTokenExpireTime(): string
     {
         return $this->remember_token_expire_time;
     }
 
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         return $this->is_active;
+    }
+
+    public function getRoleId(): int
+    {
+        return $this->role_id;
     }
 }

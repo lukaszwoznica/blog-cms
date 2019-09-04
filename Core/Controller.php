@@ -68,4 +68,11 @@ abstract class Controller
             $this->redirectTo('/login');
         }
     }
+
+    public function requireAdminAuthorization(): void
+    {
+        if (Auth::getUser()->getRoleId() !== 1) {
+            $this->redirectTo('/');
+        }
+    }
 }

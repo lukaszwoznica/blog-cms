@@ -48,6 +48,8 @@ $router->addRoute('user/password/reset/{token:[\da-f]+}', [
 ]);
 $router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 
+// App\Controllers\Admin namespace
+$router->addRoute('admin/{controller}/{action}', ['namespace' => 'Admin']);
 
 
 $router->dispatch($_SERVER['QUERY_STRING']);
