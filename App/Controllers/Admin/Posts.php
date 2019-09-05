@@ -34,10 +34,22 @@ class Posts extends Admin
 
         if ($post->saveToDatabase()) {
             Flash::addMessage('Post successfully added', Flash::SUCCESS);
+            $this->redirectTo('/admin/posts');
         } else {
-            Flash::addMessage('Failed to save the post to the database', Flash::ERROR);
+            View::renderTemplate('Admin/Posts/new.html', [
+                'validation_errors' => $post->getValidationErrors()
+            ]);
         }
 
-        $this->redirectTo('/admin/posts');
+    }
+
+    public function editAction(): void
+    {
+        $id = $this->route_params["id"];
+        $post = Post::findByID($id);
+
+        View::renderTemplate('Admin/Posts/edit.html', [
+            'post' => $post
+        ]);
     }
 }

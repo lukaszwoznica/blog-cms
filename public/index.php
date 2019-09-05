@@ -45,6 +45,7 @@ $router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 // App\Controllers\Admin namespace
 $router->addRoute('admin/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
 $router->addRoute('admin/{controller}/{action}', ['namespace' => 'Admin']);
+$router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
 
 // App\Controllers namespace
 $router->addRoute('{controller}', ['action' => 'index']);

@@ -5,13 +5,23 @@
 {% block page_title %} <h1>Add new post</h1> {% endblock %}
 
 {% block body %}
+
+    {% if validation_errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in validation_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <form action="/admin/posts/create" method="post">
         <div>
             <label for="inputTitle">Title</label>
             <input type="text" id="inputTitle" name="title">
         </div>
         <div>
-            <label for="textareaContent">Title</label>
+            <label for="textareaContent">Content</label>
             <textarea name="content" id="textareaContent" rows="10" cols="30"></textarea>
         </div>
         <div>

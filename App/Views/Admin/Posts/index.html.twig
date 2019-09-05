@@ -14,7 +14,9 @@
                 <th>Title</th>
                 <th>Category</th>
                 <th>Author</th>
-                <th>Date</th>
+                <th>Create date</th>
+                <th>Last modified</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,9 +26,20 @@
                 <td>{{ post.getId }}</td>
                 <td>{{ post.getTitle }}</td>
                 <td>{{ post.getCategoryId }}</td>
-                <td>{{ post.getUserId }}</td>
+                <td>{{ post.getAuthorName }}</td>
                 <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
-                <td>Edit/Delete</td>
+                <td>{{ post.getCreateTime|date("d/m/Y H:i:s") }}</td>
+                <td>
+                    {% if post.getIsPublished == 1 %}
+                        Published
+                    {% else %}
+                        Draft
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/admin/posts/{{ post.getId }}/edit">Edit</a>
+                    <a href="/admin/posts/{{ post.getId }}/destroy">Delete</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
