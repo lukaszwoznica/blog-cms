@@ -30,6 +30,12 @@
                 <option value="0">Uncategorized</option>
             </select>
         </div>
+        <div>
+            <label for="radioDraft">Save as draft</label>
+            <input type="radio" name="is_published" id="radioDraft" value="0" checked >
+            <label for="radioPublish">Publish</label>
+            <input type="radio" name="is_published" id="radioPublish" value="1" >
+        </div>
         <button type="submit">Add post</button>
     </form>
 {% endblock %}

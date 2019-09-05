@@ -21,7 +21,7 @@ class Post extends Model
     private $is_published;
     private $validation_errors = [];
 
-    // Optional properties for SQL queries with JOIN
+    // Additional properties for SQL queries with JOIN
 
     /**
      * Username of post author
@@ -53,14 +53,15 @@ class Post extends Model
 
         if (empty($this->validation_errors)) {
             $db = static::getDatabase();
-            $sql = 'INSERT INTO posts (title, content, category_id, user_id)
-                VALUES (:title, :content, :category_id, :user_id)';
+            $sql = 'INSERT INTO posts (title, content, category_id, user_id, is_published)
+                VALUES (:title, :content, :category_id, :user_id, :is_published)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':title', $this->title, PDO::PARAM_STR);
             $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
+            $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
 
             return $stmt->execute();
         }
