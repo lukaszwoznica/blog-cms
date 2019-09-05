@@ -83,7 +83,7 @@ class Post extends Model
     {
         $db = static::getDatabase();
         $sql = 'SELECT posts.*, users.username 
-                FROM `posts` 
+                FROM posts 
                 INNER JOIN users ON user_id = users.id';
 
         $stmt = $db->query($sql);
@@ -107,6 +107,17 @@ class Post extends Model
         if (!$result)
             return null;
         return $result;
+    }
+
+    public function delete(): bool
+    {
+        $db = static::getDatabase();
+        $sql = 'DELETE FROM posts WHERE id = :id';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $this->id);
+
+        return $stmt->execute();
     }
 
     /*

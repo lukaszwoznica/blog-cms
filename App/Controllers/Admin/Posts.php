@@ -52,4 +52,18 @@ class Posts extends Admin
             'post' => $post
         ]);
     }
+
+    public function destroyAction(): void
+    {
+        $id = $this->route_params["id"];
+        $post = Post::findByID($id);
+
+        if ($post->delete()) {
+            Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);
+        } else {
+            Flash::addMessage('An error occurred while deleting the post', Flash::SUCCESS);
+        }
+
+        $this->redirectTo('/admin/posts');
+    }
 }
