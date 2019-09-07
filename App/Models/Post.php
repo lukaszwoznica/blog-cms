@@ -120,6 +120,40 @@ class Post extends Model
         return $stmt->execute();
     }
 
+    public function update(array $data): bool
+    {
+        $this->title = $data['title'];
+        $this->content = $data['content'];
+        $this->category_id = $data['category_id'];
+        $this->last_modified = date('Y-m-d H:i:s');
+        $this->is_published = $data['is_published'];
+
+        $this->validate();
+
+        if (empty($this->validation_errors)) {
+            $db = static::getDatabase();
+            $sql = 'UPDATE posts
+                    SET title = :title,
+                    content = :content,
+                    category_id = :category_id,
+                    last_modified = :last_modified,
+                    is_published = :is_published
+                    WHERE id = :id';
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':title', $this->title, PDO::PARAM_STR);
+            $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
+            $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
+            $stmt->bindValue(':last_modified', $this->last_modified, PDO::PARAM_STR);
+            $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
+
     /*
      * Getters
      */
@@ -139,7 +173,7 @@ class Post extends Model
         return $this->content;
     }
 
-    public function getCategoryId(): int
+    public function getCategoryId(): ?int
     {
         return $this->category_id;
     }

@@ -28,7 +28,7 @@
                 <td>{{ post.getCategoryId }}</td>
                 <td>{{ post.getAuthorName }}</td>
                 <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
-                <td>{{ post.getCreateTime|date("d/m/Y H:i:s") }}</td>
+                <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
                 <td>
                     {% if post.getIsPublished == 1 %}
                         Published

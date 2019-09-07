@@ -6,10 +6,10 @@
 
 {% block body %}
 
-    {% if validation_errors is not empty %}
+    {% if post.getValidationErrors is not empty %}
         <p>Errors:</p>
         <ul>
-            {% for error in validation_errors %}
+            {% for error in post.getValidationErrors %}
                 <li>{{ error }}</li>
             {% endfor %}
         </ul>
@@ -18,11 +18,11 @@
     <form action="/admin/posts/create" method="post">
         <div>
             <label for="inputTitle">Title</label>
-            <input type="text" id="inputTitle" name="title">
+            <input type="text" id="inputTitle" name="title" value="{{ post.getTitle }}">
         </div>
         <div>
             <label for="textareaContent">Content</label>
-            <textarea name="content" id="textareaContent" rows="10" cols="30"></textarea>
+            <textarea name="content" id="textareaContent" rows="10" cols="30">{{ post.getContent }}</textarea>
         </div>
         <div>
             <label for="selectCategory">Category</label>
