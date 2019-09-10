@@ -43,7 +43,7 @@ class Category extends Model
     {
         // Name
         if (strlen(trim($this->name)) < 2 || strlen(trim($this->name)) > 100) {
-            $this->validation_errors[] = "Category name must be between 2 and 100 characters";
+            $this->validation_errors[] = 'Category name must be between 2 and 100 characters';
         }
 
         // Description
@@ -120,17 +120,17 @@ class Category extends Model
      * Getters
      */
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }

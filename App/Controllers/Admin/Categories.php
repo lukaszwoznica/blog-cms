@@ -34,15 +34,19 @@ class Categories extends Admin
 
     public function createAction(): void
     {
-        $category = new Category($_POST);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $category = new Category($_POST);
 
-        if ($category->saveToDatabase()) {
-            Flash::addMessage('Category has been successfully added', Flash::SUCCESS);
-            $this->redirectTo('/admin/categories');
+            if ($category->saveToDatabase()) {
+                Flash::addMessage('Category has been successfully added', Flash::SUCCESS);
+                $this->redirectTo('/admin/categories');
+            } else {
+                View::renderTemplate('Admin/Categories/new.html', [
+                    'category' => $category
+                ]);
+            }
         } else {
-            View::renderTemplate('Admin/Categories/new.html', [
-                'category' => $category
-            ]);
+            $this->redirectTo('/admin/categories');
         }
     }
 
@@ -96,8 +100,11 @@ class Categories extends Admin
         }
     }
 
-    private function getCategoryById(int $id): ?Category
+    private function getCategoryById(?int $id): ?Category
     {
+        if ($id === null){
+            return null;
+        }
         return Category::findByID($id);
     }
 }

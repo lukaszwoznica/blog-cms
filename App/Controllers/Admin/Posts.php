@@ -35,67 +35,92 @@ class Posts extends Admin
 
     public function createAction(): void
     {
-        $author_id = Auth::getUser()->getId();
-        $post_data = $_POST;
-        $post_data['user_id'] = $author_id;
-        if ($post_data['category_id'] == 0) {
-            $post_data['category_id'] = null;
-        }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $author_id = Auth::getUser()->getId();
+            $post_data = $_POST;
+            $post_data['user_id'] = $author_id;
+            if ($post_data['category_id'] == 0) {
+                $post_data['category_id'] = null;
+            }
 
-        $post = new Post($post_data);
+            $post = new Post($post_data);
 
-        if ($post->saveToDatabase()) {
-            Flash::addMessage('Post successfully added', Flash::SUCCESS);
-            $this->redirectTo('/admin/posts');
+            if ($post->saveToDatabase()) {
+                Flash::addMessage('Post has been successfully added', Flash::SUCCESS);
+                $this->redirectTo('/admin/posts');
+            } else {
+                View::renderTemplate('Admin/Posts/new.html', [
+                    'post' => $post
+                ]);
+            }
         } else {
-            View::renderTemplate('Admin/Posts/new.html', [
-                'post' => $post
-            ]);
+            $this->redirectTo('/admin/posts');
         }
+
     }
 
     public function editAction(): void
     {
         $post = $this->getPostById($this->id);
 
-        View::renderTemplate('Admin/Posts/edit.html', [
-            'post' => $post
-        ]);
+        if ($post) {
+            View::renderTemplate('Admin/Posts/edit.html', [
+                'post' => $post
+            ]);
+        } else {
+            Flash::addMessage('Post with given id does not exist', Flash::WARNING);
+            $this->redirectTo('/admin/posts');
+        }
+
     }
 
     public function updateAction(): void
     {
         $post = $this->getPostById($this->id);
-        $post_data = $_POST;
-        if ($post_data['category_id'] == 0) {
-            $post_data['category_id'] = null;
-        }
 
-        if ($post->update($post_data)){
-            Flash::addMessage('Post successfully updated', Flash::SUCCESS);
-            $this->redirectTo('/admin/posts');
+        if ($post && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            $post_data = $_POST;
+            if ($post_data['category_id'] == 0) {
+                $post_data['category_id'] = null;
+            }
+
+            if ($post->update($post_data)){
+                Flash::addMessage('Post has been successfully updated', Flash::SUCCESS);
+                $this->redirectTo('/admin/posts');
+            } else {
+                View::renderTemplate('Admin/Posts/edit.html', [
+                    'post' => $post
+                ]);
+            }
         } else {
-            View::renderTemplate('Admin/Posts/edit.html', [
-                'post' => $post
-            ]);
+            $this->redirectTo('/admin/posts');
         }
     }
+
 
     public function destroyAction(): void
     {
         $post = $this->getPostById($this->id);
 
-        if ($post->delete()) {
-            Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);
+        if ($post) {
+            if ($post->delete()) {
+                Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);
+            } else {
+                Flash::addMessage('An error occurred while deleting the post', Flash::ERROR);
+            }
         } else {
-            Flash::addMessage('An error occurred while deleting the post', Flash::SUCCESS);
+            Flash::addMessage('Category with given id does not exist', Flash::WARNING);
         }
+
 
         $this->redirectTo('/admin/posts');
     }
 
-    private function getPostById(int $id): ?Post
+    private function getPostById(?int $id): ?Post
     {
+        if ($id === null){
+            return null;
+        }
         return Post::findByID($id);
     }
 }

@@ -57,7 +57,7 @@ class Post extends Model
                 VALUES (:title, :content, :category_id, :user_id, :is_published)';
 
             $stmt = $db->prepare($sql);
-            $stmt->bindValue(':title', $this->title, PDO::PARAM_STR);
+            $stmt->bindValue(':title', trim($this->title), PDO::PARAM_STR);
             $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
@@ -71,11 +71,8 @@ class Post extends Model
     public function validate(): void
     {
         // Title
-        if (empty($this->title)) {
-            $this->validation_errors[] = 'Post title cannot be empty';
-        }
-        if (strlen($this->title) > 255) {
-            $this->validation_errors[] = 'Post title cannot be longer than 255 characters';
+        if (strlen(trim($this->title)) < 3 || strlen(trim($this->title)) > 255) {
+            $this->validation_errors[] = 'Category name must be between 3 and 255 characters';
         }
     }
 
@@ -120,13 +117,13 @@ class Post extends Model
         return $stmt->execute();
     }
 
-    public function update(array $data): bool
+    public function update(array $post_data): bool
     {
-        $this->title = $data['title'];
-        $this->content = $data['content'];
-        $this->category_id = $data['category_id'];
+        $this->title = trim($post_data['title']);
+        $this->content = $post_data['content'];
+        $this->category_id = $post_data['category_id'];
         $this->last_modified = date('Y-m-d H:i:s');
-        $this->is_published = $data['is_published'];
+        $this->is_published = $post_data['is_published'];
 
         $this->validate();
 
@@ -158,17 +155,17 @@ class Post extends Model
      * Getters
      */
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -178,12 +175,12 @@ class Post extends Model
         return $this->category_id;
     }
 
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->user_id;
     }
 
-    public function getCreateTime(): string
+    public function getCreateTime(): ?string
     {
         return $this->create_time;
     }
@@ -193,17 +190,17 @@ class Post extends Model
         return $this->validation_errors;
     }
 
-    public function getLastModified(): string
+    public function getLastModified(): ?string
     {
         return $this->last_modified;
     }
 
-    public function getIsPublished(): bool
+    public function getIsPublished(): ?bool
     {
         return $this->is_published;
     }
 
-    public function getAuthorName(): string
+    public function getAuthorName(): ?string
     {
         return $this->author_name;
     }
