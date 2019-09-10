@@ -6,6 +6,7 @@ namespace App\Controllers\Admin;
 
 use App\Auth;
 use App\Flash;
+use App\Models\Category;
 use App\Models\Post;
 use Core\View;
 
@@ -30,7 +31,11 @@ class Posts extends Admin
 
     public function newAction(): void
     {
-        View::renderTemplate('Admin/Posts/new.html');
+        $categories = Category::getAllCategories();
+
+        View::renderTemplate('Admin/Posts/new.html', [
+            'categories' => $categories
+        ]);
     }
 
     public function createAction(): void
@@ -62,10 +67,12 @@ class Posts extends Admin
     public function editAction(): void
     {
         $post = $this->getPostById($this->id);
+        $categories = Category::getAllCategories();
 
         if ($post) {
             View::renderTemplate('Admin/Posts/edit.html', [
-                'post' => $post
+                'post' => $post,
+                'categories' => $categories
             ]);
         } else {
             Flash::addMessage('Post with given id does not exist', Flash::WARNING);

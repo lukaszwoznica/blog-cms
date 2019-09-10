@@ -25,7 +25,13 @@
             <tr>
                 <td>{{ post.getId }}</td>
                 <td>{{ post.getTitle }}</td>
-                <td>{{ post.getCategoryId }}</td>
+                <td>
+                    {% if post.getCategoryName %}
+                        {{ post.getCategoryName }}
+                    {% else %}
+                        Uncategorized
+                    {% endif %}
+                </td>
                 <td>{{ post.getAuthorName }}</td>
                 <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
                 <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>

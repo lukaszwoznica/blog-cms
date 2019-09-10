@@ -27,7 +27,10 @@
         <div>
             <label for="selectCategory">Category</label>
             <select id="selectCategory" name="category_id">
-                <option value="0">Uncategorized</option>
+                <option value="0" >Uncategorized</option>
+                {% for category in categories %}
+                    <option value="{{ category.getId }}">{{ category.getName }}</option>
+                {% endfor %}
             </select>
         </div>
         <div>

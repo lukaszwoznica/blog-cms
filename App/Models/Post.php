@@ -28,6 +28,11 @@ class Post extends Model
      */
     private $author_name;
 
+    /**
+     * Post category name
+     */
+    private $category_name;
+
 
     public function __construct(array $post_data = [])
     {
@@ -42,6 +47,11 @@ class Post extends Model
             case 'username':
                 if(empty($this->author_name)){
                     $this->author_name = $value;
+                }
+                break;
+            case 'cat_name':
+                if(empty($this->category_name)){
+                    $this->category_name = $value;
                 }
                 break;
         }
@@ -79,9 +89,10 @@ class Post extends Model
     public static function getAllPosts(): array
     {
         $db = static::getDatabase();
-        $sql = 'SELECT posts.*, users.username 
+        $sql = 'SELECT posts.*, users.username, categories.name cat_name
                 FROM posts 
-                INNER JOIN users ON user_id = users.id';
+                INNER JOIN users ON user_id = users.id
+                LEFT OUTER JOIN categories ON category_id = categories.id';
 
         $stmt = $db->query($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -203,5 +214,10 @@ class Post extends Model
     public function getAuthorName(): ?string
     {
         return $this->author_name;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->category_name;
     }
 }
