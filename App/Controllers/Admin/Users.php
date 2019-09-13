@@ -10,12 +10,15 @@ use Core\View;
 
 class Users extends Admin
 {
-    private $id;
+    private $user;
 
     public function __construct(array $route_params)
     {
         parent::__construct($route_params);
-        $this->id = $route_params['id'] ?? null;
+
+        if (isset($route_params['id'])) {
+            $this->user = User::findByID($route_params['id']);
+        }
     }
 
     public function indexAction(): void
@@ -54,10 +57,8 @@ class Users extends Admin
 
     public function destroyAction(): void
     {
-        $user = $this->getUserById($this->id);
-
-        if ($user) {
-            if ($user->delete()) {
+        if ($this->user) {
+            if ($this->user->delete()) {
                 Flash::addMessage('User has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the user', Flash::ERROR);
@@ -71,11 +72,9 @@ class Users extends Admin
 
     public function editAction(): void
     {
-        $user = $this->getUserById($this->id);
-
-        if ($user) {
+        if ($this->user) {
             View::renderTemplate('Admin/Users/edit.html', [
-                'user' => $user
+                'user' => $this->user
             ]);
         } else {
             Flash::addMessage('User with given id does not exist', Flash::WARNING);
@@ -85,27 +84,17 @@ class Users extends Admin
 
     public function updateAction(): void
     {
-        $user = $this->getUserById($this->id);
-
-        if ($user && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($user->update($_POST)) {
+        if ($this->user && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->user->update($_POST)) {
                 Flash::addMessage('User has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/users');
             } else {
                 View::renderTemplate('Admin/Users/edit.html', [
-                    'user' => $user
+                    'user' => $this->user
                 ]);
             }
         } else {
             $this->redirectTo('/admin/users');
         }
-    }
-
-    private function getUserById(?int $id): ?User
-    {
-        if ($id === null){
-            return null;
-        }
-        return User::findByID($id);
     }
 }

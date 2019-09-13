@@ -10,12 +10,15 @@ use Core\View;
 
 class Categories extends Admin
 {
-    private $id;
+    private $category;
 
     public function __construct(array $route_params)
     {
         parent::__construct($route_params);
-        $this->id = $route_params['id'] ?? null;
+
+        if (isset($route_params['id'])) {
+            $this->category = Category::findByID($route_params['id']);
+        }
     }
 
     public function indexAction(): void
@@ -52,10 +55,8 @@ class Categories extends Admin
 
     public function destroyAction(): void
     {
-        $category = $this->getCategoryById($this->id);
-
-        if($category){
-            if ($category->delete()) {
+        if($this->category){
+            if ($this->category->delete()) {
                 Flash::addMessage('Category has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the category', Flash::ERROR);
@@ -69,11 +70,9 @@ class Categories extends Admin
 
     public function editAction(): void
     {
-        $category = $this->getCategoryById($this->id);
-
-        if ($category){
+        if ($this->category){
             View::renderTemplate('Admin/Categories/edit.html', [
-                'category' => $category
+                'category' => $this->category
             ]);
         } else {
             Flash::addMessage('Category with given id does not exist', Flash::WARNING);
@@ -84,15 +83,13 @@ class Categories extends Admin
 
     public function updateAction(): void
     {
-        $category = $this->getCategoryById($this->id);
-
-        if ($category && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($category->update($_POST)) {
+        if ($this->category && $_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->category->update($_POST)) {
                 Flash::addMessage('Category has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/categories');
             } else {
                 View::renderTemplate('Admin/Categories/edit.html', [
-                    'category' => $category
+                    'category' => $this->category
                 ]);
             }
         } else {
@@ -100,11 +97,4 @@ class Categories extends Admin
         }
     }
 
-    private function getCategoryById(?int $id): ?Category
-    {
-        if ($id === null){
-            return null;
-        }
-        return Category::findByID($id);
-    }
 }

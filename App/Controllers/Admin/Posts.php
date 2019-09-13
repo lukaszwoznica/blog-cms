@@ -12,12 +12,15 @@ use Core\View;
 
 class Posts extends Admin
 {
-    private $id;
+    private $post;
 
     public function __construct(array $route_params)
     {
         parent::__construct($route_params);
-        $this->id = $route_params['id'] ?? null;
+
+        if (isset($route_params['id'])) {
+            $this->post = Post::findByID($route_params['id']);
+        }
     }
 
     public function indexAction(): void
@@ -61,42 +64,37 @@ class Posts extends Admin
         } else {
             $this->redirectTo('/admin/posts');
         }
-
     }
 
     public function editAction(): void
     {
-        $post = $this->getPostById($this->id);
         $categories = Category::getAllCategories();
 
-        if ($post) {
+        if ($this->post) {
             View::renderTemplate('Admin/Posts/edit.html', [
-                'post' => $post,
+                'post' => $this->post,
                 'categories' => $categories
             ]);
         } else {
             Flash::addMessage('Post with given id does not exist', Flash::WARNING);
             $this->redirectTo('/admin/posts');
         }
-
     }
 
     public function updateAction(): void
     {
-        $post = $this->getPostById($this->id);
-
-        if ($post && $_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->post && $_SERVER['REQUEST_METHOD'] == 'POST') {
             $post_data = $_POST;
             if ($post_data['category_id'] == 0) {
                 $post_data['category_id'] = null;
             }
 
-            if ($post->update($post_data)){
+            if ($this->post->update($post_data)){
                 Flash::addMessage('Post has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/posts');
             } else {
                 View::renderTemplate('Admin/Posts/edit.html', [
-                    'post' => $post
+                    'post' => $this->post
                 ]);
             }
         } else {
@@ -104,13 +102,10 @@ class Posts extends Admin
         }
     }
 
-
     public function destroyAction(): void
     {
-        $post = $this->getPostById($this->id);
-
-        if ($post) {
-            if ($post->delete()) {
+        if ($this->post) {
+            if ($this->post->delete()) {
                 Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the post', Flash::ERROR);
@@ -119,15 +114,7 @@ class Posts extends Admin
             Flash::addMessage('Category with given id does not exist', Flash::WARNING);
         }
 
-
         $this->redirectTo('/admin/posts');
     }
 
-    private function getPostById(?int $id): ?Post
-    {
-        if ($id === null){
-            return null;
-        }
-        return Post::findByID($id);
-    }
 }
