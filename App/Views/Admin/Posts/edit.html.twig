@@ -1,0 +1,56 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Edit post</h1> {% endblock %}
+
+{% block body %}
+
+    {% if post.getValidationErrors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in post.getValidationErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="/admin/posts/{{ post.getId }}/update" method="post">
+        <div>
+            <label for="inputTitle">Title</label>
+            <input type="text" id="inputTitle" name="title" value="{{ post.getTitle }}">
+        </div>
+        <div>
+            <label for="textareaContent">Content</label>
+            <textarea name="content" id="textareaContent" rows="10" cols="30">{{ post.getContent }}</textarea>
+        </div>
+        <div>
+            <label for="selectCategory">Category</label>
+            <select id="selectCategory" name="category_id">
+                <option value="0">Uncategorized</option>
+                {% for category in categories %}
+                    <option value="{{ category.getID }}"
+                    {% if category.getID == post.getCategoryId %}
+                        selected
+                    {% endif %}>
+                        {{ category.getName }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="radioDraft">Draft</label>
+            <input type="radio" name="is_published" id="radioDraft" value="0"
+                {% if post.getIsPublished == false %}
+                    checked
+                {% endif %}>
+            <label for="radioPublish">Publish</label>
+            <input type="radio" name="is_published" id="radioPublish" value="1"
+                {% if post.getIsPublished %}
+                    checked
+                {% endif %}>
+        </div>
+        <button type="submit">Save</button>
+        <a href="/admin/posts">Cancel</a>
+    </form>
+{% endblock %}

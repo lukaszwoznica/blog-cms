@@ -1,0 +1,33 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Categories management</h1> {% endblock %}
+
+{% block body %}
+    <a href="/admin/categories/new">New category</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td>{{ category.getId }}</td>
+                <td>{{ category.getName }}</td>
+                <td>{{ category.getDescription }}</td>
+                <td>
+                    <a href="/admin/categories/{{ category.getId }}/edit">Edit</a>
+                    <a href="/admin/categories/{{ category.getId }}/destroy">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

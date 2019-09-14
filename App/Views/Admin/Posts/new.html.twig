@@ -1,0 +1,44 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Add new post</h1> {% endblock %}
+
+{% block body %}
+
+    {% if post.getValidationErrors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in post.getValidationErrors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form action="/admin/posts/create" method="post">
+        <div>
+            <label for="inputTitle">Title</label>
+            <input type="text" id="inputTitle" name="title" value="{{ post.getTitle }}">
+        </div>
+        <div>
+            <label for="textareaContent">Content</label>
+            <textarea name="content" id="textareaContent" rows="10" cols="30">{{ post.getContent }}</textarea>
+        </div>
+        <div>
+            <label for="selectCategory">Category</label>
+            <select id="selectCategory" name="category_id">
+                <option value="0" >Uncategorized</option>
+                {% for category in categories %}
+                    <option value="{{ category.getId }}">{{ category.getName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="radioDraft">Save as draft</label>
+            <input type="radio" name="is_published" id="radioDraft" value="0" checked >
+            <label for="radioPublish">Publish</label>
+            <input type="radio" name="is_published" id="radioPublish" value="1" >
+        </div>
+        <button type="submit">Add post</button>
+    </form>
+{% endblock %}

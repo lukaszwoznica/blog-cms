@@ -9,6 +9,7 @@ use App\Token;
 use Core\Model;
 use Core\View;
 use PDO;
+use function PHPSTORM_META\type;
 
 class User extends Model
 {
@@ -22,8 +23,8 @@ class User extends Model
     private $password_reset_token;
     private $password_reset_expiry;
     private $activation_token;
-    private $is_active;
-    private $role_id;
+    private $is_active = 0;
+    private $role_id = 2;
 
     public function __construct(array $user_data = [])
     {
@@ -42,14 +43,20 @@ class User extends Model
             $token = new Token();
             $this->activation_token = $token->getValue();
 
-            $sql_query = "INSERT INTO users (username, email, password, is_active, activation_hash, role_id) 
-                          VALUES (:username, :email, :password, 0, :activation_hash, 2)";
+            $sql_query = "INSERT INTO users (username, email, password, is_active, role_id, activation_hash) 
+                          VALUES (:username, :email, :password, :is_active, :role_id, :activation_hash)";
 
             $stmt = $db->prepare($sql_query);
-            $stmt->bindValue(":username", $this->username, PDO::PARAM_STR);
-            $stmt->bindValue(":email", $this->email, PDO::PARAM_STR);
-            $stmt->bindValue(":password", $password_hash, PDO::PARAM_STR);
-            $stmt->bindValue(':activation_hash', $token->getHash(), PDO::PARAM_STR);
+            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
+            $stmt->bindValue(':is_active', $this->is_active, PDO::PARAM_BOOL);
+            $stmt->bindValue(':role_id', $this->role_id, PDO::PARAM_INT);
+            if ($this->is_active) {
+                $stmt->bindValue(':activation_hash', null, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue(':activation_hash', $token->getHash(), PDO::PARAM_STR);
+            }
 
             return $stmt->execute();
         }
@@ -82,7 +89,7 @@ class User extends Model
         }
 
         // Password
-        if (isset($this->password)){
+        if (isset($this->password)) {
             if (strlen($this->password) < 6) {
                 $this->validation_errors[] = "Password must be at least 6 characters";
             }
@@ -94,6 +101,16 @@ class User extends Model
             if (preg_match("/.*\d+.*/i", $this->password) === 0) {
                 $this->validation_errors[] = "Password must contain at least one number";
             }
+        }
+
+        // Is active
+        if (!($this->is_active == 0 || $this->is_active == 1)) {
+            $this->validation_errors[] = "Is_Active field must be boolean value";
+        }
+
+        // Role
+        if (!($this->role_id == 1 || $this->role_id == 2)) {
+            $this->validation_errors[] = "Invalid user role identifier";
         }
     }
 
@@ -359,6 +376,61 @@ class User extends Model
                 $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
                 $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
             }
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
+
+    public static function getAllUsers(): array
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT * FROM users';
+
+        $stmt = $db->query($sql);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function delete(): bool
+    {
+        $db = static::getDatabase();
+        $sql = 'DELETE FROM users WHERE id = :id';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id', $this->id);
+
+        return $stmt->execute();
+    }
+
+    public function update(array $user_data): bool
+    {
+        $this->username = $user_data['username'];
+        $this->email = $user_data['email'];
+        $this->role_id = $user_data['role_id'];
+        $this->is_active = $user_data['is_active'];
+
+        $this->validate();
+
+        if (empty($this->validation_errors)) {
+            $db = static::getDatabase();
+
+            $sql = 'UPDATE users 
+                    SET username = :username,
+                        email = :email,
+                        role_id = :role_id,
+                        is_active = :is_active
+                    WHERE id = :id';
+
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':role_id', $this->role_id, PDO::PARAM_INT);
+            $stmt->bindValue(':is_active', $this->is_active, PDO::PARAM_BOOL);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
             return $stmt->execute();
         }
