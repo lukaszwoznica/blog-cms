@@ -31,25 +31,26 @@ $router = new Core\Router;
 $router->addRoute('', ['controller' => 'Home', 'action' => 'index']);
 $router->addRoute('logout', ['controller' => 'Login', 'action' => 'destroy']);
 
-// Variable routes
 
-// App\Controllers namespace
-$router->addRoute('{controller}', ['action' => 'index']);
-$router->addRoute('{controller}/', ['action' => 'index']);
-$router->addRoute('{controller}/{action}');
-$router->addRoute('{controller}/{id:\d+}/{action}');
-$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
+// Variable routes
 
 // App\Controllers\User namespace
 $router->addRoute('user/password/reset/{token:[\da-f]+}', [
     'controller' => 'Password',
     'action' => 'reset',
-    'namespace' => 'user'
+    'namespace' => 'User'
 ]);
 $router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 
 // App\Controllers\Admin namespace
+$router->addRoute('admin/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
 $router->addRoute('admin/{controller}/{action}', ['namespace' => 'Admin']);
+$router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
 
+// App\Controllers namespace
+$router->addRoute('{controller}', ['action' => 'index']);
+$router->addRoute('{controller}/{action}');
+$router->addRoute('{controller}/{id:\d+}/{action}');
+$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);

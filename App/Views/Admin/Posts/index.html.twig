@@ -1,0 +1,53 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Posts management</h1> {% endblock %}
+
+{% block body %}
+    <a href="/admin/posts/new">New post</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Create date</th>
+                <th>Last modified</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.getId }}</td>
+                <td>{{ post.getTitle }}</td>
+                <td>
+                    {% if post.getCategoryName %}
+                        {{ post.getCategoryName }}
+                    {% else %}
+                        Uncategorized
+                    {% endif %}
+                </td>
+                <td>{{ post.getAuthorName }}</td>
+                <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
+                <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
+                <td>
+                    {% if post.getIsPublished == 1 %}
+                        Published
+                    {% else %}
+                        Draft
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/admin/posts/{{ post.getId }}/edit">Edit</a>
+                    <a href="/admin/posts/{{ post.getId }}/destroy">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

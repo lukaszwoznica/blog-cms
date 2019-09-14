@@ -1,0 +1,49 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Admin Panel {% endblock %}
+
+{% block page_title %} <h1>Users management</h1> {% endblock %}
+
+{% block body %}
+    <a href="/admin/users/new">New user</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>E-Mail</th>
+            <th>Active</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.getId }}</td>
+                <td>{{ user.getUsername }}</td>
+                <td>{{ user.getEmail }}</td>
+                <td>
+                    {% if user.getIsActive %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.getRoleId == 1 %}
+                        Administrator
+                    {% else %}
+                        User
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/admin/users/{{ user.getId }}/edit">Edit</a>
+                    <a href="/admin/users/{{ user.getId }}/destroy">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
