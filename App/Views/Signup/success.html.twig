@@ -3,15 +3,27 @@
 {% block title %}New account{% endblock %}
 
 {% block body %}
+    <main>
+        <h2 class="center-align">Success!</h2>
 
-    <h1>Success!</h1>
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <div class="card grey lighten-4">
+                    <div class="card-content">
+                        <h5>
+                            Thank you for singing up.
+                        </h5>
+                        <p>
+                            We have sent you an email with activation link.
+                            Please check your inbox and click the link to complete the registration.
+                        </p>
+                    </div>
+                    <div class="card-action center-align">
+                        <a href="/">Back to home</a>
+                    </div>
 
-    <p>Thank you for singing up.</p>
-
-    <p>
-        We have sent you an email with activation link.
-        Please check your inbox and click the link to complete the registration.
-    </p>
-
-
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
