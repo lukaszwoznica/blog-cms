@@ -41,8 +41,13 @@
 
 <div class="container">
     {% for message in flash_messages %}
-        <div class="alert alert-{{ message.type }}">
-            {{ message.body }}
+        <div class="card alert alert-{{ message.type }}">
+            <div class="card-content">
+                <p>{{ message.body }}</p>
+            </div>
+            <button class="alert-close-btn" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
         </div>
     {% endfor %}
 
@@ -54,11 +59,7 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.sidenav').sidenav();
-    });
-</script>
+<script src="/assets/js/main.js"></script>
 
 {% block scripts %}
 {% endblock %}
