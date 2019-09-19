@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+    <main>
+        <h2 class="center-align">Log in</h2>
+
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <div class="card-panel grey lighten-4">
+                    <form id="formLogin" action="/login/create" method="post">
+                        <div class="input-field">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input type="text" id="inputLogin" name="login" value="{{ login }}" class="validate"
+                                   required >
+                            <label for="inputLogin">Login</label>
+                            <span class="helper-text" data-error="Login is required"></span>
+                        </div>
+                        <div class="input-field">
+                            <i class="material-icons prefix">lock_outline</i>
+                            <input type="password" id="inputPassword" name="password" required class="validate" >
+                            <label for="inputPassword" data-error="Password is required">Password</label>
+                            <span class="helper-text" data-error="Password is required"></span>
+                        </div>
+                        <div class="form-field">
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in"
+                                           name="remember_me" {% if remember_me %} checked {% endif %}>
+                                    <span>Remember me</span>
+                                </label>
+                            </p>
+                        </div>
+                        <div class="row center-align">
+                            <button class="waves-effect waves-light btn-large" type="submit">Log in</button>
+                        </div>
+                        <div class="center-align">
+                            <a href="/user/password/forgot" class="grey-text text-darken-2">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
+

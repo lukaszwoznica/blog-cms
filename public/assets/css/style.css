@@ -28,3 +28,28 @@ table, th, td {
     border: 1px solid black;
     padding: 5px;
 }
+
+nav .brand-logo {
+    position: relative;
+    padding: 0 1rem;
+}
+
+div.invalid {
+    color: #F44336;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.password-icon {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    color: #9e9e9e;
+    cursor: pointer;
+    z-index: 100;
+    transition: color .6s;
+}
+
+.password-icon.active {
+    color: #26a69a;
+}

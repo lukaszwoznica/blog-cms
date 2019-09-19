@@ -18,21 +18,18 @@ $(document).ready(function () {
                 required: true,
                 minlength: 6,
                 validPassword: true
-           }
+            }
         },
         messages: {
             username: {
-                remote: 'Username is already taken'
+                remote: 'Username is already taken.'
             },
             email: {
-                remote: 'Email is already taken'
+                remote: 'Email is already taken.'
             }
-        }
+        },
+        errorElement: 'div',
+        errorClass: 'invalid',
     });
-
-    $('#inputPassword').hideShowPassword({
-       show: false,
-       innerToggle: 'focus'
-    })
 });
 

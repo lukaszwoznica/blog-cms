@@ -6,23 +6,40 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        {% if current_user == null %}
-            <a href="/signup">Sign up</a>
-            <a href="/login">Login</a>
-        {% else %}
-            {% if current_user.getRoleId == 1 %}
-                <a href="/admin/dashboard">Admin Panel</a>
-            {% endif %}
-            <a href="/user/profile/show">Profile</a>
-            <a href="/logout">Logout</a>
-        {% endif %}
-    </nav>
 
+<body>
+
+<header>
+    <div class="navbar-fixed">
+        <nav class="blue-grey darken-4">
+            <div class="nav-wrapper container">
+                <ul>
+                    <li><a href="/" class="brand-logo">MyBlogLogo</a></li>
+                    <ul class="hide-on-med-and-down">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="">Contact</a></li>
+                    </ul>
+                </ul>
+                <ul class="right hide-on-med-and-down">
+                    {% include('Inc/user-nav.html.twig') %}
+                </ul>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a href="">Contact</a></li>
+    {% include('Inc/user-nav.html.twig') %}
+</ul>
+
+<div class="container">
     {% for message in flash_messages %}
         <div class="alert alert-{{ message.type }}">
             {{ message.body }}
@@ -31,13 +48,20 @@
 
     {% block body %}
     {% endblock %}
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.sidenav').sidenav();
+    });
+</script>
 
-    {% block scripts %}
-    {% endblock %}
+{% block scripts %}
+{% endblock %}
 
 </body>
 </html>

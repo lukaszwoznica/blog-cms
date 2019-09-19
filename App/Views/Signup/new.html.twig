@@ -3,40 +3,51 @@
 {% block title %}New account{% endblock %}
 
 {% block scripts %}
-    <script src="/assets/js/hideShowPassword.min.js"></script>
     <script src="/assets/js/customValidationMethods.js"></script>
     <script src="/assets/js/signupFormValidation.js"></script>
+    <script src="/assets/js/showHidePassword.js"></script>
 {% endblock %}
 
 {% block body %}
+    <main>
+        <h2 class="center-align">Sign up</h2>
 
-    <h1>Sign up</h1>
+        {% if user.getValidationErrors is not empty %}
+            <p>Errors:</p>
+            <ul>
+                {% for error in user.getValidationErrors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-    {% if user.getValidationErrors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.getValidationErrors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form id="formSignup" action="/signup/create" method="post">
-        <div>
-            <label for="inputUsername">Username</label>
-            <input id="inputUsername" name="username" placeholder="Username" value="{{ user.getUsername }}" autofocus required/>
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <div class="card-panel grey lighten-4">
+                    <form id="formSignup" action="/signup/create" method="post">
+                        <div class="input-field">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input type="text" id="inputUsername" name="username" class="validate" value="{{ user.getUsername }}"
+                                   required/>
+                            <label for="inputUsername">Username</label>
+                        </div>
+                        <div class="input-field">
+                            <i class="material-icons prefix">mail_outline</i>
+                            <input type="email" id="inputEmail" name="email" value="{{ user.getEmail }}" required/>
+                            <label for="inputEmail">Email address</label>
+                        </div>
+                        <div class="input-field">
+                            <i class="material-icons prefix">lock_outline</i>
+                            <i class="material-icons password-icon" id="passwordIcon">visibility</i>
+                            <input type="password" id="inputPassword" name="password" required/>
+                            <label for="inputPassword">Password</label>
+                        </div>
+                        <div class="row center-align">
+                            <button class="waves-effect waves-light btn-large" type="submit">Sign up</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" value="{{ user.getEmail }}" required/>
-        </div>
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required/>
-        </div>
-
-        <button type="submit">Sign up</button>
-
-    </form>
-
+    </main>
 {% endblock %}
