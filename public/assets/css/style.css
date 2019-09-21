@@ -1,25 +1,88 @@
+/*
+    Homepage
+ */
+
+.card-post  .card-content {
+    padding-top: .8rem;
+}
+
+.card-post {
+    margin: 3rem 1rem 2rem 0;
+}
+
+.main-post {
+    margin: 3.5rem 0 2rem 0;
+}
+
+span.post-details {
+    padding: 0 .5rem;
+}
+
+span.post-details i {
+    position: relative;
+    top: 5px;
+}
+
+/*
+    Navbar
+ */
+
+nav .brand-logo {
+    position: relative;
+    padding: 0 1rem;
+}
+
+.sidenav {
+    background-color: #212121;
+}
+
+.sidenav li > a {
+    color: #ffffff;
+}
+
+.sidenav li > a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/*
+    Footer
+ */
+
+.page-footer {
+    margin-top: 5rem;
+}
+
+.page-footer .brand-logo {
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+/*
+    Alerts
+ */
+
 .alert {
     margin: 1.5rem 0;
 }
 
 .alert-success {
     background-color: #e8f5e9;
-    color: #388e3c ;
+    color: #388e3c;
 }
 
 .alert-info {
     background-color: #e3f2fd;
-    color: #1976d2 ;
+    color: #1976d2;
 }
 
 .alert-warning {
     background-color: #fff3e0;
-    color: #f57c00 ;
+    color: #f57c00;
 }
 
 .alert-error {
-    background-color:#ffebee;
-    color: #d32f2f   ;
+    background-color: #ffebee;
+    color: #d32f2f;
 }
 
 .alert-close-btn {
@@ -37,19 +100,10 @@
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
 }
 
-table {
-    border-collapse: collapse;
-}
 
-table, th, td {
-    border: 1px solid black;
-    padding: 5px;
-}
-
-nav .brand-logo {
-    position: relative;
-    padding: 0 1rem;
-}
+/*
+    Forms
+ */
 
 div.invalid {
     color: #F44336;

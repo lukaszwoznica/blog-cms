@@ -15,7 +15,7 @@
 
 <header>
     <div class="navbar-fixed">
-        <nav class="blue-grey darken-4">
+        <nav class="grey darken-4">
             <div class="nav-wrapper container">
                 <ul>
                     <li><a href="/" class="brand-logo">MyBlogLogo</a></li>
@@ -27,17 +27,19 @@
                 <ul class="right hide-on-med-and-down">
                     {% include('Inc/user-nav.html.twig') %}
                 </ul>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i
+                            class="material-icons">menu</i></a>
             </div>
         </nav>
     </div>
+    <nav class="sidenav" id="mobile-demo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="">Contact</a></li>
+            {% include('Inc/user-nav.html.twig') %}
+        </ul>
+    </nav>
 </header>
-
-<ul class="sidenav" id="mobile-demo">
-    <li><a href="/">Home</a></li>
-    <li><a href="">Contact</a></li>
-    {% include('Inc/user-nav.html.twig') %}
-</ul>
 
 <div class="container">
     {% for message in flash_messages %}
@@ -54,6 +56,23 @@
     {% block body %}
     {% endblock %}
 </div>
+
+<footer class="page-footer grey darken-3">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 offset-l3 s12 center-align">
+                <a href="/" class="brand-logo">MyBlogLogo</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright grey darken-4">
+        <div class="container">
+            © 2019 Copyright
+            <a class="grey-text text-lighten-4 right" href="#!">Social icons</a>
+        </div>
+    </div>
+</footer>
+
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
