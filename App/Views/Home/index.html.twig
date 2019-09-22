@@ -3,83 +3,82 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <main>
-        <section class="section" xmlns="http://www.w3.org/1999/html">
-            <div class="row">
-                <div class="col s12">
-                    {% for post in posts|slice(0,1) %}
-                        <article>
-                            <div class="card card-post main-post center-align z-depth-2 hoverable">
-                                <div class="card-image">
-                                    <img src="https://placehold.co/1920x1080">
+    <section class="section" xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+            <div class="col s12">
+                {% for post in posts|slice(0,1) %}
+                    <article>
+                        <div class="card card-post main-post center-align z-depth-2 hoverable">
+                            <div class="card-image">
+                                <img src="https://placehold.co/1920x1080">
+                            </div>
+                            <div class="card-content">
+                                <div class="card-title">
+                                    <h5>{{ post.getTitle }}</h5>
                                 </div>
-                                <div class="card-content">
-                                    <div class="card-title">
-                                        <h5>{{ post.getTitle }}</h5>
-                                    </div>
-                                    <div class="row">
-                                        <p>{{ post.getContent|striptags|slice(0,200) }}</p>
-                                    </div>
-                                    <button class="waves-effect waves-light btn">Read more</button>
+                                <div class="row">
+                                    <p>{{ post.getContent|striptags|slice(0,200) }}</p>
                                 </div>
-                                <div class="card-action">
+                                <button class="waves-effect waves-light btn">Read more</button>
+                            </div>
+                            <div class="card-action">
                                 <span class="post-details">
                                     <i class="material-icons ">edit</i>
                                     {{ post.getAuthorName }}
                                 </span>
-                                    <span class="post-details">
-                                    <i class="material-icons">date_range</i>
-                                    {{ post.getCreateTime|date('d/m/Y') }}
-                                </span>
-                                </div>
-                            </div>
-                        </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-
-        <div class="divider"></div>
-
-        <section class="section">
-            <div class="row">
-                {% for post in posts|slice(1,6) %}
-                    <div class="col m6">
-                        <article>
-                            <div class="card card-post center-align z-depth-2 hoverable">
-                                <div class="card-image">
-                                    <img src="https://placehold.co/1920x1080">
-                                </div>
-                                <div class="card-content ">
-                                    <div class="card-title">
-                                        <h5>{{ post.getTitle }}</h5>
-                                    </div>
-                                    <div class="row">
-                                        <p>{{ post.getContent|striptags|slice(0,150) }}</p>
-                                    </div>
-                                    <button class="waves-effect waves-light btn">Read more</button>
-                                </div>
-                                <div class="card-action">
                                 <span class="post-details">
-                                    <i class="material-icons ">edit</i>
-                                    {{ post.getAuthorName }}
-                                </span>
-                                    <span class="post-details">
                                     <i class="material-icons">date_range</i>
                                     {{ post.getCreateTime|date('d/m/Y') }}
                                 </span>
-                                </div>
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
                 {% endfor %}
             </div>
-        </section>
-
-        <div class="row center">
-            <a href="">
-                <button class="waves-effect waves-light btn-large">See older posts</button>
-            </a>
         </div>
-    </main>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section">
+        <div class="row">
+            {% for post in posts|slice(1,6) %}
+                <div class="col m6">
+                    <article>
+                        <div class="card card-post center-align z-depth-2 hoverable">
+                            <div class="card-image">
+                                <img src="https://placehold.co/1920x1080">
+                            </div>
+                            <div class="card-content ">
+                                <div class="card-title">
+                                    <h5>{{ post.getTitle }}</h5>
+                                </div>
+                                <div class="row">
+                                    <p>{{ post.getContent|striptags|slice(0,150) }}</p>
+                                </div>
+                                <button class="waves-effect waves-light btn">Read more</button>
+                            </div>
+                            <div class="card-action">
+                                <span class="post-details">
+                                    <i class="material-icons ">edit</i>
+                                    {{ post.getAuthorName }}
+                                </span>
+                                <span class="post-details">
+                                    <i class="material-icons">date_range</i>
+                                    {{ post.getCreateTime|date('d/m/Y') }}
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="row center">
+        <a href="">
+            <button class="waves-effect waves-light btn-large">See older posts</button>
+        </a>
+    </div>
+
 {% endblock %}

@@ -41,21 +41,23 @@
     </nav>
 </header>
 
-<div class="container">
-    {% for message in flash_messages %}
-        <div class="card alert alert-{{ message.type }}">
-            <div class="card-content">
-                <p>{{ message.body }}</p>
+<main>
+    <div class="container">
+        {% for message in flash_messages %}
+            <div class="card alert alert-{{ message.type }}">
+                <div class="card-content">
+                    <p>{{ message.body }}</p>
+                </div>
+                <button class="alert-close-btn" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-            <button class="alert-close-btn" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    {% endfor %}
+        {% endfor %}
 
-    {% block body %}
-    {% endblock %}
-</div>
+        {% block body %}
+        {% endblock %}
+    </div>
+</main>
 
 <footer class="page-footer grey darken-3">
     <div class="container">
