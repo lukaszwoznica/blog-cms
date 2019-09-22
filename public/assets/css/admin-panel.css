@@ -1,0 +1,86 @@
+.main-page {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    padding-left: 270px;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+@media (max-width: 992px) {
+    .main-page {
+        padding-left: 0;
+    }
+}
+
+/*
+    Navbar
+ */
+
+img.user-avatar {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+nav .dropdown-content {
+    min-width: 250px;
+}
+
+nav .dropdown-content li > a > i {
+    margin: 0 14px 0 0;
+}
+
+nav ul a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-content li.dropdown-title {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    padding: 1rem;
+}
+
+.dropdown-content li.dropdown-title span {
+    padding: 0;
+}
+
+/*
+    Side nav
+ */
+
+.admin-sidenav {
+    width: 270px;
+    background-color: #2c323f;
+}
+
+.admin-sidenav li > a {
+    color: #ffffff;
+}
+
+.admin-sidenav li > a:hover {
+    background-color: #232936;
+}
+
+.admin-sidenav li > a  > i.material-icons, .admin-sidenav li > a  > i.material-icons-outlined {
+    color: #ffffff;
+    margin: 0 22px 0 0;
+}
+
+.sidenav .subheader {
+    color: #b0bec5;
+    text-transform: uppercase;
+}
+
+.admin-sidenav .logo-wrapper {
+    padding: 0.5rem 1rem;
+    background-color: #333746;
+}
+
+.admin-logo {
+    font-size: 28px;
+    color: #ffffff;
+}
+

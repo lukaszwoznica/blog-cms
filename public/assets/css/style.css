@@ -1,3 +1,13 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
 /*
     Homepage
  */
@@ -32,15 +42,15 @@ nav .brand-logo {
     padding: 0 1rem;
 }
 
-.sidenav {
+.mobile-nav {
     background-color: #212121;
 }
 
-.sidenav li > a {
+.mobile-nav li > a {
     color: #ffffff;
 }
 
-.sidenav li > a:hover {
+.mobile-nav li > a:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
 

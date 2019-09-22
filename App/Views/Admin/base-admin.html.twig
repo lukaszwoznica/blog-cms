@@ -6,45 +6,114 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/admin-panel.css"/>
 </head>
+
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/user/profile/show">Profile</a>
-        <a href="/logout">Logout</a>
-    </nav>
 
-    {% for message in flash_messages %}
-        <div class="alert alert-{{ message.type }}">
-            {{ message.body }}
-        </div>
-    {% endfor %}
+<header>
+    <div class="navbar-fixed">
+        <nav class="grey darken-4">
+            <div class="nav-wrapper">
+                <ul>
+                    <li>
+                        <a href="#" data-target="slide-out" class="sidenav-trigger waves-effect waves-light">
+                            <i class="material-icons">menu</i>
+                        </a>
+                    </li>
+                    <li><a href="/" class="brand-logo">Admin</a></li>
+                </ul>
+                <ul class="right">
+                    <li><a class="waves-effect waves-light"><i class="material-icons" data-toggle-fullscreen>settings_overscan</i></a>
+                    </li>
+                    <li><a class="dropdown-trigger waves-effect waves-light" href="#" data-target="notificationsDropdown">
+                            <i class="material-icons">notification_important</i>
+                        </a>
+                        <ul id="notificationsDropdown" class="dropdown-content">
+                            <li class="dropdown-title">Notifications<span class="new badge">0</span></li>
+                            <li class="divider" tabindex="-1"></li>
+                            <li><a href="#">Notification 1</a></li>
+                            <li><a href="#">Notification 2</a></li>
+                            <li><a href="#">Notification 3</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="dropdown-trigger waves-effect waves-light" href="#" data-target="userDropdown">
+                            <img class="user-avatar" src="/assets/img/avatars/default.png" alt="User Avatar">
+                        </a>
+                        <ul id="userDropdown" class="dropdown-content">
+                            <li><a href="/user/profile/show"><i class="material-icons">account_circle</i>Profile</a>
+                            </li>
+                            <li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
 
-    {% block page_title %}
-    {% endblock %}
-
-    <nav>
-        <ul>
-            <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li><a href="/admin/posts">Posts</a></li>
-            <li><a href="/admin/categories">Categories</a></li>
-            <li><a href="/admin/users">Users</a></li>
+<div class="main-page">
+    <aside>
+        <ul id="slide-out" class="sidenav admin-sidenav sidenav-fixed">
+            <li>
+                <div class="logo-wrapper">
+                    <a href="/" class="admin-logo">Admin panel</a>
+                </div>
+            </li>
+            <li><a href="/admin/dashboard" class="waves-effect waves-light">
+                    <i class="material-icons-outlined">dashboard</i>Dashboard</a></li>
+            <li><a href="/admin/posts" class="waves-effect waves-light">
+                    <i class="material-icons">library_books</i>Posts</a></li>
+            <li><a href="/admin/categories" class="waves-effect waves-light">
+                    <i class="material-icons-outlined">category</i>Categories</a></li>
+            <li><a href="/admin/users" class="waves-effect waves-light">
+                    <i class="material-icons">people_outline</i>Users</a></li>
         </ul>
-    </nav>
+    </aside>
 
-    {% block body %}
-    {% endblock %}
+    <main>
+        {% for message in flash_messages %}
+            <div class="alert alert-{{ message.type }}">
+                {{ message.body }}
+            </div>
+        {% endfor %}
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+        {% block page_title %}
+        {% endblock %}
 
-    {% block scripts %}
-    {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </main>
+
+    <footer class="page-footer grey darken-3">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 offset-l3 s12 center-align">
+                    <a href="/" class="brand-logo">MyBlogLogo</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright grey darken-4">
+            <div class="container">
+                © 2019 Copyright
+                <a class="grey-text text-lighten-4 right" href="#!">Social icons</a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/toggleFullscreen.js"></script>
+
+{% block scripts %}
+{% endblock %}
 
 </body>
 </html>
