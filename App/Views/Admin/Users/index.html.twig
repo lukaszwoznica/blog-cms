@@ -2,48 +2,59 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Users management</h1> {% endblock %}
+{% block page_title %} <h3>Users management</h3> {% endblock %}
 
 {% block body %}
-    <a href="/admin/users/new">New user</a>
+    <div class="fixed-action-btn">
+        <a href="/admin/users/new" class="btn-floating btn-large blue darken-2 pulse">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>E-Mail</th>
-            <th>Active</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
+    <div class="card-panel">
+        <table class="responsive-table highlight serial">
+            <thead>
             <tr>
-                <td>{{ user.getId }}</td>
-                <td>{{ user.getUsername }}</td>
-                <td>{{ user.getEmail }}</td>
-                <td>
-                    {% if user.getIsActive %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.getRoleId == 1 %}
-                        Administrator
-                    {% else %}
-                        User
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="/admin/users/{{ user.getId }}/edit">Edit</a>
-                    <a href="/admin/users/{{ user.getId }}/destroy">Delete</a>
-                </td>
+                <th>#</th>
+                <th>Username</th>
+                <th>E-Mail</th>
+                <th>Active</th>
+                <th>Role</th>
+                <th>Actions</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td></td>
+                    <td>{{ user.getUsername }}</td>
+                    <td>{{ user.getEmail }}</td>
+                    <td>
+                        {% if user.getIsActive %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.getRoleId == 1 %}
+                            Administrator
+                        {% else %}
+                            User
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/admin/users/{{ user.getId }}/edit">
+                            <i class="material-icons blue-text text-darken-2">edit</i>
+                        </a>
+                        <a href="/admin/users/{{ user.getId }}/destroy"
+                           onclick="return deleteConfirm('user')">
+                            <i class="material-icons red-text text-darken-2">delete_forever</i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

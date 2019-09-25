@@ -29,7 +29,8 @@
                 <ul class="right">
                     <li><a class="waves-effect waves-light"><i class="material-icons" data-toggle-fullscreen>settings_overscan</i></a>
                     </li>
-                    <li><a class="dropdown-trigger waves-effect waves-light" href="#" data-target="notificationsDropdown">
+                    <li><a class="dropdown-trigger waves-effect waves-light" href="#"
+                           data-target="notificationsDropdown">
                             <i class="material-icons">notification_important</i>
                         </a>
                         <ul id="notificationsDropdown" class="dropdown-content">
@@ -44,6 +45,11 @@
                             <img class="user-avatar" src="/assets/img/avatars/default.png" alt="User Avatar">
                         </a>
                         <ul id="userDropdown" class="dropdown-content">
+                            <li class="dropdown-title" style="text-align: center">
+                                {{ current_user.getUsername }}
+                                <span>{{ current_user.getEmail }}</span>
+                            </li>
+                            <li class="divider" tabindex="-1"></li>
                             <li><a href="/user/profile/show"><i class="material-icons">account_circle</i>Profile</a>
                             </li>
                             <li><a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a></li>
@@ -75,17 +81,19 @@
     </aside>
 
     <main>
-        {% for message in flash_messages %}
-            <div class="alert alert-{{ message.type }}">
-                {{ message.body }}
-            </div>
-        {% endfor %}
+        <div class="container">
+            {% for message in flash_messages %}
+                <div class="alert alert-{{ message.type }}">
+                    {{ message.body }}
+                </div>
+            {% endfor %}
 
-        {% block page_title %}
-        {% endblock %}
+            {% block page_title %}
+            {% endblock %}
 
-        {% block body %}
-        {% endblock %}
+            {% block body %}
+            {% endblock %}
+        </div>
     </main>
 
     <footer class="page-footer grey darken-3">

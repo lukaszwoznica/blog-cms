@@ -9,6 +9,10 @@ main {
     flex: 1 0 auto;
 }
 
+.main-page .container {
+    width: 95%;
+}
+
 @media (max-width: 992px) {
     .main-page {
         padding-left: 0;
@@ -84,3 +88,14 @@ nav ul a:hover {
     color: #ffffff;
 }
 
+/*
+    Tables
+ */
+
+table a > i.material-icons, table a > i.material-icons-outlined {
+    padding-left: .2rem;
+}
+
+table a > i.material-icons:hover, table a > i.material-icons-outlined:hover {
+    opacity: 0.5;
+}

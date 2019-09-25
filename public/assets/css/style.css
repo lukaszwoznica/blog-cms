@@ -134,3 +134,16 @@ div.invalid {
 .password-icon.active {
     color: #26a69a;
 }
+
+/*
+    Tables
+ */
+
+table.serial {
+    counter-reset: serial-number;
+}
+
+table.serial td:first-child:before {
+    counter-increment: serial-number;
+    content: counter(serial-number);
+}

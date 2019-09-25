@@ -1,3 +1,7 @@
+function deleteConfirm(item_name = "") {
+    return confirm('Are you sure you want to delete this ' + item_name + '?');
+}
+
 $(document).ready(function () {
     $('.sidenav').sidenav({
         draggable: true
