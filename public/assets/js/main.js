@@ -14,4 +14,8 @@ $(document).ready(function () {
     $('.alert > button').on('click', function(){
         $(this).closest('div.alert').fadeOut('slow');
     })
+
+    $(document).ready(function(){
+        $('select').formSelect();
+    });
 });

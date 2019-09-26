@@ -2,55 +2,76 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Edit post</h1> {% endblock %}
+{% block page_title %} <h3 class="page-title">Edit post</h3> {% endblock %}
 
 {% block body %}
 
     {% if post.getValidationErrors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in post.getValidationErrors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <ul class="collection with-header">
+                    <li class="collection-header red lighten-3 center-align"><h5>Errors:</h5></li>
+                    {% for error in post.getValidationErrors %}
+                        <li class="collection-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 
-    <form action="/admin/posts/{{ post.getId }}/update" method="post">
-        <div>
-            <label for="inputTitle">Title</label>
-            <input type="text" id="inputTitle" name="title" value="{{ post.getTitle }}">
+    <div class="row">
+        <div class="col m10 s12 offset-m1">
+            <div class="card z-depth-2">
+                <form action="/admin/posts/{{ post.getId }}/update" method="post">
+                    <div class="card-content">
+                        <div class="input-field">
+                            <label for="inputTitle">Title</label>
+                            <input type="text" id="inputTitle" name="title" value="{{ post.getTitle }}">
+                        </div>
+                        <div class="input-field">
+                            <label for="textareaContent">Content</label>
+                            <textarea class="materialize-textarea" name="content" id="textareaContent" rows="10"
+                                      cols="30">{{ post.getContent }}</textarea>
+                        </div>
+                        <div class="input-field">
+                            <select id="selectCategory" name="category_id">
+                                <option value="0">Uncategorized</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.getID }}"
+                                        {% if category.getID == post.getCategoryId %}
+                                            selected
+                                        {% endif %}>{{ category.getName }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <label for="selectCategory">Category</label>
+                        </div>
+                        <p>
+                            <label for="radioDraft">
+                                <input type="radio" name="is_published" id="radioDraft" value="0"
+                                        {% if post.isPublished == false %}
+                                checked
+                                        {% endif %}>
+                                <span>Save as draft</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label for="radioPublish">
+                                <input type="radio" name="is_published" id="radioPublish" value="1"
+                                        {% if post.isPublished %}
+                                checked
+                                        {% endif %}>
+                                <span>Publish</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <button type="submit" class="waves-effect btn">Save</button>
+                        <a href="/admin/posts" class="waves-effect btn red right">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="textareaContent">Content</label>
-            <textarea name="content" id="textareaContent" rows="10" cols="30">{{ post.getContent }}</textarea>
-        </div>
-        <div>
-            <label for="selectCategory">Category</label>
-            <select id="selectCategory" name="category_id">
-                <option value="0">Uncategorized</option>
-                {% for category in categories %}
-                    <option value="{{ category.getID }}"
-                    {% if category.getID == post.getCategoryId %}
-                        selected
-                    {% endif %}>
-                        {{ category.getName }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="radioDraft">Draft</label>
-            <input type="radio" name="is_published" id="radioDraft" value="0"
-                {% if post.getIsPublished == false %}
-                    checked
-                {% endif %}>
-            <label for="radioPublish">Publish</label>
-            <input type="radio" name="is_published" id="radioPublish" value="1"
-                {% if post.getIsPublished %}
-                    checked
-                {% endif %}>
-        </div>
-        <button type="submit">Save</button>
-        <a href="/admin/posts">Cancel</a>
-    </form>
+    </div>
+
 {% endblock %}
