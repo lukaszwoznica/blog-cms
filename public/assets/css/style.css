@@ -147,3 +147,24 @@ table.serial td:first-child:before {
     counter-increment: serial-number;
     content: counter(serial-number);
 }
+
+
+/*
+    Profile card
+ */
+
+.user-avatar {
+    text-align: center;
+    width: 80%;
+    max-width: 200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.user-avatar img {
+    width: 100%;
+}
+
+.user-details table tr td:first-child {
+    font-weight: bold;
+}
