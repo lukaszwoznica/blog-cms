@@ -2,15 +2,20 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Posts management</h1> {% endblock %}
+{% block page_title %} <h3 class="page-title">Posts management</h3> {% endblock %}
 
 {% block body %}
-    <a href="/admin/posts/new">New post</a>
+    <div class="fixed-action-btn">
+        <a href="/admin/posts/new" class="btn-floating btn-large blue darken-2 pulse">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 
-    <table>
-        <thead>
+    <div class="card-panel">
+        <table class="responsive-table highlight serial">
+            <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Author</th>
@@ -19,35 +24,41 @@
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.getId }}</td>
-                <td>{{ post.getTitle }}</td>
-                <td>
-                    {% if post.getCategoryName %}
-                        {{ post.getCategoryName }}
-                    {% else %}
-                        Uncategorized
-                    {% endif %}
-                </td>
-                <td>{{ post.getAuthorName }}</td>
-                <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
-                <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
-                <td>
-                    {% if post.getIsPublished == 1 %}
-                        Published
-                    {% else %}
-                        Draft
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="/admin/posts/{{ post.getId }}/edit">Edit</a>
-                    <a href="/admin/posts/{{ post.getId }}/destroy">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td></td>
+                    <td>{{ post.getTitle }}</td>
+                    <td>
+                        {% if post.getCategoryName %}
+                            {{ post.getCategoryName }}
+                        {% else %}
+                            Uncategorized
+                        {% endif %}
+                    </td>
+                    <td>{{ post.getAuthorName }}</td>
+                    <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
+                    <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
+                    <td>
+                        {% if post.getIsPublished == 1 %}
+                            Published
+                        {% else %}
+                            Draft
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/admin/posts/{{ post.getId }}/edit">
+                            <i class="material-icons blue-text text-darken-2">edit</i>
+                        </a>
+                        <a href="/admin/posts/{{ post.getId }}/destroy"
+                           onclick="return deleteConfirm('post')">
+                            <i class="material-icons red-text text-darken-2">delete_forever</i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

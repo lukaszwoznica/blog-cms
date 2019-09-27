@@ -2,15 +2,20 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Categories management</h1> {% endblock %}
+{% block page_title %} <h3 class="page-title">Categories management</h3> {% endblock %}
 
 {% block body %}
-    <a href="/admin/categories/new">New category</a>
+    <div class="fixed-action-btn">
+        <a href="/admin/categories/new" class="btn-floating btn-large blue darken-2 pulse">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 
-    <table>
+    <div class="card-panel">
+    <table class="responsive-table highlight serial">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Actions</th>
@@ -19,15 +24,21 @@
         <tbody>
         {% for category in categories %}
             <tr>
-                <td>{{ category.getId }}</td>
+                <td></td>
                 <td>{{ category.getName }}</td>
                 <td>{{ category.getDescription }}</td>
                 <td>
-                    <a href="/admin/categories/{{ category.getId }}/edit">Edit</a>
-                    <a href="/admin/categories/{{ category.getId }}/destroy">Delete</a>
+                    <a href="/admin/categories/{{ category.getId }}/edit">
+                        <i class="material-icons blue-text text-darken-2">edit</i>
+                    </a>
+                    <a href="/admin/categories/{{ category.getId }}/destroy"
+                       onclick="return deleteConfirm('category')">
+                        <i class="material-icons red-text text-darken-2">delete_forever</i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    </div>
 {% endblock %}

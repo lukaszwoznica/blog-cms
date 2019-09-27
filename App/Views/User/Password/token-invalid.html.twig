@@ -3,12 +3,22 @@
 {% block title %}Invalid password reset token{% endblock %}
 
 {% block body %}
+    <h2 class="center-align">Password reset</h2>
 
-    <h1>Password reset error</h1>
-
-    <p>
-        Password reset link is invalid or expired.
-        Please click <a href="/user/password/forgot">here</a> to request another one.
-    </p>
-
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card grey lighten-4">
+                <div class="card-content">
+                    <h5>Failed</h5>
+                    <p>
+                        Password reset link is invalid or expired.
+                        Please click below to request another one.
+                    </p>
+                </div>
+                <div class="card-action center-align">
+                    <a href="/user/password/forgot">Request password reset again</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

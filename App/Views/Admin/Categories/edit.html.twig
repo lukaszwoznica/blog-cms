@@ -2,29 +2,50 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Edit category</h1> {% endblock %}
+{% block page_title %} <h3 class="page-title">Edit category</h3> {% endblock %}
 
 {% block body %}
 
     {% if category.getValidationErrors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in category.getValidationErrors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <ul class="collection with-header">
+                    <li class="collection-header red lighten-3 center-align"><h5>Errors:</h5></li>
+                    {% for error in category.getValidationErrors %}
+                        <li class="collection-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 
-    <form action="/admin/categories/{{ category.getId }}/update" method="post">
-        <div>
-            <label for="inputName">Name</label>
-            <input type="text" id="inputName" name="name" value="{{ category.getName }}">
+    <div class="row">
+        <div class="col m10 s12 offset-m1">
+            <div class="card z-depth-2">
+                <form action="/admin/categories/{{ category.getId }}/update" method="post">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="input-field col m6 s12">
+                                <label for="inputName">Name</label>
+                                <input type="text" id="inputName" name="name" value="{{ category.getName }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <label for="textareaDescription">Description</label>
+                                <textarea class="materialize-textarea" name="description" id="textareaDescription"
+                                          rows="10"
+                                          cols="30">{{ category.getDescription }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button type="submit" class="waves-effect btn">Save</button>
+                        <a href="/admin/categories" class="waves-effect btn red right">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="textareaDescription">Description</label>
-            <textarea name="description" id="textareaDescription" rows="10" cols="30">{{ category.getDescription }}</textarea>
-        </div>
-        <button type="submit">Save</button>
-        <a href="/admin/categories">Cancel</a>
-    </form>
+    </div>
+
 {% endblock %}

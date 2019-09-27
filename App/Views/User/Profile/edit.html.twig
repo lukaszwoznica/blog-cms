@@ -3,7 +3,7 @@
 {% block title %}Edit profile{% endblock %}
 
 {% block scripts %}
-    <script src="/assets/js/hideShowPassword.min.js"></script>
+    <script src="/assets/js/showHidePassword.js"></script>
     <script src="/assets/js/customValidationMethods.js"></script>
     <script>const user_id = '{{ current_user.getId }}'</script>
     <script src="/assets/js/profileEditFormValidation.js"></script>
@@ -11,35 +11,53 @@
 
 {% block body %}
 
-    <h1>Edit profile</h1>
+    <h2>Edit profile</h2>
 
     {% if errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <ul class="collection with-header">
+                    <li class="collection-header red lighten-3 center-align"><h5>Errors:</h5></li>
+                    {% for error in errors %}
+                        <li class="collection-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 
-    <form id="formEditProfile" action="/user/profile/update" method="post">
-        <div>
-            <label for="inputUsername">Username</label>
-            <input id="inputUsername" name="username" placeholder="Username" value="{{ current_user.getUsername }}" required />
+    <div class="row">
+        <div class="col m8 s12 offset-m2">
+            <div class="card">
+                <form id="formEditProfile" action="/user/profile/update" method="post">
+                    <div class="card-content">
+                        <div class="input-field">
+                            <label for="inputUsername">Username</label>
+                            <input type="text" id="inputUsername" class="validate" name="username"
+                                   value="{{ current_user.getUsername }}"
+                                   required>
+                        </div>
+                        <div class="input-field">
+                            <label for="inputEmail">Email address</label>
+                            <input type="email" id="inputEmail" class="validate" name="email"
+                                   value="{{ current_user.getEmail }}"
+                                   required>
+                        </div>
+                        <div class="input-field">
+                            <label for="inputPassword">Password</label>
+                            <input type="password" id="inputPassword" class="validate" name="password"
+                                   placeholder="Password"
+                                   aria-describedby="helpBlock">
+                            <span class="helper-text" id="helpBlock">Leave blank to keep current password</span>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button class="waves-effect waves-light btn" type="submit">Save</button>
+                        <a class="waves-effect waves-light btn red right" href="/user/profile/show">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" placeholder="Email address" value="{{ current_user.getEmail }}" required />
-        </div>
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" aria-describedby="helpBlock"/>
-            <span id="helpBlock">Leave blank to keep current password</span>
-        </div>
-
-        <button type="submit">Save</button>
-        <a href="/user/profile/show">Cancel</a>
-
-    </form>
+    </div>
 
 {% endblock %}

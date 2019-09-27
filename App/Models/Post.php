@@ -82,7 +82,7 @@ class Post extends Model
     {
         // Title
         if (strlen(trim($this->title)) < 3 || strlen(trim($this->title)) > 255) {
-            $this->validation_errors[] = 'Category name must be between 3 and 255 characters';
+            $this->validation_errors[] = 'Post name must be between 3 and 255 characters';
         }
     }
 

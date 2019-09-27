@@ -40,12 +40,9 @@ $(document).ready(function () {
             email: {
                 remote: 'Email is already taken'
             }
-        }
+        },
+        errorElement: 'div',
+        errorClass: 'invalid'
     });
-
-    $('#inputPassword').hideShowPassword({
-       show: false,
-       innerToggle: 'focus'
-    })
 });
 

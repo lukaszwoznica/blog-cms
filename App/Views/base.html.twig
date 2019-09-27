@@ -6,38 +6,84 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
+
 <body>
-    <nav>
-        <a href="/">Home</a>
-        {% if current_user == null %}
-            <a href="/signup">Sign up</a>
-            <a href="/login">Login</a>
-        {% else %}
-            {% if current_user.getRoleId == 1 %}
-                <a href="/admin/dashboard">Admin Panel</a>
-            {% endif %}
-            <a href="/user/profile/show">Profile</a>
-            <a href="/logout">Logout</a>
-        {% endif %}
+
+<header>
+    <div class="navbar-fixed">
+        <nav class="grey darken-4">
+            <div class="nav-wrapper container">
+                <ul>
+                    <li><a href="/" class="brand-logo">MyBlogLogo</a></li>
+                    <ul class="hide-on-med-and-down">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="">Contact</a></li>
+                    </ul>
+                </ul>
+                <ul class="right hide-on-med-and-down">
+                    {% include('Inc/user-nav.html.twig') %}
+                </ul>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i
+                            class="material-icons">menu</i></a>
+            </div>
+        </nav>
+    </div>
+    <nav class="sidenav mobile-nav" id="mobile-demo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="">Contact</a></li>
+            {% include('Inc/user-nav.html.twig') %}
+        </ul>
     </nav>
+</header>
 
-    {% for message in flash_messages %}
-        <div class="alert alert-{{ message.type }}">
-            {{ message.body }}
+<main>
+    <div class="container">
+        {% for message in flash_messages %}
+            <div class="card alert alert-{{ message.type }}">
+                <div class="card-content">
+                    <p>{{ message.body }}</p>
+                </div>
+                <button class="alert-close-btn" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        {% endfor %}
+
+        {% block body %}
+        {% endblock %}
+    </div>
+</main>
+
+<footer class="page-footer grey darken-3">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 offset-l3 s12 center-align">
+                <a href="/" class="brand-logo">MyBlogLogo</a>
+            </div>
         </div>
-    {% endfor %}
+    </div>
+    <div class="footer-copyright grey darken-4">
+        <div class="container">
+            © 2019 Copyright
+            <a class="grey-text text-lighten-4 right" href="#!">Social icons</a>
+        </div>
+    </div>
+</footer>
 
-    {% block body %}
-    {% endblock %}
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/assets/js/main.js"></script>
 
-    {% block scripts %}
-    {% endblock %}
+{% block scripts %}
+{% endblock %}
 
 </body>
 </html>

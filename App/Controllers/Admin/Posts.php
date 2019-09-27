@@ -93,8 +93,11 @@ class Posts extends Admin
                 Flash::addMessage('Post has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/posts');
             } else {
+                $categories = Category::getAllCategories();
+
                 View::renderTemplate('Admin/Posts/edit.html', [
-                    'post' => $this->post
+                    'post' => $this->post,
+                    'categories' => $categories
                 ]);
             }
         } else {

@@ -1,14 +1,24 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Invalid password reset token{% endblock %}
+{% block title %}Password reset successful{% endblock %}
 
 {% block body %}
+    <h2 class="center-align">Password reset</h2>
 
-    <h1>Success!</h1>
-
-    <p>
-        Your password has been successfully reset.
-        You can <a href="/login">login</a> now.
-    </p>
-
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card grey lighten-4">
+                <div class="card-content">
+                    <h5>Success</h5>
+                    <p>
+                        Your password has been successfully reset.
+                        You can login now.
+                    </p>
+                </div>
+                <div class="card-action center-align">
+                    <a href="/login">Go to login page</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
