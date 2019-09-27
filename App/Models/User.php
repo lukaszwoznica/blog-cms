@@ -352,9 +352,8 @@ class User extends Model
     {
         $this->username = $data['username'];
         $this->email = $data['email'];
-        if ($data['password'] != '')
+        if (!empty($data['password']))
             $this->password = $data['password'];
-
 
         $this->validate();
 
@@ -364,7 +363,7 @@ class User extends Model
             $sql = 'UPDATE users
                     SET username = :username,
                         email = :email';
-            if (isset($this->password))
+            if (!empty($data['password']))
                 $sql .= ', password = :password';
             $sql .= "\nWHERE id = :id";
 
@@ -372,7 +371,7 @@ class User extends Model
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            if (isset($this->password) && !empty($this->password)){
+            if (!empty($data['password'])){
                 $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
                 $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
             }
