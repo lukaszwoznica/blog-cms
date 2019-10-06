@@ -104,7 +104,11 @@ class Post extends Model
     public static function findByID(int $post_id): ?Post
     {
         $db = static::getDatabase();
-        $sql = 'SELECT * FROM posts WHERE id = :post_id';
+        $sql = 'SELECT posts.*, users.username, categories.name cat_name
+                FROM posts
+                INNER JOIN users ON user_id = users.id
+                LEFT OUTER JOIN categories ON category_id = categories.id
+                WHERE posts.id = :post_id';
 
         $stmt = $db->prepare($sql);
         $stmt->bindValue(":post_id", $post_id, PDO::PARAM_INT);

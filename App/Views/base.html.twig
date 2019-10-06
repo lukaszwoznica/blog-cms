@@ -42,6 +42,8 @@
 </header>
 
 <main>
+    {% block post_image %}
+    {% endblock %}
     <div class="container">
         {% for message in flash_messages %}
             <div class="card alert alert-{{ message.type }}">
