@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ post.getTitle }}{% endblock %}
+
+{% block post_image %}
+    <div class="post-image" style="background-image: url('https://placehold.co/1920x1080')">
+
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="card post-card z-depth-2">
+        <div class="card-content">
+            <h2>{{ post.getTitle }}</h2>
+            <p>{{ post.getContent }}</p>
+        </div>
+        <div class="card-action">
+            <span>
+                Author: {{ post.getAuthorName }} |
+                Date: {{ post.getCreateTime|date('d F Y') }} |
+                Category: {{ post.getCategoryName }}
+            </span>
+        </div>
+    </div>
+
+{% endblock %}

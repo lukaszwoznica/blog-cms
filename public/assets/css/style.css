@@ -34,6 +34,10 @@ span.post-details i {
 }
 
 /*
+    END Homepage
+ */
+
+/*
     Navbar
  */
 
@@ -55,6 +59,10 @@ nav .brand-logo {
 }
 
 /*
+    END Navbar
+ */
+
+/*
     Footer
  */
 
@@ -66,6 +74,10 @@ nav .brand-logo {
     color: #ffffff;
     font-size: 2rem;
 }
+
+/*
+    END Footer
+ */
 
 /*
     Alerts
@@ -110,6 +122,9 @@ nav .brand-logo {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
 }
 
+/*
+    END Alerts
+ */
 
 /*
     Forms
@@ -136,6 +151,10 @@ div.invalid {
 }
 
 /*
+    END Forms
+ */
+
+/*
     Tables
  */
 
@@ -148,6 +167,9 @@ table.serial td:first-child:before {
     content: counter(serial-number);
 }
 
+/*
+    END Tables
+ */
 
 /*
     Profile card
@@ -168,3 +190,47 @@ table.serial td:first-child:before {
 .user-details table tr td:first-child {
     font-weight: bold;
 }
+
+/*
+    END Profile card
+ */
+
+/*
+    Post page
+ */
+
+.post-image {
+    position: relative;
+    min-height: 80vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.post-card {
+    top: -20vh;
+    line-height: 1.8rem;
+}
+
+.post-card .card-content {
+    padding: .3rem 3rem 3rem 3rem;
+}
+
+.post-card .card-content h2 {
+    margin-bottom: 2.5rem;
+}
+
+@media (max-width: 600px) {
+    .post-image {
+        min-height: 50vh;
+    }
+
+    .post-card {
+        top: 0;
+    }
+}
+
+/*
+    END Post page
+ */

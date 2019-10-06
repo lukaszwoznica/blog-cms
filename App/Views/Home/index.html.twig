@@ -19,7 +19,9 @@
                                 <div class="row">
                                     <p>{{ post.getContent|striptags|slice(0,200) }}</p>
                                 </div>
-                                <button class="waves-effect waves-light btn">Read more</button>
+                                <a href="/posts/{{ post.getId }}/show" class="waves-effect waves-light btn">
+                                    Read more
+                                </a>
                             </div>
                             <div class="card-action">
                                 <span class="post-details">
@@ -56,7 +58,9 @@
                                 <div class="row">
                                     <p>{{ post.getContent|striptags|slice(0,150) }}</p>
                                 </div>
-                                <button class="waves-effect waves-light btn">Read more</button>
+                                <a href="/posts/{{ post.getId }}/show" class="waves-effect waves-light btn">
+                                    Read more
+                                </a>
                             </div>
                             <div class="card-action">
                                 <span class="post-details">
