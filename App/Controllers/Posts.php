@@ -22,6 +22,15 @@ class Posts extends Controller
         }
     }
 
+    public function indexAction(): void
+    {
+        $posts = Post::getAllPosts();
+
+        View::renderTemplate('Posts/index.html', [
+            'posts' => $posts
+        ]);
+    }
+
     public function showAction(): void
     {
         if ($this->post) {
