@@ -41,4 +41,13 @@
         {% endfor %}
     </div>
 
+    <div class="row center">
+        {% include 'inc/pagination.html.twig' with {
+            currentPage: page,
+            paginationPath: "/posts/",
+            lastPage: total_pages,
+            showAlwaysFirstAndLast: true
+        } only %}
+    </div>
+
 {% endblock %}

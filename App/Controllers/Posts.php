@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 
 use App\Models\Post;
+use App\Paginator;
 use Core\Controller;
 use Core\View;
 use Exception;
@@ -12,6 +13,7 @@ use Exception;
 class Posts extends Controller
 {
     private $post;
+    private $page;
 
     public function __construct(array $route_params)
     {
@@ -20,14 +22,24 @@ class Posts extends Controller
         if (isset($route_params['id'])) {
             $this->post = Post::findByID($route_params['id']);
         }
+
+        if (isset($route_params['page'])) {
+            $this->page = (int)$route_params['page'];
+        } else {
+            $this->page = 1;
+        }
     }
 
     public function indexAction(): void
     {
-        $posts = Post::getAllPosts();
+        $paginator = new Paginator($this->page, 4, Post::getTotal());
+
+        $posts = Post::getAllPosts($paginator->getOffset(), $paginator->getLimit());
 
         View::renderTemplate('Posts/index.html', [
-            'posts' => $posts
+            'posts' => $posts,
+            'page' => $this->page,
+            'total_pages' => $paginator->getTotalPages()
         ]);
     }
 

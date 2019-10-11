@@ -48,9 +48,10 @@ $router->addRoute('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
 
 // App\Controllers namespace
+$router->addRoute('posts/{page:\d+}', ['controller' => 'Posts', 'action' => 'index']);
+$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
-$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);

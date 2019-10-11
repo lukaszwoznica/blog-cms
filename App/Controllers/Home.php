@@ -13,7 +13,7 @@ class Home extends Controller
 {
     public function indexAction(): void
     {
-        $posts = Post::getAllPosts();
+        $posts = Post::getAllPosts(0, 7);
 
         View::renderTemplate('Home/index.html', [
             'posts' => $posts

@@ -86,13 +86,15 @@ class Post extends Model
         }
     }
 
-    public static function getAllPosts(): array
+    public static function getAllPosts(int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX): array
     {
         $db = static::getDatabase();
-        $sql = 'SELECT posts.*, users.username, categories.name cat_name
+        $sql = "SELECT posts.*, users.username, categories.name cat_name
                 FROM posts 
                 INNER JOIN users ON user_id = users.id
-                LEFT OUTER JOIN categories ON category_id = categories.id';
+                LEFT OUTER JOIN categories ON category_id = categories.id
+                ORDER BY create_time DESC 
+                LIMIT $limit_offset, $limit_row_num";
 
         $stmt = $db->query($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -164,6 +166,15 @@ class Post extends Model
         }
 
         return false;
+    }
+
+    public static function getTotal(): int
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT COUNT(*) FROM posts';
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchColumn();
     }
 
     /*
