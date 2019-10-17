@@ -21,6 +21,8 @@ class Posts extends Controller
 
         if (isset($route_params['id'])) {
             $this->post = Post::findByID($route_params['id']);
+        } elseif (isset($route_params['slug'])) {
+            $this->post = Post::findBySlug($route_params['slug']);
         }
 
         if (isset($route_params['page'])) {
@@ -28,11 +30,12 @@ class Posts extends Controller
         } else {
             $this->page = 1;
         }
+
     }
 
     public function indexAction(): void
     {
-        $paginator = new Paginator($this->page, 4, Post::getTotal());
+        $paginator = new Paginator($this->page, 12, Post::getTotal());
 
         $posts = Post::getAllPosts($paginator->getOffset(), $paginator->getLimit());
 
@@ -50,7 +53,7 @@ class Posts extends Controller
                 'post' => $this->post
             ]);
         } else {
-            throw new Exception("Post with given id does not exist", 404);
+            throw new Exception("Post with given id or slug does not exist", 404);
         }
     }
 }

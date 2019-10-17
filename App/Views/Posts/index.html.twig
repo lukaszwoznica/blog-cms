@@ -21,7 +21,7 @@
                             <div class="row">
                                 <p>{{ post.getContent|striptags|slice(0,150) }}</p>
                             </div>
-                            <a href="/posts/{{ post.getId }}/show" class="waves-effect waves-light btn">
+                            <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
                                 Read more
                             </a>
                         </div>

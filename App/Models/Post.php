@@ -19,6 +19,7 @@ class Post extends Model
     private $create_time;
     private $last_modified;
     private $is_published;
+    private $url_slug;
     private $validation_errors = [];
 
     // Additional properties for SQL queries with JOIN
@@ -63,8 +64,8 @@ class Post extends Model
 
         if (empty($this->validation_errors)) {
             $db = static::getDatabase();
-            $sql = 'INSERT INTO posts (title, content, category_id, user_id, is_published)
-                VALUES (:title, :content, :category_id, :user_id, :is_published)';
+            $sql = 'INSERT INTO posts (title, content, category_id, user_id, is_published, url_slug)
+                VALUES (:title, :content, :category_id, :user_id, :is_published, :url_slug)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':title', trim($this->title), PDO::PARAM_STR);
@@ -72,6 +73,7 @@ class Post extends Model
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
+            $stmt->bindValue(':url_slug', $this->url_slug, PDO::PARAM_STR);
 
             return $stmt->execute();
         }
@@ -83,6 +85,17 @@ class Post extends Model
         // Title
         if (strlen(trim($this->title)) < 3 || strlen(trim($this->title)) > 255) {
             $this->validation_errors[] = 'Post name must be between 3 and 255 characters';
+        }
+
+        // Slug
+        if (strlen($this->url_slug) < 3 || strlen($this->url_slug) > 255) {
+            $this->validation_errors[] = "Slug must be between 3 and 25 characters";
+        }
+        if (preg_match("/^[a-z0-9-]+$/",  $this->url_slug) === 0) {
+            $this->validation_errors[] = "Slug can only contain alphanumeric characters (lowercase letters a-z, numbers 0-9) and dash";
+        }
+        if (static::slugExist($this->url_slug, $this->id ?? null)) {
+            $this->validation_errors[] = "URL slug is already taken";
         }
     }
 
@@ -141,6 +154,7 @@ class Post extends Model
         $this->category_id = $post_data['category_id'];
         $this->last_modified = date('Y-m-d H:i:s');
         $this->is_published = $post_data['is_published'];
+        $this->url_slug = $post_data['url_slug'];
 
         $this->validate();
 
@@ -151,7 +165,8 @@ class Post extends Model
                     content = :content,
                     category_id = :category_id,
                     last_modified = :last_modified,
-                    is_published = :is_published
+                    is_published = :is_published,
+                    url_slug = :url_slug
                     WHERE id = :id';
 
             $stmt = $db->prepare($sql);
@@ -160,6 +175,7 @@ class Post extends Model
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':last_modified', $this->last_modified, PDO::PARAM_STR);
             $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
+            $stmt->bindValue(':url_slug', $this->url_slug, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
             return $stmt->execute();
@@ -175,6 +191,31 @@ class Post extends Model
         $stmt = $db->query($sql);
 
         return $stmt->fetchColumn();
+    }
+
+    public static function findBySlug(string $slug): ?Post
+    {
+        $db = static::getDatabase();
+        $sql = "SELECT * FROM posts WHERE url_slug = :url_slug";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(":url_slug", $slug, PDO::PARAM_STR);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if (!$result)
+            return null;
+        return $result;
+    }
+
+    public static function slugExist(string $slug, int $ignore_id = null): bool
+    {
+        $post = static::findBySlug($slug);
+        if ($post && $post->id != $ignore_id){
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -234,5 +275,10 @@ class Post extends Model
     public function getCategoryName(): ?string
     {
         return $this->category_name;
+    }
+
+    public function getUrlSlug(): ?string
+    {
+        return $this->url_slug;
     }
 }

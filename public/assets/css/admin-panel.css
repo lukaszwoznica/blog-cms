@@ -103,3 +103,21 @@ table a > i.material-icons, table a > i.material-icons-outlined {
 table a > i.material-icons:hover, table a > i.material-icons-outlined:hover {
     opacity: 0.5;
 }
+
+/*
+    Forms
+ */
+
+.slug-edit-icon {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    color: #9e9e9e;
+    cursor: pointer;
+    z-index: 100;
+    transition: color .6s;
+}
+
+.slug-edit-icon.active {
+    color: #26a69a;
+}

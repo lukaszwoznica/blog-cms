@@ -49,6 +49,7 @@ $router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin
 
 // App\Controllers namespace
 $router->addRoute('posts/{page:\d+}', ['controller' => 'Posts', 'action' => 'index']);
+$router->addRoute('posts/{slug:[\da-z-]+}', ['controller' => 'Posts', 'action' => 'show']);
 $router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/{action}');

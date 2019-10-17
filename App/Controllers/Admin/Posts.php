@@ -57,8 +57,10 @@ class Posts extends Admin
                 Flash::addMessage('Post has been successfully added', Flash::SUCCESS);
                 $this->redirectTo('/admin/posts');
             } else {
+                $categories = Category::getAllCategories();
                 View::renderTemplate('Admin/Posts/new.html', [
-                    'post' => $post
+                    'post' => $post,
+                    'categories' => $categories
                 ]);
             }
         } else {
@@ -118,6 +120,18 @@ class Posts extends Admin
         }
 
         $this->redirectTo('/admin/posts');
+    }
+
+    /**
+     * Check if slug is available (AJAX)
+     */
+    public function validateSlugAction(): void
+    {
+        if (isset($_GET['url_slug']) && !empty($_GET['url_slug'])) {
+            $slug_valid = !Post::slugExist($_GET['url_slug'], $_GET['ignore_id'] ?? null);
+            header('Content-Type: application/json');
+            echo json_encode($slug_valid);
+        }
     }
 
 }

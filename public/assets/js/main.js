@@ -15,7 +15,5 @@ $(document).ready(function () {
         $(this).closest('div.alert').fadeOut('slow');
     })
 
-    $(document).ready(function(){
-        $('select').formSelect();
-    });
+    $('select').formSelect();
 });

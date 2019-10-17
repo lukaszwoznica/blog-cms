@@ -10,7 +10,7 @@
                     <article>
                         <div class="card card-post main-post center-align z-depth-2 hoverable">
                             <div class="card-image">
-                                <img src="https://placehold.co/1920x1080">
+                                <img src="https://placehold.co/1920x1080" alt="Post image">
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
@@ -19,7 +19,7 @@
                                 <div class="row">
                                     <p>{{ post.getContent|striptags|slice(0,200) }}</p>
                                 </div>
-                                <a href="/posts/{{ post.getId }}/show" class="waves-effect waves-light btn">
+                                <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
                                     Read more
                                 </a>
                             </div>
@@ -49,7 +49,7 @@
                     <article>
                         <div class="card card-post center-align z-depth-2 hoverable">
                             <div class="card-image">
-                                <img src="https://placehold.co/1920x1080">
+                                <img src="https://placehold.co/1920x1080" alt="Post image">
                             </div>
                             <div class="card-content ">
                                 <div class="card-title">
@@ -58,7 +58,7 @@
                                 <div class="row">
                                     <p>{{ post.getContent|striptags|slice(0,150) }}</p>
                                 </div>
-                                <a href="/posts/{{ post.getId }}/show" class="waves-effect waves-light btn">
+                                <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
                                     Read more
                                 </a>
                             </div>
