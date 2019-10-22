@@ -99,15 +99,18 @@ class Post extends Model
         }
     }
 
-    public static function getAllPosts(int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX): array
+    public static function getAllPosts(bool $getDrafts = true, int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX): array
     {
         $db = static::getDatabase();
         $sql = "SELECT posts.*, users.username, categories.name cat_name
                 FROM posts 
                 INNER JOIN users ON user_id = users.id
-                LEFT OUTER JOIN categories ON category_id = categories.id
-                ORDER BY create_time DESC 
-                LIMIT $limit_offset, $limit_row_num";
+                LEFT OUTER JOIN categories ON category_id = categories.id";
+        if (!$getDrafts) {
+            $sql .= "\nWHERE is_published = 1";
+        }
+        $sql .= "\nORDER BY create_time DESC 
+                 LIMIT $limit_offset, $limit_row_num";
 
         $stmt = $db->query($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());

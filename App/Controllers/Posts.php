@@ -37,7 +37,7 @@ class Posts extends Controller
     {
         $paginator = new Paginator($this->page, 12, Post::getTotal());
 
-        $posts = Post::getAllPosts($paginator->getOffset(), $paginator->getLimit());
+        $posts = Post::getAllPosts(false, $paginator->getOffset(), $paginator->getLimit());
 
         View::renderTemplate('Posts/index.html', [
             'posts' => $posts,
