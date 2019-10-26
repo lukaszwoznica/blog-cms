@@ -187,10 +187,13 @@ class Post extends Model
         return false;
     }
 
-    public static function getTotal(): int
+    public static function getTotal(bool $count_drafts = true): int
     {
         $db = static::getDatabase();
-        $sql = 'SELECT COUNT(*) FROM posts';
+        $sql = "SELECT COUNT(*) FROM posts";
+        if (!$count_drafts) {
+            $sql .= "\nWHERE is_published = 1";
+        }
         $stmt = $db->query($sql);
 
         return $stmt->fetchColumn();
@@ -199,7 +202,11 @@ class Post extends Model
     public static function findBySlug(string $slug): ?Post
     {
         $db = static::getDatabase();
-        $sql = "SELECT * FROM posts WHERE url_slug = :url_slug";
+        $sql = 'SELECT posts.*, users.username, categories.name cat_name
+                FROM posts
+                INNER JOIN users ON user_id = users.id
+                LEFT OUTER JOIN categories ON category_id = categories.id
+                WHERE url_slug = :url_slug';
 
         $stmt = $db->prepare($sql);
         $stmt->bindValue(":url_slug", $slug, PDO::PARAM_STR);

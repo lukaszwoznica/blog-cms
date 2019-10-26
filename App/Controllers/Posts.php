@@ -35,7 +35,7 @@ class Posts extends Controller
 
     public function indexAction(): void
     {
-        $paginator = new Paginator($this->page, 12, Post::getTotal());
+        $paginator = new Paginator($this->page, 10, Post::getTotal(false));
 
         $posts = Post::getAllPosts(false, $paginator->getOffset(), $paginator->getLimit());
 

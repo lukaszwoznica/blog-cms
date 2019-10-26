@@ -6,40 +6,48 @@
 
     <h2>All posts</h2>
 
-    <div class="row">
-        {% for post in posts %}
-            <div class="col l6">
-                <article>
-                    <div class="card card-post center-align z-depth-2 hoverable">
-                        <div class="card-image">
-                            <img src="https://placehold.co/1920x1080">
+    {% for post in posts %}
+
+        {% if loop.index0 is divisible by(2) %}
+            <div class="row">
+        {% endif %}
+
+        <div class="col l6">
+            <article>
+                <div class="card card-post center-align z-depth-2 hoverable">
+                    <div class="card-image">
+                        <img src="https://placehold.co/1920x1080">
+                    </div>
+                    <div class="card-content ">
+                        <div class="card-title">
+                            <h5>{{ post.getTitle }}</h5>
                         </div>
-                        <div class="card-content ">
-                            <div class="card-title">
-                                <h5>{{ post.getTitle }}</h5>
-                            </div>
-                            <div class="row">
-                                <p>{{ post.getContent|striptags|slice(0,150) }}</p>
-                            </div>
-                            <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
-                                Read more
-                            </a>
+                        <div class="row">
+                            <p>{{ post.getContent|striptags|slice(0,150) }}</p>
                         </div>
-                        <div class="card-action">
-                                <span class="post-details">
-                                    <i class="material-icons ">edit</i>
-                                    {{ post.getAuthorName }}
-                                </span>
-                            <span class="post-details">
+                        <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
+                            Read more
+                        </a>
+                    </div>
+                    <div class="card-action">
+                        <span class="post-details">
+                            <i class="material-icons ">edit</i>
+                            {{ post.getAuthorName }}
+                        </span>
+                        <span class="post-details">
                                     <i class="material-icons">date_range</i>
                                     {{ post.getCreateTime|date('d/m/Y') }}
-                                </span>
-                        </div>
+                        </span>
                     </div>
-                </article>
+                </div>
+            </article>
+        </div>
+
+        {% if loop.index0 is not divisible by(2) or loop.last %}
             </div>
-        {% endfor %}
-    </div>
+        {% endif %}
+
+    {% endfor %}
 
     <div class="row center">
         {% include 'inc/pagination.html.twig' with {
