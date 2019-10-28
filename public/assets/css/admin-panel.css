@@ -121,3 +121,23 @@ table a > i.material-icons:hover, table a > i.material-icons-outlined:hover {
 .slug-edit-icon.active {
     color: #26a69a;
 }
+
+#inputSlug:-moz-read-only {
+    color: #9e9e9e;
+}
+
+#inputSlug:read-only {
+    color: #9e9e9e;
+}
+
+.quill-wrapper {
+    margin: 2.5rem 0 2.5rem 0;
+}
+
+#editor-container {
+    min-height: 150px;
+}
+
+.ql-editor strong {
+    font-weight: 600;
+}

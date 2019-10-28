@@ -231,6 +231,36 @@ table.serial td:first-child:before {
     }
 }
 
+.post-content strong {
+    font-weight: 600;
+}
+
+.post-content .ql-align-center {
+    text-align: center;
+}
+
+.post-content .ql-align-right {
+    text-align: right;
+}
+
+.post-content .ql-align-justify {
+    text-align: justify;
+}
+
+.post-content .ql-syntax {
+    background-color: #212121;
+    color: #ffffff;
+    padding-left: .3rem;
+}
+
+.post-content ul {
+    padding-left: 2.8rem;
+}
+
+.post-content ul li {
+    list-style-type: disc;
+}
+
 /*
     END Post page
  */

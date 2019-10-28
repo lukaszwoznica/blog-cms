@@ -2,6 +2,10 @@
 
 {% block title %}{{ post.getTitle }}{% endblock %}
 
+{% block styles %}
+
+{% endblock %}
+
 {% block post_image %}
     <div class="post-image" style="background-image: url('https://placehold.co/1920x1080')">
 
@@ -12,8 +16,12 @@
 
     <div class="card post-card z-depth-2">
         <div class="card-content">
-            <h2>{{ post.getTitle }}</h2>
-            <p>{{ post.getContent }}</p>
+            <h1>{{ post.getTitle }}</h1>
+            <div class="post-content">
+                {% autoescape %}
+                    {{ post.getContent|raw }}
+                {% endautoescape %}
+            </div>
         </div>
         <div class="card-action">
             <span>

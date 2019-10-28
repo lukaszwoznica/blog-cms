@@ -4,6 +4,10 @@
 
 {% block page_title %} <h3 class="page-title">Edit post</h3> {% endblock %}
 
+{% block styles %}
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 
     {% if post.getValidationErrors is not empty %}
@@ -35,18 +39,20 @@
                                    value="{{ post.getUrlSlug }}" required>
                         </div>
                         <div class="input-field">
-                            <label for="textareaContent">Content</label>
-                            <textarea class="materialize-textarea" name="content" id="textareaContent" rows="10"
-                                      cols="30">{{ post.getContent }}</textarea>
+                            <div class="quill-wrapper">
+                                <input type="hidden" id="content" name="content">
+                                <div id="editor-container"></div>
+                            </div>
+
                         </div>
                         <div class="input-field">
                             <select id="selectCategory" name="category_id">
                                 <option value="0">Uncategorized</option>
                                 {% for category in categories %}
                                     <option value="{{ category.getID }}"
-                                        {% if category.getID == post.getCategoryId %}
-                                            selected
-                                        {% endif %}>{{ category.getName }}
+                                            {% if category.getID == post.getCategoryId %}
+                                                selected
+                                            {% endif %}>{{ category.getName }}
                                     </option>
                                 {% endfor %}
                             </select>
@@ -56,18 +62,18 @@
                             <label for="radioDraft">
                                 <input type="radio" name="is_published" id="radioDraft" value="0"
                                         {% if post.isPublished == false %}
-                                checked
+                                            checked
                                         {% endif %}>
-                                <span>Save as draft</span>
+                                <span>Draft</span>
                             </label>
                         </p>
                         <p>
                             <label for="radioPublish">
                                 <input type="radio" name="is_published" id="radioPublish" value="1"
                                         {% if post.isPublished %}
-                                checked
+                                            checked
                                         {% endif %}>
-                                <span>Publish</span>
+                                <span>Published</span>
                             </label>
                         </p>
                     </div>
@@ -86,4 +92,15 @@
     <script>const post_id = '{{ post.getId }}'</script>
     <script src="/assets/js/customValidationMethods.js"></script>
     <script src="/assets/js/slugs.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="/assets/js/quillEditor.js"></script>
+    <script>
+        quill.clipboard.dangerouslyPasteHTML('{{ post.getContent|raw|spaceless }}');
+
+        const form = document.querySelector('#formEditPost');
+        form.onsubmit = function () {
+            const about = document.querySelector('input[name=content]');
+            about.value = quill.root.innerHTML
+        }
+    </script>
 {% endblock %}
