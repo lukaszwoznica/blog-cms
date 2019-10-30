@@ -17,7 +17,7 @@
                                     <h5>{{ post.getTitle }}</h5>
                                 </div>
                                 <div class="row">
-                                    <p>{{ post.getContent|striptags|slice(0,200) }}</p>
+                                    <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
                                 </div>
                                 <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
                                     Read more
@@ -61,7 +61,7 @@
                                 <h5>{{ post.getTitle }}</h5>
                             </div>
                             <div class="row">
-                                <p>{{ post.getContent|striptags|slice(0,150) }}</p>
+                                <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
                             </div>
                             <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
                                 Read more

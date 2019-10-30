@@ -17,6 +17,7 @@
     <div class="card post-card z-depth-2">
         <div class="card-content">
             <h1>{{ post.getTitle }}</h1>
+            <p>{{ post.getIntroduction }}</p>
             <div class="post-content">
                 {% autoescape %}
                     {{ post.getContent|raw }}

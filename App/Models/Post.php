@@ -13,6 +13,7 @@ class Post extends Model
 {
     private $id;
     private $title;
+    private $introduction;
     private $content;
     private $category_id;
     private $user_id;
@@ -64,11 +65,12 @@ class Post extends Model
 
         if (empty($this->validation_errors)) {
             $db = static::getDatabase();
-            $sql = 'INSERT INTO posts (title, content, category_id, user_id, is_published, url_slug)
-                VALUES (:title, :content, :category_id, :user_id, :is_published, :url_slug)';
+            $sql = 'INSERT INTO posts (title, introduction, content, category_id, user_id, is_published, url_slug)
+                VALUES (:title, :introduction, :content, :category_id, :user_id, :is_published, :url_slug)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':title', trim($this->title), PDO::PARAM_STR);
+            $stmt->bindValue(':introduction', trim($this->introduction), PDO::PARAM_STR);
             $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
@@ -89,13 +91,18 @@ class Post extends Model
 
         // Slug
         if (strlen($this->url_slug) < 3 || strlen($this->url_slug) > 255) {
-            $this->validation_errors[] = "Slug must be between 3 and 25 characters";
+            $this->validation_errors[] = 'Slug must be between 3 and 25 characters';
         }
         if (preg_match("/^[a-z0-9-]+$/",  $this->url_slug) === 0) {
-            $this->validation_errors[] = "Slug can only contain alphanumeric characters (lowercase letters a-z, numbers 0-9) and dash";
+            $this->validation_errors[] = 'Slug can only contain alphanumeric characters (lowercase letters a-z, numbers 0-9) and dash';
         }
         if (static::slugExist($this->url_slug, $this->id ?? null)) {
-            $this->validation_errors[] = "URL slug is already taken";
+            $this->validation_errors[] = 'URL slug is already taken';
+        }
+
+        // Introduction
+        if (strlen($this->introduction) > 255) {
+            $this->validation_errors[] = 'Introduction can have a maximum of 255 characters';
         }
     }
 
@@ -165,6 +172,7 @@ class Post extends Model
             $db = static::getDatabase();
             $sql = 'UPDATE posts
                     SET title = :title,
+                    introduction = :introduction,
                     content = :content,
                     category_id = :category_id,
                     last_modified = :last_modified,
@@ -174,6 +182,7 @@ class Post extends Model
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':title', $this->title, PDO::PARAM_STR);
+            $stmt->bindValue(':introduction', $this->introduction, PDO::PARAM_STR);
             $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
             $stmt->bindValue(':category_id', $this->category_id, PDO::PARAM_INT);
             $stmt->bindValue(':last_modified', $this->last_modified, PDO::PARAM_STR);
@@ -290,5 +299,10 @@ class Post extends Model
     public function getUrlSlug(): ?string
     {
         return $this->url_slug;
+    }
+
+    public function getIntroduction(): ?string
+    {
+        return $this->introduction;
     }
 }

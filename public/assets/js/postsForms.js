@@ -49,6 +49,9 @@ $('#formNewPost').validate({
             validSlug: true,
             remote: '/admin/posts/validate-slug'
         },
+        introduction: {
+            maxlength: 255
+        }
     },
     messages: {
         url_slug: {
