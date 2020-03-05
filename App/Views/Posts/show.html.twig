@@ -3,13 +3,20 @@
 {% block title %}{{ post.getTitle }}{% endblock %}
 
 {% block styles %}
-
+    {% if post.getImage is null %}
+        <style type="text/css">
+            .post-card {
+                top: 10vh;
+            }
+        </style>
+    {% endif %}
 {% endblock %}
 
 {% block post_image %}
-    <div class="post-image" style="background-image: url('https://placehold.co/1920x1080')">
-
-    </div>
+    {% if post.getImage is not null %}
+        <div class="post-image" style="background-image: url({{ post.getImage }})">
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block body %}

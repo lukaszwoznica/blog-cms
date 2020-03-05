@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 
 
 use App\Auth;
+use App\FileUploader;
 use App\Flash;
 use App\Models\Category;
 use App\Models\Post;
@@ -50,13 +51,34 @@ class Posts extends Admin
             if ($post_data['category_id'] == 0) {
                 $post_data['category_id'] = null;
             }
+            $img_upload_errors = [];
+
+            if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+                $file = $_FILES['image'];
+                $allowed_types = ['image/gif', 'image/png', 'image/jpeg'];
+                $upload_path = '/public/uploads/posts-images/';
+                $file_uploader = new FileUploader($upload_path, 8388608, $allowed_types);
+                $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $filename = $post_data['url_slug'] . '.' . $file_extension;
+
+                if ($file_uploader->upload($file, $filename)) {
+                    $post_data['image'] = '/uploads/posts-images/' . $filename;
+                } else {
+                    $img_upload_errors = $file_uploader->getValidationErrors();
+                }
+            } else {
+                $post_data['image'] = null;
+            }
 
             $post = new Post($post_data);
 
-            if ($post->saveToDatabase()) {
+            if (empty($img_upload_errors) && $post->saveToDatabase()) {
                 Flash::addMessage('Post has been successfully added', Flash::SUCCESS);
                 $this->redirectTo('/admin/posts');
             } else {
+                if (!empty($img_upload_errors)) {
+                    $post->setValidationErrors(array_merge($post->getValidationErrors(), $img_upload_errors));
+                }
                 $categories = Category::getAllCategories();
                 View::renderTemplate('Admin/Posts/new.html', [
                     'post' => $post,
@@ -116,7 +138,7 @@ class Posts extends Admin
                 Flash::addMessage('An error occurred while deleting the post', Flash::ERROR);
             }
         } else {
-            Flash::addMessage('Category with given id does not exist', Flash::WARNING);
+            Flash::addMessage('Post with given id does not exist', Flash::WARNING);
         }
 
         $this->redirectTo('/admin/posts');

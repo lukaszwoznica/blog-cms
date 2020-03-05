@@ -21,6 +21,7 @@ class Post extends Model
     private $last_modified;
     private $is_published;
     private $url_slug;
+    private $image;
     private $validation_errors = [];
 
     // Additional properties for SQL queries with JOIN
@@ -65,8 +66,8 @@ class Post extends Model
 
         if (empty($this->validation_errors)) {
             $db = static::getDatabase();
-            $sql = 'INSERT INTO posts (title, introduction, content, category_id, user_id, is_published, url_slug)
-                VALUES (:title, :introduction, :content, :category_id, :user_id, :is_published, :url_slug)';
+            $sql = 'INSERT INTO posts (title, introduction, content, category_id, user_id, is_published, url_slug, image)
+                VALUES (:title, :introduction, :content, :category_id, :user_id, :is_published, :url_slug, :image)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':title', trim($this->title), PDO::PARAM_STR);
@@ -76,6 +77,7 @@ class Post extends Model
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
             $stmt->bindValue(':url_slug', $this->url_slug, PDO::PARAM_STR);
+            $stmt->bindValue(':image', $this->image, PDO::PARAM_STR);
 
             return $stmt->execute();
         }
@@ -237,10 +239,6 @@ class Post extends Model
         return false;
     }
 
-    /*
-     * Getters
-     */
-
     public function getId(): ?int
     {
         return $this->id;
@@ -304,5 +302,15 @@ class Post extends Model
     public function getIntroduction(): ?string
     {
         return $this->introduction;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setValidationErrors(array $validation_errors): void
+    {
+        $this->validation_errors = $validation_errors;
     }
 }

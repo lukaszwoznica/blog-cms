@@ -3,14 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <section class="section" xmlns="http://www.w3.org/1999/html">
+    <section class="section">
         <div class="row">
             <div class="col s12">
                 {% for post in posts|slice(0,1) %}
                     <article>
                         <div class="card card-post main-post center-align z-depth-2 hoverable">
                             <div class="card-image">
-                                <img src="https://placehold.co/1920x1080" alt="Post image">
+                                <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
+                                     alt="Post image">
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
@@ -54,7 +55,7 @@
                 <article>
                     <div class="card card-post center-align z-depth-2 hoverable">
                         <div class="card-image">
-                            <img src="https://placehold.co/1920x1080" alt="Post image">
+                            <img src="{{ post.getImage | default("/assets/img/post-default.png") }}" alt="Post image">
                         </div>
                         <div class="card-content ">
                             <div class="card-title">
