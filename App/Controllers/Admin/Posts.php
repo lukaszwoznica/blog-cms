@@ -133,6 +133,10 @@ class Posts extends Admin
     {
         if ($this->post) {
             if ($this->post->delete()) {
+                $img_path = dirname(__DIR__, 3) . '/public' . $this->post->getImage();
+                if (file_exists($img_path)) {
+                    unlink($img_path);
+                }
                 Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the post', Flash::ERROR);
