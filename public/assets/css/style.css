@@ -12,7 +12,7 @@ main {
     Homepage
  */
 
-.card-post  .card-content {
+.card-post .card-content {
     padding-top: .8rem;
 }
 
@@ -32,10 +32,6 @@ span.post-details i {
     position: relative;
     top: 5px;
 }
-
-/*
-    END Homepage
- */
 
 /*
     Navbar
@@ -59,10 +55,6 @@ nav .brand-logo {
 }
 
 /*
-    END Navbar
- */
-
-/*
     Footer
  */
 
@@ -74,10 +66,6 @@ nav .brand-logo {
     color: #ffffff;
     font-size: 2rem;
 }
-
-/*
-    END Footer
- */
 
 /*
     Alerts
@@ -123,10 +111,6 @@ nav .brand-logo {
 }
 
 /*
-    END Alerts
- */
-
-/*
     Forms
  */
 
@@ -151,10 +135,6 @@ div.invalid {
 }
 
 /*
-    END Forms
- */
-
-/*
     Tables
  */
 
@@ -166,10 +146,6 @@ table.serial td:first-child:before {
     counter-increment: serial-number;
     content: counter(serial-number);
 }
-
-/*
-    END Tables
- */
 
 /*
     Profile card
@@ -190,10 +166,6 @@ table.serial td:first-child:before {
 .user-details table tr td:first-child {
     font-weight: bold;
 }
-
-/*
-    END Profile card
- */
 
 /*
     Post page
@@ -262,6 +234,11 @@ table.serial td:first-child:before {
 }
 
 /*
-    END Post page
+    Helpers
  */
 
+.center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

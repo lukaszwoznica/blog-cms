@@ -79,38 +79,37 @@
                             </select>
                             <label for="selectCategory">Category</label>
                         </div>
-                        <div class="row">
-                            <div class="file-field input-field col l8 s12">
-                                <div class="btn">
-                                    <span>Post image</span>
-                                    <input type="file" name="image" accept="image/*">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
-                                </div>
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Post image</span>
+                                <input type="file" name="image" accept="image/*">
                             </div>
-                            <div class="input-field col l4 s12">
-                                <p>
-                                    <label for="radioDraft">
-                                        <input type="radio" name="is_published" id="radioDraft" value="0"
-                                                {% if post.isPublished == false %}
-                                        checked
-                                                {% endif %}>
-                                        <span>Save as draft</span>
-                                    </label>
-                                </p>
-                                <p>
-                                    <label for="radioPublish">
-                                        <input type="radio" name="is_published" id="radioPublish" value="1"
-                                                {% if post.isPublished %}
-                                        checked
-                                                {% endif %}>
-                                        <span>Publish</span>
-                                    </label>
-                                </p>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                                <span class="helper-text" data-error="wrong" data-success="right">
+                                    Recommended resolution: 1920x1080px, Max size: 8MB
+                                </span>
                             </div>
-
-
+                        </div>
+                        <div class="center-content" style="margin-top: 2.5rem">
+                            <p>
+                                <label for="radioDraft">
+                                    <input type="radio" name="is_published" id="radioDraft" value="0"
+                                            {% if post.isPublished == false %}
+                                                checked
+                                            {% endif %}>
+                                    <span>Save as draft</span>
+                                </label>
+                            </p>
+                            <p style="margin-left: 1rem">
+                                <label for="radioPublish">
+                                    <input type="radio" name="is_published" id="radioPublish" value="1"
+                                            {% if post.isPublished %}
+                                                checked
+                                            {% endif %}>
+                                    <span>Publish</span>
+                                </label>
+                            </p>
                         </div>
                     </div>
                     <div class="card-action">
@@ -130,7 +129,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script src="/assets/js/quillEditor.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const form = document.querySelector('#formNewPost');
             form.onsubmit = function () {
                 const about = document.querySelector('input[name=content]');

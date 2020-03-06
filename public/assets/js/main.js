@@ -11,12 +11,11 @@ $(document).ready(function () {
         coverTrigger: false
     });
 
-    $('.alert > button').on('click', function(){
+    $('.alert > button').on('click', function () {
         $(this).closest('div.alert').fadeOut('slow');
-    })
+    });
 
     $('select').formSelect();
-
     $('.tooltipped').tooltip();
-
+    $('.materialboxed').materialbox();
 });

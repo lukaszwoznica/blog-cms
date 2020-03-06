@@ -162,11 +162,13 @@ class Post extends Model
     public function update(array $post_data): bool
     {
         $this->title = trim($post_data['title']);
+        $this->introduction = $post_data['introduction'];
         $this->content = $post_data['content'];
         $this->category_id = $post_data['category_id'];
         $this->last_modified = date('Y-m-d H:i:s');
         $this->is_published = $post_data['is_published'];
         $this->url_slug = $post_data['url_slug'];
+        $this->image = $post_data['image'];
 
         $this->validate();
 
@@ -179,7 +181,8 @@ class Post extends Model
                     category_id = :category_id,
                     last_modified = :last_modified,
                     is_published = :is_published,
-                    url_slug = :url_slug
+                    url_slug = :url_slug,
+                    image = :image
                     WHERE id = :id';
 
             $stmt = $db->prepare($sql);
@@ -190,6 +193,7 @@ class Post extends Model
             $stmt->bindValue(':last_modified', $this->last_modified, PDO::PARAM_STR);
             $stmt->bindValue(':is_published', $this->is_published, PDO::PARAM_BOOL);
             $stmt->bindValue(':url_slug', $this->url_slug, PDO::PARAM_STR);
+            $stmt->bindValue(':image', $this->image, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
             return $stmt->execute();
