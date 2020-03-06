@@ -9,12 +9,14 @@ use App\FileUploader;
 use App\Flash;
 use App\Models\Category;
 use App\Models\Post;
+use App\Paginator;
 use Core\View;
 
 class Posts extends Admin
 {
     private $post;
     private $file_uploader;
+    private $page;
 
     public function __construct(array $route_params)
     {
@@ -23,6 +25,11 @@ class Posts extends Admin
         if (isset($route_params['id'])) {
             $this->post = Post::findByID($route_params['id']);
         }
+        if (isset($route_params['page'])) {
+            $this->page = (int)$route_params['page'];
+        } else {
+            $this->page = 1;
+        }
         $allowed_types = ['image/gif', 'image/png', 'image/jpeg'];
         $upload_path = '/public/uploads/posts-images/';
         $this->file_uploader = new FileUploader($upload_path, 8388608, $allowed_types);
@@ -30,10 +37,14 @@ class Posts extends Admin
 
     public function indexAction(): void
     {
-        $posts = Post::getAllPosts();
+        $paginator = new Paginator($this->page, 10, Post::getTotal(false));
+
+        $posts = Post::getAllPosts(true, $paginator->getOffset(), $paginator->getLimit());
 
         View::renderTemplate('Admin/Posts/index.html', [
-            'posts' => $posts
+            'posts' => $posts,
+            'page' => $this->page,
+            'total_pages' => $paginator->getTotalPages()
         ]);
     }
 
