@@ -37,15 +37,20 @@ class Posts extends Admin
 
     public function indexAction(): void
     {
-        $paginator = new Paginator($this->page, 10, Post::getTotal(false));
+        $context_data = [];
 
-        $posts = Post::getAllPosts(true, $paginator->getOffset(), $paginator->getLimit());
+        if (isset($_GET['search_query'])) {
+            $posts = Post::getAllPostsContainsFilter($_GET['search_query']);
+            $context_data['search_query'] = $_GET['search_query'];
+        } else {
+            $paginator = new Paginator($this->page, 10, Post::getTotal(false));
+            $posts = Post::getAllPosts(true, $paginator->getOffset(), $paginator->getLimit());
+            $context_data['page'] = $this->page;
+            $context_data['total_pages'] = $paginator->getTotalPages();
+        }
+        $context_data['posts'] = $posts;
 
-        View::renderTemplate('Admin/Posts/index.html', [
-            'posts' => $posts,
-            'page' => $this->page,
-            'total_pages' => $paginator->getTotalPages()
-        ]);
+        View::renderTemplate('Admin/Posts/index.html', $context_data);
     }
 
     public function newAction(): void
@@ -199,5 +204,4 @@ class Posts extends Admin
             echo json_encode($slug_valid);
         }
     }
-
 }

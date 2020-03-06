@@ -8,8 +8,7 @@ use PDO;
 /**
  * Post Model
  */
-
-class Post extends Model
+class Post  extends Model
 {
     private $id;
     private $title;
@@ -48,12 +47,12 @@ class Post extends Model
     {
         switch ($name) {
             case 'username':
-                if(empty($this->author_name)){
+                if (empty($this->author_name)) {
                     $this->author_name = $value;
                 }
                 break;
             case 'cat_name':
-                if(empty($this->category_name)){
+                if (empty($this->category_name)) {
                     $this->category_name = $value;
                 }
                 break;
@@ -95,7 +94,7 @@ class Post extends Model
         if (strlen($this->url_slug) < 3 || strlen($this->url_slug) > 255) {
             $this->validation_errors[] = 'Slug must be between 3 and 25 characters';
         }
-        if (preg_match("/^[a-z0-9-]+$/",  $this->url_slug) === 0) {
+        if (preg_match("/^[a-z0-9-]+$/", $this->url_slug) === 0) {
             $this->validation_errors[] = 'Slug can only contain alphanumeric characters (lowercase letters a-z, numbers 0-9) and dash';
         }
         if (static::slugExist($this->url_slug, $this->id ?? null)) {
@@ -237,10 +236,30 @@ class Post extends Model
     public static function slugExist(string $slug, int $ignore_id = null): bool
     {
         $post = static::findBySlug($slug);
-        if ($post && $post->id != $ignore_id){
+        if ($post && $post->id != $ignore_id) {
             return true;
         }
         return false;
+    }
+
+    public static function getAllPostsContainsFilter(string $filter): array
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT posts.*, users.username, categories.name cat_name
+                FROM posts 
+                INNER JOIN users ON user_id = users.id
+                LEFT OUTER JOIN categories ON category_id = categories.id
+                WHERE title LIKE :filter
+	            OR users.username LIKE :filter
+	            OR categories.name LIKE :filter';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':filter', "%$filter%", PDO::PARAM_STR);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
     }
 
     public function getId(): ?int
