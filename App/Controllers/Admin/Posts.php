@@ -55,7 +55,7 @@ class Posts extends Admin
 
     public function newAction(): void
     {
-        $categories = Category::getAllCategories();
+        $categories = Category::getTree();
 
         View::renderTemplate('Admin/Posts/new.html', [
             'categories' => $categories
@@ -109,7 +109,7 @@ class Posts extends Admin
 
     public function editAction(): void
     {
-        $categories = Category::getAllCategories();
+        $categories = Category::getTree();
 
         if ($this->post) {
             View::renderTemplate('Admin/Posts/edit.html', [

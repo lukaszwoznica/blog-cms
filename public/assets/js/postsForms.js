@@ -15,11 +15,7 @@ function slugify(string) {
 
 function toggleEdit() {
     edit_icon.classList.toggle('active');
-    if (slugInput.readOnly === true) {
-        slugInput.readOnly = false;
-    } else {
-        slugInput.readOnly = true
-    }
+    slugInput.readOnly = slugInput.readOnly !== true;
 }
 
 const titleToSlug = function (evt) {
@@ -27,71 +23,70 @@ const titleToSlug = function (evt) {
 };
 
 const titleInput = document.getElementById('inputTitle');
+const slugInput = document.getElementById('inputSlug');
 titleInput.addEventListener('input', titleToSlug, false);
 
-const slugInput = document.getElementById('inputSlug');
 const edit_icon = document.getElementById('slugEditIcon');
-
 edit_icon.addEventListener('click', toggleEdit);
 
+$(document).ready(function () {
+    $('textarea#textareaIntroduction').characterCounter();
 
-$('#formNewPost').validate({
-    rules: {
-        title: {
-            required: true,
-            minlength: 3,
-            maxlength: 255,
-        },
-        url_slug: {
-            minlength: 3,
-            maxlength: 255,
-            required: true,
-            validSlug: true,
-            remote: '/admin/posts/validate-slug'
-        },
-        introduction: {
-            maxlength: 255
-        }
-    },
-    messages: {
-        url_slug: {
-            remote: 'URL slug is already taken'
-        },
-    },
-    errorElement: 'div',
-    errorClass: 'invalid'
-});
-
-$('#formEditPost').validate({
-    rules: {
-        title: {
-            required: true,
-            minlength: 3,
-            maxlength: 255,
-        },
-        url_slug: {
-            minlength: 3,
-            maxlength: 255,
-            required: true,
-            validSlug: true,
-            remote: {
-                url: '/admin/posts/validate-slug',
-                data: {
-                    ignore_id: function () {
-                        return post_id;
-                    }
-                }
+    $('#formNewPost').validate({
+        rules: {
+            title: {
+                required: true,
+                minlength: 3,
+                maxlength: 255,
+            },
+            url_slug: {
+                minlength: 3,
+                maxlength: 255,
+                required: true,
+                validSlug: true,
+                remote: '/admin/posts/validate-slug'
+            },
+            introduction: {
+                maxlength: 255
             }
         },
-    },
-    messages: {
-        url_slug: {
-            remote: 'URL slug is already taken'
+        messages: {
+            url_slug: {
+                remote: 'URL slug is already taken'
+            },
         },
-    },
-    errorElement: 'div',
-    errorClass: 'invalid'
+        errorElement: 'div',
+        errorClass: 'invalid'
+    });
+
+    $('#formEditPost').validate({
+        rules: {
+            title: {
+                required: true,
+                minlength: 3,
+                maxlength: 255,
+            },
+            url_slug: {
+                minlength: 3,
+                maxlength: 255,
+                required: true,
+                validSlug: true,
+                remote: {
+                    url: '/admin/posts/validate-slug',
+                    data: {
+                        ignore_id: function () {
+                            return post_id;
+                        }
+                    }
+                }
+            },
+        },
+        messages: {
+            url_slug: {
+                remote: 'URL slug is already taken'
+            },
+        },
+        errorElement: 'div',
+        errorClass: 'invalid'
+    });
 });
-
-
-

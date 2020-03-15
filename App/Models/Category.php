@@ -11,7 +11,11 @@ class Category extends Model
     private $id;
     private $name;
     private $description;
+    private $parent_id;
+    private $subcategories = [];
     private $validation_errors = [];
+    private $descendant_subcategories = [];
+    private $level;
 
     public function __construct(array $category_data = [])
     {
@@ -24,14 +28,15 @@ class Category extends Model
     {
         $this->validate();
 
-        if (empty($this->validation_errors)){
+        if (empty($this->validation_errors)) {
             $db = self::getDatabase();
-            $sql = 'INSERT INTO categories (name, description)
-                VALUES (:name, :description)';
+            $sql = 'INSERT INTO categories (name, description, parent_id)
+                VALUES (:name, :description, :parent_id)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':name', trim($this->name), PDO::PARAM_STR);
             $stmt->bindValue('description', $this->description, PDO::PARAM_STR);
+            $stmt->bindValue(':parent_id', $this->parent_id, PDO::PARAM_INT);
 
             return $stmt->execute();
         }
@@ -95,6 +100,7 @@ class Category extends Model
     {
         $this->name = trim($category_data['name']);
         $this->description = $category_data['description'];
+        $this->parent_id = $category_data['parent_id'];
 
         $this->validate();
 
@@ -102,13 +108,15 @@ class Category extends Model
             $db = static::getDatabase();
             $sql = 'UPDATE categories
                     SET name = :name,
-                    description = :description                    
+                    description = :description,
+                    parent_id = :parent_id
                     WHERE id = :id';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
             $stmt->bindValue(':description', $this->description, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(':parent_id', $this->parent_id, PDO::PARAM_INT);
 
             return $stmt->execute();
         }
@@ -116,9 +124,39 @@ class Category extends Model
         return false;
     }
 
-    /*
-     * Getters
-     */
+    public static function getTree(): array
+    {
+        $children = [];
+        $categories = static::getAllCategories();
+
+        foreach ($categories as $category) {
+            $children[$category->getParentId()][] = $category;
+        }
+
+        foreach ($categories as $category) {
+            if (isset($children[$category->getId()])) {
+                $category->setSubcategories($children[$category->getId()]);
+            }
+        }
+
+        return $children[null];
+    }
+
+    public function getAllDescendantSubcategories()
+    {
+        $this->preorderTraversal($this, 0);
+
+        return $this->descendant_subcategories;
+    }
+
+    private function preorderTraversal(Category $node, int $level): void
+    {
+        foreach ($node->getSubcategories() as $subcategory) {
+            $subcategory->setLevel($level);
+            $this->descendant_subcategories[] = $subcategory;
+            $this->preorderTraversal($subcategory, $level + 1);
+        }
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +176,31 @@ class Category extends Model
     public function getValidationErrors(): array
     {
         return $this->validation_errors;
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->parent_id;
+    }
+
+    public function getSubcategories(): array
+    {
+        return $this->subcategories;
+    }
+
+    public function setSubcategories(array $subcategories): void
+    {
+        $this->subcategories = $subcategories;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel($level): void
+    {
+        $this->level = $level;
     }
 
 }

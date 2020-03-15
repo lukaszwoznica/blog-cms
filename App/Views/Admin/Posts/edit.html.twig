@@ -58,11 +58,22 @@
                             <select id="selectCategory" name="category_id">
                                 <option value="0">Uncategorized</option>
                                 {% for category in categories %}
-                                    <option value="{{ category.getID }}"
-                                        {% if category.getID == post.getCategoryId %}
-                                            selected
-                                        {% endif %}>{{ category.getName }}
+                                    <option value="{{ category.getId }}"
+                                            {% if category.getId == post.getCategoryId %}
+                                                selected
+                                            {% endif %}>{{ category.getName }}
                                     </option>
+                                    {% for subcategory in category.getAllDescendantSubcategories %}
+                                        <option value="{{ subcategory.getId }}"
+                                                {% if subcategory.getId == post.getCategoryId %}
+                                                     selected
+                                                {% endif %}>
+                                            {%- for i in range(0, subcategory.getLevel) -%}
+                                                &emsp;
+                                            {%- endfor -%}
+                                            {{ subcategory.getName }}
+                                        </option>
+                                    {% endfor %}
                                 {% endfor %}
                             </select>
                             <label for="selectCategory">Category</label>
@@ -92,18 +103,18 @@
                             <p>
                                 <label for="radioDraft">
                                     <input type="radio" name="is_published" id="radioDraft" value="0"
-                                        {% if post.isPublished == false %}
-                                            checked
-                                        {% endif %}>
+                                            {% if post.isPublished == false %}
+                                                checked
+                                            {% endif %}>
                                     <span>Draft</span>
                                 </label>
                             </p>
                             <p style="margin-left: 1rem">
                                 <label for="radioPublish">
                                     <input type="radio" name="is_published" id="radioPublish" value="1"
-                                        {% if post.isPublished %}
-                                            checked
-                                        {% endif %}>
+                                            {% if post.isPublished %}
+                                                checked
+                                            {% endif %}>
                                     <span>Published</span>
                                 </label>
                             </p>
@@ -126,6 +137,7 @@
     <script src="/assets/js/postsForms.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script src="/assets/js/quillEditor.js"></script>
+    <script src="/assets/js/categoriesSelectInput.js"></script>
     <script>
         $(document).ready(function () {
             quill.clipboard.dangerouslyPasteHTML('{{ post.getContent|raw|spaceless }}');
@@ -135,8 +147,6 @@
                 const about = document.querySelector('input[name=content]');
                 about.value = quill.root.innerHTML
             };
-
-            $('textarea#textareaIntroduction').characterCounter();
         });
     </script>
 {% endblock %}

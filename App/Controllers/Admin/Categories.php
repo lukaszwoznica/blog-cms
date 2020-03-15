@@ -4,17 +4,22 @@
 namespace App\Controllers\Admin;
 
 
+
 use App\Flash;
 use App\Models\Category;
+use App\TreePreorderTraversal;
 use Core\View;
 
 class Categories extends Admin
 {
     private $category;
+    private $categories_tree;
 
     public function __construct(array $route_params)
     {
         parent::__construct($route_params);
+
+        $this->categories_tree = Category::getTree();
 
         if (isset($route_params['id'])) {
             $this->category = Category::findByID($route_params['id']);
@@ -23,29 +28,35 @@ class Categories extends Admin
 
     public function indexAction(): void
     {
-        $categories = Category::getAllCategories();
-
         View::renderTemplate('Admin/Categories/index.html', [
-            'categories' => $categories
+            'categories' => $this->categories_tree
         ]);
     }
 
     public function newAction(): void
     {
-        View::renderTemplate('Admin/Categories/new.html');
+        View::renderTemplate('Admin/Categories/new.html', [
+            'categories' => $this->categories_tree
+        ]);
     }
 
     public function createAction(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $category = new Category($_POST);
+            $post_data = $_POST;
+            if ($post_data['parent_id'] == 0) {
+                $post_data['parent_id'] = null;
+            }
+
+            $category = new Category($post_data);
 
             if ($category->saveToDatabase()) {
                 Flash::addMessage('Category has been successfully added', Flash::SUCCESS);
                 $this->redirectTo('/admin/categories');
             } else {
                 View::renderTemplate('Admin/Categories/new.html', [
-                    'category' => $category
+                    'category' => $category,
+                    'categories' => $this->categories_tree
                 ]);
             }
         } else {
@@ -72,7 +83,8 @@ class Categories extends Admin
     {
         if ($this->category){
             View::renderTemplate('Admin/Categories/edit.html', [
-                'category' => $this->category
+                'category' => $this->category,
+                'categories' => $this->categories_tree
             ]);
         } else {
             Flash::addMessage('Category with given id does not exist', Flash::WARNING);
@@ -84,12 +96,18 @@ class Categories extends Admin
     public function updateAction(): void
     {
         if ($this->category && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->category->update($_POST)) {
+            $post_data = $_POST;
+            if($post_data['parent_id'] == 0) {
+                $post_data['parent_id'] = null;
+            }
+
+            if ($this->category->update($post_data)) {
                 Flash::addMessage('Category has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/categories');
             } else {
                 View::renderTemplate('Admin/Categories/edit.html', [
-                    'category' => $this->category
+                    'category' => $this->category,
+                    'categories' => $this->categories_tree
                 ]);
             }
         } else {

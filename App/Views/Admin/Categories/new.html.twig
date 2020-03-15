@@ -24,19 +24,39 @@
             <div class="card z-depth-2">
                 <form action="/admin/categories/create" method="post">
                     <div class="card-content">
-                        <div class="row">
-                            <div class="input-field col m6 s12">
-                                <label for="inputName">Name</label>
-                                <input type="text" id="inputName" name="name" value="{{ category.getName }}">
-                            </div>
+                        <div class="input-field">
+                            <label for="inputName">Name</label>
+                            <input type="text" id="inputName" name="name" value="{{ category.getName }}">
                         </div>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <label for="textareaDescription">Description</label>
-                                <textarea class="materialize-textarea" name="description" id="textareaDescription"
-                                          rows="10"
-                                          cols="30">{{ category.getDescription }}</textarea>
-                            </div>
+                        <div class="input-field">
+                            <label for="textareaDescription">Description</label>
+                            <textarea class="materialize-textarea" name="description" id="textareaDescription"
+                                      rows="10"
+                                      cols="30">{{ category.getDescription }}</textarea>
+                        </div>
+                        <div class="input-field">
+                            <select id="selectCategory" name="parent_id">
+                                <option value="0">None</option>
+                                {% for parent_category in categories %}
+                                    <option value="{{ parent_category.getId }}"
+                                            {% if parent_category.getId == category.getParentId %}
+                                                selected
+                                            {% endif %}>{{ parent_category.getName }}
+                                    </option>
+                                    {% for subcategory in parent_category.getAllDescendantSubcategories %}
+                                        <option value="{{ subcategory.getId }}"
+                                                {% if subcategory.getId == category.getParentId %}
+                                                    selected
+                                                {% endif %}>
+                                            {%- for i in range(0, subcategory.getLevel) -%}
+                                                &emsp;
+                                            {%- endfor -%}
+                                            {{ subcategory.getName }}
+                                        </option>
+                                    {% endfor %}
+                                {% endfor %}
+                            </select>
+                            <label for="selectCategory">Parent category</label>
                         </div>
                     </div>
                     <div class="card-action">
@@ -48,4 +68,8 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/categoriesSelectInput.js"></script>
 {% endblock %}

@@ -12,33 +12,54 @@
     </div>
 
     <div class="card-panel">
-    <table class="responsive-table highlight serial">
-        <thead>
+        <table class="responsive-table highlight serial">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td></td>
-                <td>{{ category.getName }}</td>
-                <td>{{ category.getDescription }}</td>
-                <td>
-                    <a href="/admin/categories/{{ category.getId }}/edit">
-                        <i class="material-icons blue-text text-darken-2">edit</i>
-                    </a>
-                    <a href="/admin/categories/{{ category.getId }}/destroy"
-                       onclick="return deleteConfirm('category')">
-                        <i class="material-icons red-text text-darken-2">delete_forever</i>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td></td>
+                    <td>{{ category.getName }}</td>
+                    <td>{{ category.getDescription }}</td>
+                    <td>
+                        <a href="/admin/categories/{{ category.getId }}/edit">
+                            <i class="material-icons blue-text text-darken-2">edit</i>
+                        </a>
+                        <a href="/admin/categories/{{ category.getId }}/destroy"
+                           onclick="return deleteConfirm('category')">
+                            <i class="material-icons red-text text-darken-2">delete_forever</i>
+                        </a>
+                    </td>
+                </tr>
+                {% for subcategory in category.getAllDescendantSubcategories %}
+                    <tr style="margin-left: {{ subcategory.getLevel }}rem">
+                        <td></td>
+                        <td>
+                            {%- for i in range(0, subcategory.getLevel) -%}
+                                &emsp;
+                            {%- endfor -%}
+                            {{ subcategory.getName }}
+                        </td>
+                        <td>{{ subcategory.getDescription }}</td>
+                        <td>
+                            <a href="/admin/categories/{{ subcategory.getId }}/edit">
+                                <i class="material-icons blue-text text-darken-2">edit</i>
+                            </a>
+                            <a href="/admin/categories/{{ subcategory.getId }}/destroy"
+                               onclick="return deleteConfirm('category')">
+                                <i class="material-icons red-text text-darken-2">delete_forever</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
