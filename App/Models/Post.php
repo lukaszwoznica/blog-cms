@@ -8,7 +8,7 @@ use PDO;
 /**
  * Post Model
  */
-class Post  extends Model
+class Post extends Model
 {
     private $id;
     private $title;
@@ -22,19 +22,8 @@ class Post  extends Model
     private $url_slug;
     private $image;
     private $validation_errors = [];
-
-    // Additional properties for SQL queries with JOIN
-
-    /**
-     * Username of post author
-     */
     private $author_name;
-
-    /**
-     * Post category name
-     */
     private $category_name;
-
 
     public function __construct(array $post_data = [])
     {
@@ -107,9 +96,11 @@ class Post  extends Model
         }
     }
 
-    public static function getAllPosts(bool $getDrafts = true, int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX): array
+    public static function getAllPosts(bool $getDrafts = true, int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX,
+                                       array $categories = []): array
     {
         $db = static::getDatabase();
+
         $sql = "SELECT posts.*, users.username, categories.name cat_name
                 FROM posts 
                 INNER JOIN users ON user_id = users.id
@@ -117,11 +108,33 @@ class Post  extends Model
         if (!$getDrafts) {
             $sql .= "\nWHERE is_published = 1";
         }
+        if (!empty($categories)) {
+            if (!$getDrafts) {
+                $sql .= "\nAND category_id IN (";
+            } else {
+                $sql .= "\nWHERE category_id IN (";
+            }
+            for ($i = 0; $i < sizeof($categories); ++$i) {
+                $sql .= "?, ";
+            }
+            $sql = substr($sql, 0, -2);
+            $sql .= ")";
+        }
         $sql .= "\nORDER BY create_time DESC 
                  LIMIT $limit_offset, $limit_row_num";
 
-        $stmt = $db->query($sql);
+        $stmt = $db->prepare($sql);
+
+        if (!empty($categories)) {
+            $i = 1;
+            foreach ($categories as $category_id) {
+                $stmt->bindValue($i, $category_id, PDO::PARAM_INT);
+                ++$i;
+            }
+        }
+
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
         $result = $stmt->fetchAll();
 
         return $result;

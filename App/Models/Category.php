@@ -144,18 +144,11 @@ class Category extends Model
 
     public function getAllDescendantSubcategories()
     {
-        $this->preorderTraversal($this, 0);
+        if (empty($this->descendant_subcategories)) {
+            $this->preorderTraversal($this, 0);
+        }
 
         return $this->descendant_subcategories;
-    }
-
-    private function preorderTraversal(Category $node, int $level): void
-    {
-        foreach ($node->getSubcategories() as $subcategory) {
-            $subcategory->setLevel($level);
-            $this->descendant_subcategories[] = $subcategory;
-            $this->preorderTraversal($subcategory, $level + 1);
-        }
     }
 
     public function getId(): ?int
@@ -203,4 +196,12 @@ class Category extends Model
         $this->level = $level;
     }
 
+    private function preorderTraversal(Category $node, int $level): void
+    {
+        foreach ($node->getSubcategories() as $subcategory) {
+            $subcategory->setLevel($level);
+            $this->descendant_subcategories[] = $subcategory;
+            $this->preorderTraversal($subcategory, $level + 1);
+        }
+    }
 }

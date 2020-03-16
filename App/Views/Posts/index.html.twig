@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <h2>All posts</h2>
+    <h2>{{ category_name |default("All posts") }}</h2>
 
     {% for post in posts %}
 
@@ -47,12 +47,25 @@
             </div>
         {% endif %}
 
+    {% else %}
+        <div class="row center-align" style="padding-top: 2rem">
+            <div class="col s12">
+                <div class="card-panel grey lighten-2 hoverable">
+                    <div class="row">
+                        <i class="large material-icons ">info_outline</i>
+                    </div>
+                    <span class="">
+                        There are no posts in this category.
+                    </span>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
     <div class="row center">
         {% include 'inc/pagination.html.twig' with {
             currentPage: page,
-            paginationPath: "/posts/",
+            paginationPath: path,
             lastPage: total_pages,
             showAlwaysFirstAndLast: true
         } only %}

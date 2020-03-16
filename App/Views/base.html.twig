@@ -24,6 +24,11 @@
                     <li><a href="/" class="brand-logo">MyBlogLogo</a></li>
                     <ul class="hide-on-med-and-down">
                         <li><a href="/">Home</a></li>
+                        <li>
+                            <a class="dropdown-trigger" href="" data-target="categoriesDropdown">
+                                Categories<i class="material-icons right">arrow_drop_down</i>
+                            </a>
+                        </li>
                         <li><a href="">Contact</a></li>
                     </ul>
                 </ul>
@@ -34,14 +39,53 @@
                             class="material-icons">menu</i></a>
             </div>
         </nav>
+        <ul id="categoriesDropdown" class="dropdown-content">
+            {% for cat in categories %}
+                <li class="text-bold"><a href="/categories/{{ cat.getId }}">{{ cat.name }}</a></li>
+                {% for subcategory in cat.getAllDescendantSubcategories %}
+                    <li>
+                        <a href="/categories/{{ subcategory.getId }}">
+                            {%- for i in range(0, subcategory.getLevel) -%}
+                                &emsp;
+                            {%- endfor -%}
+                            {{ subcategory.getName }}
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="divider"></li>
+            {% endfor %}
+        </ul>
     </div>
     <nav class="sidenav mobile-nav" id="mobile-demo">
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="">Contact</a></li>
+            <li><a class="modal-trigger" href="#categoriesModal">Categories</a></li>
+            <li class="divider"></li>
             {% include('Inc/user-nav.html.twig') %}
         </ul>
     </nav>
+    <div id="categoriesModal" class="modal">
+        <button class="modal-close btn-flat">
+            <i class="material-icons">close</i>
+        </button>
+        <div class="modal-content">
+            <h4 class="center-align">Categories</h4>
+            <div class="collection">
+                {% for cat in categories %}
+                    <a class="collection-item text-bold" href="/categories/{{ cat.getId }}">{{ cat.name }}</a>
+                    {% for subcategory in cat.getAllDescendantSubcategories %}
+                        <a class="collection-item" href="/categories/{{ subcategory.getId }}">
+                            {%- for i in range(0, subcategory.getLevel) -%}
+                                &emsp;
+                            {%- endfor -%}
+                            {{ subcategory.getName }}
+                        </a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </header>
 
 <main>
@@ -79,7 +123,6 @@
         </div>
     </div>
 </footer>
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

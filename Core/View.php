@@ -4,6 +4,7 @@ namespace Core;
 
 use App\Auth;
 use App\Flash;
+use App\Models\Category;
 use Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -49,6 +50,7 @@ class View
             // Twig globals
             $twig->addGlobal('current_user', Auth::getUser());
             $twig->addGlobal('flash_messages', Flash::getMessages());
+            $twig->addGlobal('categories', Category::getTree());
         }
 
         try {

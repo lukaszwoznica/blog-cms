@@ -38,7 +38,7 @@
                     </td>
                 </tr>
                 {% for subcategory in category.getAllDescendantSubcategories %}
-                    <tr style="margin-left: {{ subcategory.getLevel }}rem">
+                    <tr>
                         <td></td>
                         <td>
                             {%- for i in range(0, subcategory.getLevel) -%}

@@ -42,7 +42,8 @@ class Posts extends Controller
         View::renderTemplate('Posts/index.html', [
             'posts' => $posts,
             'page' => $this->page,
-            'total_pages' => $paginator->getTotalPages()
+            'total_pages' => $paginator->getTotalPages(),
+            'path' => '/posts/'
         ]);
     }
 

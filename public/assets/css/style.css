@@ -42,6 +42,14 @@ nav .brand-logo {
     padding: 0 1rem;
 }
 
+#categoriesDropdown {
+    overflow-y: scroll;
+    white-space: nowrap;
+    width: auto !important;
+    max-height: 350px;
+
+}
+
 .mobile-nav {
     background-color: #212121;
 }
@@ -52,6 +60,14 @@ nav .brand-logo {
 
 .mobile-nav li > a:hover {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+#categoriesModal .modal-content {
+    padding-top: 0;
+}
+
+#categoriesModal > .modal-close {
+    margin-top: 0.2rem;
 }
 
 /*
@@ -241,4 +257,8 @@ table.serial td:first-child:before {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.text-bold {
+    font-weight: 700;
 }
