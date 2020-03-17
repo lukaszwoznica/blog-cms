@@ -7,7 +7,6 @@ namespace App\Controllers\Admin;
 use App\Auth;
 use App\FileUploader;
 use App\Flash;
-use App\Models\Category;
 use App\Models\Post;
 use App\Paginator;
 use Core\View;
@@ -55,11 +54,7 @@ class Posts extends Admin
 
     public function newAction(): void
     {
-        $categories = Category::getTree();
-
-        View::renderTemplate('Admin/Posts/new.html', [
-            'categories' => $categories
-        ]);
+        View::renderTemplate('Admin/Posts/new.html');
     }
 
     public function createAction(): void
@@ -95,11 +90,9 @@ class Posts extends Admin
                 if (!empty($img_upload_errors)) {
                     $post->setValidationErrors(array_merge($post->getValidationErrors(), $img_upload_errors));
                 }
-                $categories = Category::getAllCategories();
 
                 View::renderTemplate('Admin/Posts/new.html', [
-                    'post' => $post,
-                    'categories' => $categories
+                    'post' => $post
                 ]);
             }
         } else {
@@ -109,12 +102,9 @@ class Posts extends Admin
 
     public function editAction(): void
     {
-        $categories = Category::getTree();
-
         if ($this->post) {
             View::renderTemplate('Admin/Posts/edit.html', [
-                'post' => $this->post,
-                'categories' => $categories
+                'post' => $this->post
             ]);
         } else {
             Flash::addMessage('Post with given id does not exist', Flash::WARNING);
@@ -162,11 +152,9 @@ class Posts extends Admin
                 if (!empty($img_upload_errors)) {
                     $this->post->setValidationErrors(array_merge($this->post->getValidationErrors(), $img_upload_errors));
                 }
-                $categories = Category::getAllCategories();
 
                 View::renderTemplate('Admin/Posts/edit.html', [
-                    'post' => $this->post,
-                    'categories' => $categories
+                    'post' => $this->post
                 ]);
             }
         } else {

@@ -12,13 +12,10 @@ use Core\View;
 class Categories extends Admin
 {
     private $category;
-    private $categories_tree;
 
     public function __construct(array $route_params)
     {
         parent::__construct($route_params);
-
-        $this->categories_tree = Category::getTree();
 
         if (isset($route_params['id'])) {
             $this->category = Category::findByID($route_params['id']);
@@ -27,16 +24,12 @@ class Categories extends Admin
 
     public function indexAction(): void
     {
-        View::renderTemplate('Admin/Categories/index.html', [
-            'categories' => $this->categories_tree
-        ]);
+        View::renderTemplate('Admin/Categories/index.html');
     }
 
     public function newAction(): void
     {
-        View::renderTemplate('Admin/Categories/new.html', [
-            'categories' => $this->categories_tree
-        ]);
+        View::renderTemplate('Admin/Categories/new.html');
     }
 
     public function createAction(): void
@@ -54,8 +47,7 @@ class Categories extends Admin
                 $this->redirectTo('/admin/categories');
             } else {
                 View::renderTemplate('Admin/Categories/new.html', [
-                    'category' => $category,
-                    'categories' => $this->categories_tree
+                    'category' => $category
                 ]);
             }
         } else {
@@ -82,8 +74,7 @@ class Categories extends Admin
     {
         if ($this->category){
             View::renderTemplate('Admin/Categories/edit.html', [
-                'category' => $this->category,
-                'categories' => $this->categories_tree
+                'category' => $this->category
             ]);
         } else {
             Flash::addMessage('Category with given id does not exist', Flash::WARNING);
@@ -105,8 +96,7 @@ class Categories extends Admin
                 $this->redirectTo('/admin/categories');
             } else {
                 View::renderTemplate('Admin/Categories/edit.html', [
-                    'category' => $this->category,
-                    'categories' => $this->categories_tree
+                    'category' => $this->category
                 ]);
             }
         } else {
