@@ -2,13 +2,18 @@
 
 {% block title %}Home{% endblock %}
 
+{% block styles %}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
     <section class="section">
         <div class="row">
             <div class="col s12">
                 {% for post in posts|slice(0,1) %}
                     <article>
-                        <div class="card card-post main-post center-align z-depth-2 hoverable">
+                        <div class="card card-post main-post center-align z-depth-2 hoverable"
+                             data-aos="fade" data-aos-duration="1000" data-aos-easing="ease-in-out">
                             <div class="card-image">
                                 <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
                                      alt="Post image">
@@ -46,14 +51,17 @@
     <section class="section">
 
         {% for post in posts|slice(1) %}
+            {% set data_aos = 'fade-left' %}
 
             {% if loop.index0 is divisible by(2) %}
+                {% set data_aos = "fade-right" %}
                 <div class="row">
             {% endif %}
 
             <div class="col m6">
                 <article>
-                    <div class="card card-post center-align z-depth-2 hoverable">
+                    <div class="card card-post center-align z-depth-2 hoverable" data-aos="{{ data_aos }}"
+                         data-aos-duration="800" data-aos-easing="ease-in-out">
                         <div class="card-image">
                             <img src="{{ post.getImage | default("/assets/img/post-default.png") }}" alt="Post image">
                         </div>
@@ -93,4 +101,11 @@
         <a href="/posts" class="waves-effect waves-light btn-large">See all posts</a>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 {% endblock %}
