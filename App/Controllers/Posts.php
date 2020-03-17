@@ -43,7 +43,7 @@ class Posts extends Controller
             'posts' => $posts,
             'page' => $this->page,
             'total_pages' => $paginator->getTotalPages(),
-            'path' => '/posts/'
+            'path' => '/posts/page/'
         ]);
     }
 

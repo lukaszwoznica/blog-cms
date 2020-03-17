@@ -22,11 +22,17 @@
     <div class="row">
         <div class="col m10 s12 offset-m1">
             <div class="card z-depth-2">
-                <form action="/admin/categories/create" method="post">
+                <form id="formNewCategory" action="/admin/categories/create" method="post">
                     <div class="card-content">
                         <div class="input-field">
                             <label for="inputName">Name</label>
                             <input type="text" id="inputName" name="name" value="{{ category.getName }}">
+                        </div>
+                        <div class="input-field">
+                            <i class="material-icons slug-edit-icon" id="slugEditIcon">edit</i>
+                            <label for="inputSlug">Slug</label>
+                            <input readonly type="text" id="inputSlug" name="url_slug" placeholder="Slug"
+                                   value="{{ category.getUrlSlug }}" required>
                         </div>
                         <div class="input-field">
                             <label for="textareaDescription">Description</label>
@@ -72,4 +78,7 @@
 
 {% block scripts %}
     <script src="/assets/js/categoriesSelectInput.js"></script>
+    <script src="/assets/js/slugGenerator.js"></script>
+    <script src="/assets/js/customValidationMethods.js"></script>
+    <script src="/assets/js/categoriesForms.js"></script>
 {% endblock %}

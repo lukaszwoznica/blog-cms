@@ -74,12 +74,10 @@ class Post extends Model
 
     public function validate(): void
     {
-        // Title
         if (strlen(trim($this->title)) < 3 || strlen(trim($this->title)) > 255) {
             $this->validation_errors[] = 'Post name must be between 3 and 255 characters';
         }
 
-        // Slug
         if (strlen($this->url_slug) < 3 || strlen($this->url_slug) > 255) {
             $this->validation_errors[] = 'Slug must be between 3 and 25 characters';
         }
@@ -90,7 +88,6 @@ class Post extends Model
             $this->validation_errors[] = 'URL slug is already taken';
         }
 
-        // Introduction
         if (strlen($this->introduction) > 255) {
             $this->validation_errors[] = 'Introduction can have a maximum of 255 characters';
         }
@@ -233,7 +230,7 @@ class Post extends Model
                 FROM posts
                 INNER JOIN users ON user_id = users.id
                 LEFT OUTER JOIN categories ON category_id = categories.id
-                WHERE url_slug = :url_slug';
+                WHERE posts.url_slug = :url_slug';
 
         $stmt = $db->prepare($sql);
         $stmt->bindValue(":url_slug", $slug, PDO::PARAM_STR);

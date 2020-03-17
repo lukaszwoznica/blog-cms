@@ -41,10 +41,10 @@
         </nav>
         <ul id="categoriesDropdown" class="dropdown-content">
             {% for cat in categories %}
-                <li class="text-bold"><a href="/categories/{{ cat.getId }}">{{ cat.name }}</a></li>
+                <li class="text-bold"><a href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a></li>
                 {% for subcategory in cat.getAllDescendantSubcategories %}
                     <li>
-                        <a href="/categories/{{ subcategory.getId }}">
+                        <a href="/categories/{{ subcategory.getUrlSlug }}">
                             {%- for i in range(0, subcategory.getLevel) -%}
                                 &emsp;
                             {%- endfor -%}
@@ -73,9 +73,9 @@
             <h4 class="center-align">Categories</h4>
             <div class="collection">
                 {% for cat in categories %}
-                    <a class="collection-item text-bold" href="/categories/{{ cat.getId }}">{{ cat.name }}</a>
+                    <a class="collection-item text-bold" href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a>
                     {% for subcategory in cat.getAllDescendantSubcategories %}
-                        <a class="collection-item" href="/categories/{{ subcategory.getId }}">
+                        <a class="collection-item" href="/categories/{{ subcategory.getUrlSlug }}">
                             {%- for i in range(0, subcategory.getLevel) -%}
                                 &emsp;
                             {%- endfor -%}

@@ -7,7 +7,6 @@ namespace App\Controllers\Admin;
 
 use App\Flash;
 use App\Models\Category;
-use App\TreePreorderTraversal;
 use Core\View;
 
 class Categories extends Admin
@@ -115,4 +114,15 @@ class Categories extends Admin
         }
     }
 
+    /**
+     * Check if slug is available (AJAX)
+     */
+    public function validateSlugAction(): void
+    {
+        if (isset($_GET['url_slug']) && !empty($_GET['url_slug'])) {
+            $slug_valid = !Category::slugExist($_GET['url_slug'], $_GET['ignore_id'] ?? null);
+            header('Content-Type: application/json');
+            echo json_encode($slug_valid);
+        }
+    }
 }

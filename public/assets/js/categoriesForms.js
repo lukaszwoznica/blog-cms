@@ -1,15 +1,12 @@
 $(document).ready(function () {
-    const titleInput = document.getElementById('inputTitle');
-    titleInput.addEventListener('input', titleToSlug, false);
-
-    $('textarea#textareaIntroduction').characterCounter();
-
+    const nameInput = document.getElementById('inputName');
+    nameInput.addEventListener('input', titleToSlug, false);
     const options = {
         rules: {
-            title: {
+            name: {
                 required: true,
                 minlength: 3,
-                maxlength: 255,
+                maxlength: 100,
             },
             url_slug: {
                 minlength: 3,
@@ -17,10 +14,10 @@ $(document).ready(function () {
                 required: true,
                 validSlug: true,
                 remote: {
-                    url: '/admin/posts/validate-slug'
+                    url: '/admin/categories/validate-slug'
                 }
             },
-            introduction: {
+            description: {
                 maxlength: 255
             }
         },
@@ -33,13 +30,13 @@ $(document).ready(function () {
         errorClass: 'invalid'
     };
 
-    $('#formNewPost').validate(options);
+    $('#formNewCategory').validate(options);
 
     options['rules']['url_slug']['remote']['data'] = {
         ignore_id: function () {
-            return post_id;
+            return category_id;
         }
     };
 
-    $('#formEditPost').validate(options);
+    $('#formEditCategory').validate(options);
 });

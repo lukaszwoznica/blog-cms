@@ -22,6 +22,8 @@ class Categories extends Controller
 
         if (isset($route_params['id'])) {
             $this->category = Category::findByID($route_params['id']);
+        } elseif (isset($route_params['slug'])) {
+            $this->category = Category::findBySlug($route_params['slug']);
         }
 
         if (isset($route_params['page'])) {
@@ -53,15 +55,16 @@ class Categories extends Controller
                 }
             }
 
-            $paginator = new Paginator($this->page, 2, sizeof($categories_ids));
-            $posts = Post::getAllPosts(true, $paginator->getOffset(), $paginator->getLimit(), $categories_ids);
+            $total_records = sizeof(Post::getAllPosts(false, 0, PHP_INT_MAX, $categories_ids));
+            $paginator = new Paginator($this->page, 10, $total_records);
+            $posts = Post::getAllPosts(false, $paginator->getOffset(), $paginator->getLimit(), $categories_ids);
 
             View::renderTemplate('Posts/index.html', [
                 'posts' => $posts,
                 'category_name' => $this->category->getName(),
                 'page' => $this->page,
                 'total_pages' => $paginator->getTotalPages(),
-                'path' => '/categories/' . $this->category->getId() . '/'
+                'path' => '/categories/' . $this->category->getUrlSlug() . '/page/'
             ]);
         } else {
             throw new Exception("Category with given id or slug does not exist", 404);

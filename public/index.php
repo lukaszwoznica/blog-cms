@@ -49,9 +49,9 @@ $router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin
 $router->addRoute('admin/posts/{page:\d+}', ['namespace' => 'Admin', 'controller' => 'Posts', 'action' => 'index']);
 
 // App\Controllers namespace
-$router->addRoute('categories/{id:\d+}', ['controller' => 'Categories', 'action' => 'show']);
-$router->addRoute('categories/{id:\d+}/{page:\d+}', ['controller' => 'Categories', 'action' => 'show']);
-$router->addRoute('posts/{page:\d+}', ['controller' => 'Posts', 'action' => 'index']);
+$router->addRoute('categories/{slug:[\da-z-]+}', ['controller' => 'Categories', 'action' => 'show']);
+$router->addRoute('categories/{slug:[\da-z-]+}/page/{page:\d+}', ['controller' => 'Categories', 'action' => 'show']);
+$router->addRoute('posts/page/{page:\d+}', ['controller' => 'Posts', 'action' => 'index']);
 $router->addRoute('posts/{slug:[\da-z-]+}', ['controller' => 'Posts', 'action' => 'show']);
 $router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
 $router->addRoute('{controller}', ['action' => 'index']);
