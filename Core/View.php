@@ -11,6 +11,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 class View
 {
@@ -46,6 +47,11 @@ class View
         if ($twig === null){
             $loader = new FilesystemLoader(dirname(__DIR__) . "/App/Views");
             $twig = new Environment($loader);
+
+            $rememberPageFunction = new TwigFunction('rememberRequestedPage', function () {
+                Auth::rememberRequestedPage();
+            });
+            $twig->addFunction($rememberPageFunction);
 
             // Twig globals
             $twig->addGlobal('current_user', Auth::getUser());

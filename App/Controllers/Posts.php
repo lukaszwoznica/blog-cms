@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Paginator;
 use Core\Controller;
@@ -50,8 +51,11 @@ class Posts extends Controller
     public function showAction(): void
     {
         if ($this->post) {
+            $comments = Comment::getAllComments($this->post->getId());
+
             View::renderTemplate('Posts/show.html', [
-                'post' => $this->post
+                'post' => $this->post,
+                'comments' => $comments
             ]);
         } else {
             throw new Exception("Post with given id or slug does not exist", 404);

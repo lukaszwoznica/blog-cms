@@ -36,7 +36,7 @@ class Category extends Model
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':name', trim($this->name), PDO::PARAM_STR);
-            $stmt->bindValue('description', $this->description, PDO::PARAM_STR);
+            $stmt->bindValue(':description', $this->description, PDO::PARAM_STR);
             $stmt->bindValue(':parent_id', $this->parent_id, PDO::PARAM_INT);
             $stmt->bindValue(':url_slug', $this->url_slug, PDO::PARAM_STR);
 

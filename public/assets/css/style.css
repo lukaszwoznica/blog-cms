@@ -88,7 +88,8 @@ nav .brand-logo {
  */
 
 .alert {
-    margin: 1.5rem 0;
+    text-align: center;
+    margin: 0;
 }
 
 .alert-success {
@@ -187,6 +188,11 @@ table.serial td:first-child:before {
     Post page
  */
 
+.post-page-content {
+    position: relative;
+    top: -20vh;
+}
+
 .post-image {
     position: relative;
     min-height: 80vh;
@@ -197,7 +203,6 @@ table.serial td:first-child:before {
 }
 
 .post-card {
-    top: -20vh;
     line-height: 1.8rem;
 }
 
@@ -249,6 +254,27 @@ table.serial td:first-child:before {
     list-style-type: disc;
 }
 
+.comment-avatar {
+    min-width: 45px;
+    max-width: 60px;
+}
+
+.comment-card .card-content .card-title {
+    margin-bottom: 0;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-right: 1rem;
+}
+
+.comment-card .card-content .comment-date {
+    opacity: 0.3;
+    font-size: .9rem;
+}
+
+.comment-card .card-content .comment-info {
+    margin-bottom: 1rem;
+}
+
 /*
     Helpers
  */
@@ -262,3 +288,8 @@ table.serial td:first-child:before {
 .text-bold {
     font-weight: 700;
 }
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
