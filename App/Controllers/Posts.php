@@ -51,7 +51,7 @@ class Posts extends Controller
     public function showAction(): void
     {
         if ($this->post) {
-            $comments = Comment::getAllComments($this->post->getId());
+            $comments = Comment::getAllComments(0, PHP_INT_MAX, $this->post->getId());
 
             View::renderTemplate('Posts/show.html', [
                 'post' => $this->post,

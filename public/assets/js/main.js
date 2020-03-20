@@ -14,8 +14,6 @@ function searchData(url, query) {
 }
 
 $(document).ready(function () {
-    AOS.init();
-
     $('.sidenav').sidenav({
         draggable: true
     });
@@ -32,5 +30,5 @@ $(document).ready(function () {
     $('.tooltipped').tooltip();
     $('.materialboxed').materialbox();
     $('.modal').modal();
-
+    AOS.init();
 });
