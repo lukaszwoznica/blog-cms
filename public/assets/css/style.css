@@ -178,6 +178,7 @@ table.serial td:first-child:before {
 
 .user-avatar img {
     width: 100%;
+    border-radius: 50%;
 }
 
 .user-details table tr td:first-child {
@@ -257,6 +258,10 @@ table.serial td:first-child:before {
 .comment-avatar {
     min-width: 45px;
     max-width: 60px;
+}
+
+.comment-avatar img {
+    border-radius: 50%;
 }
 
 .comment-card .card-content .card-title {

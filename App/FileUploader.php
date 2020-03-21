@@ -45,8 +45,7 @@ class FileUploader
 
                 if (!in_array($finfo->file($file['tmp_name']), $this->allowed_mime_types)) {
                     $this->validation_errors[] = 'The type of uploaded file is not allowed';
-                }
-                else if ($file['size'] > $this->max_file_size) {
+                } else if ($file['size'] > $this->max_file_size) {
                     $this->validation_errors[] = 'The uploaded file is too large.';
                 }
                 break;
@@ -69,6 +68,11 @@ class FileUploader
     public function getValidationErrors(): array
     {
         return $this->validation_errors;
+    }
+
+    public function getUploadDir(): string
+    {
+        return $this->upload_dir;
     }
 
 }

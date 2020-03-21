@@ -24,6 +24,7 @@ class User extends Model
     private $activation_token;
     private $is_active = 0;
     private $role_id = 2;
+    private $avatar;
 
     public function __construct(array $user_data = [])
     {
@@ -62,14 +63,14 @@ class User extends Model
 
         return false;
     }
-    
+
     public function validate(): void
     {
         // Username
         if (strlen($this->username) < 3 || strlen($this->username) > 25) {
             $this->validation_errors[] = "Username must be between 3 and 25 characters";
         }
-        if (preg_match("/^[a-z0-9_]+$/i",  $this->username) === 0) {
+        if (preg_match("/^[a-z0-9_]+$/i", $this->username) === 0) {
             $this->validation_errors[] = "Username can only contain alphanumeric characters (letters A-Z, numbers 0-9) and underscore";
         }
         if (preg_match("/^([a-z]+).*([a-z0-9]+)$/i", $this->username) === 0) {
@@ -209,54 +210,10 @@ class User extends Model
         $user = static::findByUsernameOrEmail($login);
 
         if ($user) {
-            if ($user->generatePasswordResetToken()){
+            if ($user->generatePasswordResetToken()) {
                 $user->sendPasswordResetEmail();
             }
         }
-    }
-
-    /**
-     * Generate a new token for password reset process.
-     *
-     * @return bool
-     */
-    private function generatePasswordResetToken(): bool
-    {
-        $token = new Token();
-        $token_hash = $token->getHash();
-        $this->password_reset_token = $token->getValue();
-        $expiry_timestamp = time() + 60 * 60 * 4; // 4 hours
-        $db = static::getDatabase();
-        $sql = 'UPDATE users 
-                SET password_reset_hash = :token_hash, 
-                    password_reset_expiry = :expiry_time
-                WHERE id = :id';
-
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':token_hash', $token_hash, PDO::PARAM_STR);
-        $stmt->bindValue(':expiry_time', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
-        $stmt->bindValue(':id', $this->id);
-
-        return $stmt->execute();
-    }
-
-    /**
-     * Send password reset link in an email to the user.
-     */
-    private function sendPasswordResetEmail(): void
-    {
-        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_token;
-
-        $html_body = View::getTemplate('User/Password/reset-email.html', [
-            'url' => $url,
-            'username' => $this->username
-        ]);
-        $plaintext_body = View::getTemplate('User/Password/reset-email.txt', [
-            'url' => $url,
-            'username' => $this->username
-        ]);
-
-        Mail::send($this->email, 'Password reset', $html_body, $plaintext_body);
     }
 
     public static function findByPasswordResetToken(string $token): ?User
@@ -351,6 +308,7 @@ class User extends Model
     {
         $this->username = $data['username'];
         $this->email = $data['email'];
+        $this->avatar = $data['avatar'];
         if (!empty($data['password']))
             $this->password = $data['password'];
 
@@ -361,7 +319,8 @@ class User extends Model
 
             $sql = 'UPDATE users
                     SET username = :username,
-                        email = :email';
+                        email = :email,
+                        avatar = :avatar';
             if (!empty($data['password']))
                 $sql .= ', password = :password';
             $sql .= "\nWHERE id = :id";
@@ -370,7 +329,8 @@ class User extends Model
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            if (!empty($data['password'])){
+            $stmt->bindValue(':avatar', $this->avatar, PDO::PARAM_STR);
+            if (!empty($data['password'])) {
                 $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
                 $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
             }
@@ -410,6 +370,7 @@ class User extends Model
         $this->email = $user_data['email'];
         $this->role_id = $user_data['role_id'];
         $this->is_active = $user_data['is_active'];
+        $this->avatar = $user_data['avatar'];
 
         $this->validate();
 
@@ -420,7 +381,8 @@ class User extends Model
                     SET username = :username,
                         email = :email,
                         role_id = :role_id,
-                        is_active = :is_active
+                        is_active = :is_active,
+                        avatar = :avatar
                     WHERE id = :id';
 
             $stmt = $db->prepare($sql);
@@ -428,6 +390,7 @@ class User extends Model
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':role_id', $this->role_id, PDO::PARAM_INT);
             $stmt->bindValue(':is_active', $this->is_active, PDO::PARAM_BOOL);
+            $stmt->bindValue(':avatar', $this->avatar, PDO::PARAM_STR);
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
 
             return $stmt->execute();
@@ -481,6 +444,11 @@ class User extends Model
         return $this->validation_errors;
     }
 
+    public function setValidationErrors(array $validation_errors): void
+    {
+        $this->validation_errors = $validation_errors;
+    }
+
     public function getRememberToken(): ?string
     {
         return $this->remember_token;
@@ -500,4 +468,54 @@ class User extends Model
     {
         return $this->role_id;
     }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Generate a new token for password reset process.
+     *
+     * @return bool
+     */
+    private function generatePasswordResetToken(): bool
+    {
+        $token = new Token();
+        $token_hash = $token->getHash();
+        $this->password_reset_token = $token->getValue();
+        $expiry_timestamp = time() + 60 * 60 * 4; // 4 hours
+        $db = static::getDatabase();
+        $sql = 'UPDATE users 
+                SET password_reset_hash = :token_hash, 
+                    password_reset_expiry = :expiry_time
+                WHERE id = :id';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':token_hash', $token_hash, PDO::PARAM_STR);
+        $stmt->bindValue(':expiry_time', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
+        $stmt->bindValue(':id', $this->id);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Send password reset link in an email to the user.
+     */
+    private function sendPasswordResetEmail(): void
+    {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/user/password/reset/' . $this->password_reset_token;
+
+        $html_body = View::getTemplate('User/Password/reset-email.html', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+        $plaintext_body = View::getTemplate('User/Password/reset-email.txt', [
+            'url' => $url,
+            'username' => $this->username
+        ]);
+
+        Mail::send($this->email, 'Password reset', $html_body, $plaintext_body);
+    }
+
 }

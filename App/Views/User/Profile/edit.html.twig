@@ -2,13 +2,6 @@
 
 {% block title %}Edit profile{% endblock %}
 
-{% block scripts %}
-    <script src="/assets/js/showHidePassword.js"></script>
-    <script src="/assets/js/customValidationMethods.js"></script>
-    <script>const user_id = '{{ current_user.getId }}'</script>
-    <script src="/assets/js/profileEditFormValidation.js"></script>
-{% endblock %}
-
 {% block body %}
 
     <h2>Edit profile</h2>
@@ -27,28 +20,49 @@
     {% endif %}
 
     <div class="row">
-        <div class="col m8 s12 offset-m2">
+        <div class="col s12">
             <div class="card">
-                <form id="formEditProfile" action="/user/profile/update" method="post">
+                <form id="formEditProfile" action="/user/profile/update" method="post" enctype="multipart/form-data">
                     <div class="card-content">
-                        <div class="input-field">
-                            <label for="inputUsername">Username</label>
-                            <input type="text" id="inputUsername" class="validate" name="username"
-                                   value="{{ current_user.getUsername }}"
-                                   required>
-                        </div>
-                        <div class="input-field">
-                            <label for="inputEmail">Email address</label>
-                            <input type="email" id="inputEmail" class="validate" name="email"
-                                   value="{{ current_user.getEmail }}"
-                                   required>
-                        </div>
-                        <div class="input-field">
-                            <label for="inputPassword">Password</label>
-                            <input type="password" id="inputPassword" class="validate" name="password"
-                                   placeholder="Password"
-                                   aria-describedby="helpBlock">
-                            <span class="helper-text" id="helpBlock">Leave blank to keep current password</span>
+                        <div class="row mb-0">
+                            <div class="col l6 s12">
+                                <div class="input-field">
+                                    <label for="inputUsername">Username</label>
+                                    <input type="text" id="inputUsername" class="validate" name="username"
+                                           value="{{ current_user.getUsername }}"
+                                           required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="inputEmail">Email address</label>
+                                    <input type="email" id="inputEmail" class="validate" name="email"
+                                           value="{{ current_user.getEmail }}"
+                                           required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="password" id="inputPassword" class="validate" name="password"
+                                           aria-describedby="helpBlock">
+                                    <span class="helper-text" id="helpBlock">Leave blank to keep current password</span>
+                                </div>
+                            </div>
+                            <div class="col l6 s12">
+                                <h6 class="center-align" style="margin-bottom: 1.5rem">User avatar</h6>
+                                <div class="user-avatar">
+                                    <img src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
+                                         alt="User avatar">
+                                </div>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Choose file</span>
+                                        <input type="file" name="avatar" accept="image/*">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                        <span class="helper-text">
+                                        Recommended resolution: 300x300px, Max size: 200kB</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-action">
@@ -60,4 +74,11 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/showHidePassword.js"></script>
+    <script src="/assets/js/customValidationMethods.js"></script>
+    <script>const user_id = '{{ current_user.getId }}'</script>
+    <script src="/assets/js/profileEditFormValidation.js"></script>
 {% endblock %}

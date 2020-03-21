@@ -75,6 +75,10 @@ class Users extends Admin
     {
         if ($this->user) {
             if ($this->user->delete()) {
+                $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
+                if (file_exists($img_path)) {
+                    unlink($img_path);
+                }
                 Flash::addMessage('User has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the user', Flash::ERROR);
@@ -101,7 +105,22 @@ class Users extends Admin
     public function updateAction(): void
     {
         if ($this->user && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->user->update($_POST)) {
+            $post_data = $_POST;
+
+            if ($post_data['username'] != $this->user->getUsername() && $this->user->getAvatar() != null) {
+                $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
+                if (file_exists($img_path)) {
+                    $extension = pathinfo($img_path, PATHINFO_EXTENSION);
+                    $new_filename = $post_data['username'] . '.' . $extension;
+                    $new_path = dirname(__DIR__, 3) . '/public/uploads/users-avatars/' . $new_filename;
+                    rename($img_path, $new_path);
+                    $post_data['avatar'] = '/uploads/users-avatars/' . $new_filename;
+                }
+            } else {
+                $post_data['avatar'] = $this->user->getAvatar();
+            }
+
+            if ($this->user->update($post_data)) {
                 Flash::addMessage('User has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/users');
             } else {

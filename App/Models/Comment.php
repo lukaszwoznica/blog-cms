@@ -16,6 +16,7 @@ class Comment extends Model
     private $submit_time;
     private $author_name;
     private $post_title;
+    private $author_avatar;
     private $validation_errors = [];
 
 
@@ -38,13 +39,18 @@ class Comment extends Model
                 if (empty($this->post_title)) {
                     $this->post_title = $value;
                 }
+                break;
+            case 'avatar':
+                if (empty($this->author_avatar)) {
+                    $this->author_avatar = $value;
+                }
         }
     }
 
     public static function getAllComments(int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX, int $post_id = null): array
     {
         $db = static::getDatabase();
-        $sql = "SELECT comments.*, username, title FROM comments 
+        $sql = "SELECT comments.*, username, avatar, title FROM comments 
                 INNER JOIN users ON user_id = users.id
                 INNER JOIN posts ON post_id = posts.id";
         if ($post_id) {
@@ -208,5 +214,10 @@ class Comment extends Model
     public function getPostTitle(): ?string
     {
         return $this->post_title;
+    }
+
+    public function getAuthorAvatar(): ?string
+    {
+        return $this->author_avatar;
     }
 }

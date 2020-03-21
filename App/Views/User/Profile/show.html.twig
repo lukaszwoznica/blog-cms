@@ -13,7 +13,8 @@
                     <div class="row" style="margin-bottom: 0">
                         <div class="col m6 s12">
                             <div class="user-avatar">
-                                <img src="/assets/img/avatar-default.png" alt="">
+                                <img src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
+                                     alt="User avatar">
                             </div>
                             <div class=" center-align">
                                 <h4>{{ current_user.getUsername }}</h4>
@@ -36,15 +37,16 @@
                     </div>
                 </div>
                 <div class="card-action right-align hide-on-small-only">
-                        <a href="/user/profile/edit" class="waves-effect waves-light btn ">
-                            <i class="material-icons left">edit</i>
-                            <span>Edit profile</span>
-                        </a>
+                    <a href="/user/profile/edit" class="waves-effect waves-light btn ">
+                        <i class="material-icons left">edit</i>
+                        <span>Edit profile</span>
+                    </a>
                 </div>
                 <div class="fixed-action-btn hide-on-med-and-up">
                     <a href="/user/profile/edit" class="btn-floating btn-large blue">
                         <i class="large material-icons">edit</i>
                     </a>
+                </div>
             </div>
         </div>
     </div>

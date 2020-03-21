@@ -62,7 +62,8 @@
                                 <div class="row valign-wrapper" style="margin-bottom: 0">
                                     <div class="col m1 s2 center-content">
                                         <div class="comment-avatar">
-                                            <img class="responsive-img" src="/assets/img/avatar-default.png"
+                                            <img class="responsive-img"
+                                                 src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
                                                  alt="User avatar">
                                         </div>
                                     </div>
@@ -112,7 +113,8 @@
                             <div class="row mb-0">
                                 <div class="col m1 s2 center-content">
                                     <div class="comment-avatar">
-                                        <img class="responsive-img" src="/assets/img/avatar-default.png"
+                                        <img class="responsive-img"
+                                             src="{{ comment.getAuthorAvatar | default("/assets/img/avatar-default.png") }}"
                                              alt="User avatar">
                                     </div>
                                 </div>
