@@ -12,11 +12,11 @@
     </div>
 
     <div class="card-panel">
-        <div class="input-field ">
+        <div class="input-field">
             <i class="material-icons prefix">search</i>
             <label for="searchInput">Search</label>
             <input type="text" name="search" id="searchInput" placeholder="Search by title, category or author"
-                   class="form-control" value="{{ search_query }}"/>
+                   class="form-control" value="{{ search_query }}">
         </div>
         <table class="responsive-table highlight serial">
             <thead>
@@ -83,7 +83,7 @@
         $(document).ready(function () {
             $('#searchInput').change(function () {
                 let search_query = $(this).val();
-                if (search_query.length > 1) {
+                if (search_query.length > 0) {
                     searchData('/admin/posts', search_query);
                 } else {
                     searchData();

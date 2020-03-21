@@ -6,10 +6,12 @@ namespace App\Controllers\Admin;
 
 use App\Flash;
 use App\Models\User;
+use App\Paginator;
 use Core\View;
 
 class Users extends Admin
 {
+    private $page;
     private $user;
 
     public function __construct(array $route_params)
@@ -19,15 +21,29 @@ class Users extends Admin
         if (isset($route_params['id'])) {
             $this->user = User::findByID($route_params['id']);
         }
+        if (isset($route_params['page'])) {
+            $this->page = (int)$route_params['page'];
+        } else {
+            $this->page = 1;
+        }
     }
 
     public function indexAction(): void
     {
-        $users = User::getAllUsers();
+        $context_data = [];
 
-        View::renderTemplate('Admin/Users/index.html', [
-            'users' => $users
-        ]);
+        if (isset($_GET['search_query'])) {
+            $users = User::getAllUsersContainsFilter($_GET['search_query']);
+            $context_data['search_query'] = $_GET['search_query'];
+        } else {
+            $paginator = new Paginator($this->page, 10, User::getTotal());
+            $users = User::getAllUsers($paginator->getOffset(), $paginator->getLimit());
+            $context_data['page'] = $this->page;
+            $context_data['total_pages'] = $paginator->getTotalPages();
+        }
+        $context_data['users'] = $users;
+
+        View::renderTemplate('Admin/Users/index.html', $context_data);
     }
 
     public function newAction(): void

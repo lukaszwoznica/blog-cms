@@ -156,6 +156,25 @@ class Comment extends Model
         return $stmt->execute();
     }
 
+    public static function getAllCommentsContainsFilter(string $filter): array
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT comments.*, username, title FROM comments 
+                INNER JOIN users ON user_id = users.id
+                INNER JOIN posts ON post_id = posts.id
+                WHERE comments.content LIKE :filter
+	            OR username LIKE :filter
+	            OR title LIKE :filter';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':filter', "%$filter%", PDO::PARAM_STR);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

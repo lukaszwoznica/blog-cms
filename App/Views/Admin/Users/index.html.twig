@@ -12,6 +12,12 @@
     </div>
 
     <div class="card-panel">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <label for="searchInput">Search</label>
+            <input type="text" name="search" id="searchInput" placeholder="Search by username or email"
+                   class="form-control" value="{{ search_query }}">
+        </div>
         <table class="responsive-table highlight serial">
             <thead>
             <tr>
@@ -56,5 +62,29 @@
             {% endfor %}
             </tbody>
         </table>
+
+        <div class="row center">
+            {% include 'inc/pagination.html.twig' with {
+                currentPage: page,
+                paginationPath: "/admin/users/",
+                lastPage: total_pages,
+                showAlwaysFirstAndLast: true
+            } only %}
+        </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').change(function () {
+                let search_query = $(this).val();
+                if (search_query.length > 0) {
+                    searchData('/admin/users', search_query);
+                } else {
+                    searchData();
+                }
+            });
+        });
+    </script>
 {% endblock %}

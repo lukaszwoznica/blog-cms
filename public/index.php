@@ -46,8 +46,7 @@ $router->addRoute('user/{controller}/{action}', ['namespace' => 'User']);
 $router->addRoute('admin/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
 $router->addRoute('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->addRoute('admin/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
-$router->addRoute('admin/posts/{page:\d+}', ['namespace' => 'Admin', 'controller' => 'Posts', 'action' => 'index']);
-$router->addRoute('admin/comments/{page:\d+}', ['namespace' => 'Admin', 'controller' => 'Comments', 'action' => 'index']);
+$router->addRoute('admin/{controller}/{page:\d+}', ['namespace' => 'Admin', 'action' => 'index']);
 
 // App\Controllers namespace
 $router->addRoute('categories/{slug:[\da-z-]+}', ['controller' => 'Categories', 'action' => 'show']);

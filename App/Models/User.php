@@ -9,7 +9,6 @@ use App\Token;
 use Core\Model;
 use Core\View;
 use PDO;
-use function PHPSTORM_META\type;
 
 class User extends Model
 {
@@ -382,10 +381,10 @@ class User extends Model
         return false;
     }
 
-    public static function getAllUsers(): array
+    public static function getAllUsers(int $limit_offset = 0, int $limit_row_num = PHP_INT_MAX): array
     {
         $db = static::getDatabase();
-        $sql = 'SELECT * FROM users';
+        $sql = "SELECT * FROM users LIMIT $limit_offset, $limit_row_num";
 
         $stmt = $db->query($sql);
         $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -437,21 +436,42 @@ class User extends Model
         return false;
     }
 
-    /*
-     * Getters
-     */
+    public static function getTotal(): int
+    {
+        $db = static::getDatabase();
+        $sql = "SELECT COUNT(*) FROM users";
+        $stmt = $db->query($sql);
 
-    public function getId(): int
+        return $stmt->fetchColumn();
+    }
+
+    public static function getAllUsersContainsFilter(string $filter): array
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT * FROM users 
+                WHERE username LIKE :filter
+	            OR email LIKE :filter';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':filter', "%$filter%", PDO::PARAM_STR);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -461,22 +481,22 @@ class User extends Model
         return $this->validation_errors;
     }
 
-    public function getRememberToken(): string
+    public function getRememberToken(): ?string
     {
         return $this->remember_token;
     }
 
-    public function getRememberTokenExpireTime(): string
+    public function getRememberTokenExpireTime(): ?string
     {
         return $this->remember_token_expire_time;
     }
 
-    public function getIsActive(): bool
+    public function getIsActive(): ?bool
     {
         return $this->is_active;
     }
 
-    public function getRoleId(): int
+    public function getRoleId(): ?int
     {
         return $this->role_id;
     }

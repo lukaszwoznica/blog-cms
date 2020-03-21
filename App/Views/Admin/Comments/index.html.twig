@@ -6,6 +6,12 @@
 
 {% block body %}
     <div class="card-panel">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <label for="searchInput">Search</label>
+            <input type="text" name="search" id="searchInput" placeholder="Search by author, comment or post title"
+                   class="form-control" value="{{ search_query }}">
+        </div>
         <table class="responsive-table highlight serial">
             <thead>
             <tr>
@@ -42,14 +48,20 @@
             {% endfor %}
             </tbody>
         </table>
-
-        <div class="row center">
-            {% include 'inc/pagination.html.twig' with {
-                currentPage: page,
-                paginationPath: "/admin/comments/",
-                lastPage: total_pages,
-                showAlwaysFirstAndLast: true
-            } only %}
-        </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').change(function () {
+                let search_query = $(this).val();
+                if (search_query.length > 0) {
+                    searchData('/admin/comments', search_query);
+                } else {
+                    searchData();
+                }
+            });
+        });
+    </script>
 {% endblock %}
