@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
 <header>
     <div class="navbar-fixed">
         <nav class="grey darken-4">
@@ -30,19 +29,17 @@
                 <ul class="right">
                     <li><a class="waves-effect waves-light"><i class="material-icons" data-toggle-fullscreen>settings_overscan</i></a>
                     </li>
-                    <li><a class="dropdown-trigger waves-effect waves-light" href="#"
+                    <li id="notificationsItem">
+                        <a id="notificationsDropdownTrigger" class="dropdown-trigger waves-effect waves-light" href="#"
                            data-target="notificationsDropdown">
-                            <i class="material-icons">notification_important</i>
+                            <i id="notificationIcon" class="material-icons">notification_important</i>
+                            <i id="newNotificationIcon" class="material-icons">new_releases</i>
                         </a>
                         <ul id="notificationsDropdown" class="dropdown-content">
-                            <li class="dropdown-title">Notifications<span class="new badge">0</span></li>
-                            <li class="divider" tabindex="-1"></li>
-                            <li><a href="#">Notification 1</a></li>
-                            <li><a href="#">Notification 2</a></li>
-                            <li><a href="#">Notification 3</a></li>
                         </ul>
                     </li>
-                    <li><a class="dropdown-trigger waves-effect waves-light" href="#" data-target="userDropdown">
+                    <li>
+                        <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="userDropdown">
                             <img class="user-avatar"
                                  src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
                                  alt="User Avatar">
@@ -129,7 +126,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/toggleFullscreen.js"></script>
+<script src="/assets/js/adminMain.js"></script>
+<script>
+    const user_id = {{ current_user.getId }}
 
+        $(document).ready(function () {
+            loadNotifications(user_id);
+            $('#notificationsDropdownTrigger').dropdown({
+                coverTrigger: false,
+                closeOnClick: false
+            });
+            $('body').on('click', '.mark-notification-icon', function () {
+                const post_id = $(this).data('post-id');
+                deleteNotification(post_id, user_id);
+                $(this).parent().parent().parent().fadeOut(400, function () {
+                    $(this).remove();
+                    $('#notificationsDropdownTrigger').dropdown('recalculateDimensions');
+                })
+            });
+        });
+</script>
 {% block scripts %}
 {% endblock %}
 

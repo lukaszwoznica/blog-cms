@@ -27,6 +27,13 @@ main {
     margin: 1.5rem 0;
 }
 
+#toast-container {
+    top: auto !important;
+    left: auto !important;
+    bottom: 15%;
+    right:2%;
+}
+
 /*
     Navbar
  */
@@ -36,6 +43,10 @@ img.user-avatar {
     height: 30px;
     vertical-align: middle;
     border-radius: 50%;
+}
+
+nav .dropdown-trigger {
+    max-height: 64px;
 }
 
 nav .dropdown-content {
@@ -54,10 +65,39 @@ nav ul a:hover {
     font-size: 1.5rem;
     vertical-align: middle;
     padding: 1rem;
+
 }
 
 .dropdown-content li.dropdown-title span {
     padding: 0;
+}
+
+.dropdown-content li a{
+    color: #212121;
+}
+
+#notificationsDropdown li a {
+    font-size: 16px;
+    display: block;
+    line-height: 22px;
+    padding: 14px 16px;
+}
+
+#notificationsDropdown {
+    min-width: 300px;
+}
+
+#notificationsDropdown li i:hover {
+    opacity: 0.5;
+}
+
+#newNotificationIcon {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    color: #e10300;
+    font-size: .8rem;
 }
 
 /*

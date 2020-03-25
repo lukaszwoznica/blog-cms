@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Auth;
 use App\Flash;
 use App\Models\Comment;
+use App\Models\Post;
 
 class Comments extends Authenticated
 {
@@ -15,8 +16,12 @@ class Comments extends Authenticated
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $post_data = $_POST;
             $post_data['user_id'] = Auth::getUser()->getId();
-
             $comment = new Comment($post_data);
+            $post = Post::findByID($post_data['post_id']);
+
+            if ($post->getUserId() == $post_data['user_id']) {
+                $comment->setNotificationSeen(true);
+            }
 
             if ($comment->save()) {
                 Flash::addMessage('Comment has been successfully added', Flash::SUCCESS);

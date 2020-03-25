@@ -17,6 +17,7 @@ class Comment extends Model
     private $author_name;
     private $post_title;
     private $author_avatar;
+    private $notification_seen = false;
     private $validation_errors = [];
 
 
@@ -77,13 +78,14 @@ class Comment extends Model
 
         if (empty($this->validation_errors)) {
             $db = self::getDatabase();
-            $sql = 'INSERT INTO comments (user_id, post_id, content)
-                    VALUES (:user_id, :post_id, :content)';
+            $sql = 'INSERT INTO comments (user_id, post_id, content, notification_seen)
+                    VALUES (:user_id, :post_id, :content, :notification_seen)';
 
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
             $stmt->bindValue(':post_id', $this->post_id, PDO::PARAM_INT);
             $stmt->bindValue(':content', trim($this->content), PDO::PARAM_STR);
+            $stmt->bindValue(':notification_seen', $this->notification_seen, PDO::PARAM_BOOL);
 
             return $stmt->execute();
         }
@@ -149,6 +151,19 @@ class Comment extends Model
         }
 
         return false;
+    }
+
+    public static function markNotificationAsSeen(int $post_id): bool
+    {
+        $db = static::getDatabase();
+        $sql = 'UPDATE comments
+                SET notification_seen = 1
+                WHERE post_id = :post_id';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':post_id', $post_id, PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
 
     public function delete(): bool
@@ -219,5 +234,10 @@ class Comment extends Model
     public function getAuthorAvatar(): ?string
     {
         return $this->author_avatar;
+    }
+
+    public function setNotificationSeen(bool $notification_seen): void
+    {
+        $this->notification_seen = $notification_seen;
     }
 }

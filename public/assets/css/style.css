@@ -278,6 +278,7 @@ table.serial td:first-child:before {
 
 .comment-card .card-content .comment-info {
     margin-bottom: 1rem;
+    font-size: .5rem;
 }
 
 /*
@@ -296,5 +297,13 @@ table.serial td:first-child:before {
 
 .mb-0 {
     margin-bottom: 0;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.p-0 {
+    padding: 0 !important;
 }
 

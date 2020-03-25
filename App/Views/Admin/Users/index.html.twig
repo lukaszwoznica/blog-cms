@@ -18,58 +18,8 @@
             <input type="text" name="search" id="searchInput" placeholder="Search by username or email"
                    class="form-control" value="{{ search_query }}">
         </div>
-        <table class="responsive-table highlight serial">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Username</th>
-                <th>E-Mail</th>
-                <th>Active</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    <td></td>
-                    <td>{{ user.getUsername }}</td>
-                    <td>{{ user.getEmail }}</td>
-                    <td>
-                        {% if user.getIsActive %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if user.getRoleId == 1 %}
-                            Administrator
-                        {% else %}
-                            User
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="/admin/users/{{ user.getId }}/edit">
-                            <i class="material-icons blue-text text-darken-2">edit</i>
-                        </a>
-                        <a href="/admin/users/{{ user.getId }}/destroy"
-                           onclick="return deleteConfirm('user')">
-                            <i class="material-icons red-text text-darken-2">delete_forever</i>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="row center">
-            {% include 'inc/pagination.html.twig' with {
-                currentPage: page,
-                paginationPath: "/admin/users/",
-                lastPage: total_pages,
-                showAlwaysFirstAndLast: true
-            } only %}
+        <div id="tableCard">
+            {% include 'Admin/Users/Inc/table.html.twig' %}
         </div>
     </div>
 {% endblock %}
@@ -80,9 +30,9 @@
             $('#searchInput').change(function () {
                 let search_query = $(this).val();
                 if (search_query.length > 0) {
-                    searchData('/admin/users', search_query);
+                    searchData('/admin/users/search', search_query);
                 } else {
-                    searchData();
+                    searchData('/admin/users/search');
                 }
             });
         });

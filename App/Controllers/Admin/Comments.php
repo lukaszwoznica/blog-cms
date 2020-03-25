@@ -31,20 +31,34 @@ class Comments extends Admin
 
     public function indexAction(): void
     {
-        $context_data = [];
+        $paginator = new Paginator($this->page, 10, Comment::getTotal());
+        $comments = Comment::getAllComments($paginator->getOffset(), $paginator->getLimit());
 
+        View::renderTemplate('Admin/Comments/index.html', [
+            'comments' => $comments,
+            'page' => $this->page,
+            'total_pages' => $paginator->getTotalPages()
+        ]);
+    }
+
+    public function searchAction(): void
+    {
         if (isset($_GET['search_query'])) {
             $comments = Comment::getAllCommentsContainsFilter($_GET['search_query']);
-            $context_data['search_query'] = $_GET['search_query'];
+
+            View::renderTemplate('Admin/Comments/Inc/table.html', [
+                'comments' => $comments
+            ]);
         } else {
             $paginator = new Paginator($this->page, 10, Comment::getTotal());
             $comments = Comment::getAllComments($paginator->getOffset(), $paginator->getLimit());
-            $context_data['page'] = $this->page;
-            $context_data['total_pages'] = $paginator->getTotalPages();
-        }
-        $context_data['comments'] = $comments;
 
-        View::renderTemplate('Admin/Comments/index.html', $context_data);
+            View::renderTemplate('Admin/Comments/Inc/table.html', [
+                'comments' => $comments,
+                'page' => $this->page,
+                'total_pages' => $paginator->getTotalPages()
+            ]);
+        }
     }
 
     public function editAction(): void
@@ -77,7 +91,7 @@ class Comments extends Admin
 
     public function destroyAction(): void
     {
-        if($this->comment){
+        if ($this->comment) {
             if ($this->comment->delete()) {
                 Flash::addMessage('Comment has been successfully deleted', Flash::SUCCESS);
             } else {

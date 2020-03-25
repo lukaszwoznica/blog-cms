@@ -1,18 +1,3 @@
-function deleteConfirm(item_name = "") {
-    return confirm('Are you sure you want to delete this ' + item_name + '?');
-}
-
-function searchData(url, query) {
-    $.ajax({
-        url: url,
-        method: "get",
-        data: {search_query: query},
-        success: function(data) {
-            $(document.body).html(data);
-        }
-    });
-}
-
 $(document).ready(function () {
     $('.sidenav').sidenav({
         draggable: true
@@ -30,5 +15,4 @@ $(document).ready(function () {
     $('.tooltipped').tooltip();
     $('.materialboxed').materialbox();
     $('.modal').modal();
-    AOS.init();
 });

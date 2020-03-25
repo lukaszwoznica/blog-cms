@@ -12,42 +12,9 @@
             <input type="text" name="search" id="searchInput" placeholder="Search by author, comment or post title"
                    class="form-control" value="{{ search_query }}">
         </div>
-        <table class="responsive-table highlight serial">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Author</th>
-                <th>Comment</th>
-                <th>Post</th>
-                <th>Submitted on</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for comment in comments %}
-                <tr>
-                    <td></td>
-                    <td>{{ comment.getAuthorName }}</td>
-                    <td>{{ comment.getContent }}</td>
-                    <td>
-                        <a href="/posts/{{ comment.getPostId }}/show" target="_blank" rel="noopener noreferrer">
-                            {{ comment.getPostTitle }}
-                        </a>
-                    </td>
-                    <td>{{ comment.getSubmitTime | date('d-m-Y H:i:s')}}</td>
-                    <td>
-                        <a href="/admin/comments/{{ comment.getId }}/edit">
-                            <i class="material-icons blue-text text-darken-2">edit</i>
-                        </a>
-                        <a href="/admin/comments/{{ comment.getId }}/destroy"
-                           onclick="return deleteConfirm('comment')">
-                            <i class="material-icons red-text text-darken-2">delete_forever</i>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div id="tableCard">
+            {% include 'Admin/Comments/Inc/table.html.twig' %}
+        </div>
     </div>
 {% endblock %}
 
@@ -57,9 +24,9 @@
             $('#searchInput').change(function () {
                 let search_query = $(this).val();
                 if (search_query.length > 0) {
-                    searchData('/admin/comments', search_query);
+                    searchData('/admin/comments/search', search_query);
                 } else {
-                    searchData();
+                    searchData('/admin/comments/search');
                 }
             });
         });

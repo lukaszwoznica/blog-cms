@@ -30,20 +30,34 @@ class Users extends Admin
 
     public function indexAction(): void
     {
-        $context_data = [];
+        $paginator = new Paginator($this->page, 10, User::getTotal());
+        $users = User::getAllUsers($paginator->getOffset(), $paginator->getLimit());
 
+        View::renderTemplate('Admin/Users/index.html', [
+            'users' => $users,
+            'page' => $this->page,
+            'total_pages' => $paginator->getTotalPages()
+        ]);
+    }
+
+    public function searchAction(): void
+    {
         if (isset($_GET['search_query'])) {
             $users = User::getAllUsersContainsFilter($_GET['search_query']);
-            $context_data['search_query'] = $_GET['search_query'];
+
+            View::renderTemplate('Admin/Users/Inc/table.html', [
+                'users' => $users
+            ]);
         } else {
             $paginator = new Paginator($this->page, 10, User::getTotal());
             $users = User::getAllUsers($paginator->getOffset(), $paginator->getLimit());
-            $context_data['page'] = $this->page;
-            $context_data['total_pages'] = $paginator->getTotalPages();
-        }
-        $context_data['users'] = $users;
 
-        View::renderTemplate('Admin/Users/index.html', $context_data);
+            View::renderTemplate('Admin/Users/Inc/table.html', [
+                'users' => $users,
+                'page' => $this->page,
+                'total_pages' => $paginator->getTotalPages()
+            ]);
+        }
     }
 
     public function newAction(): void
