@@ -1,12 +1,12 @@
-<li class="dropdown-title teal-text text-lighten-1">
+<li class="dropdown-title">
     Notifications
-    <span class="new badge">
+    <span class="new badge red darken-2">
         <span>{{ notifications | length }}</span>
     </span>
 </li>
 <li class="divider" tabindex="-1"></li>
 {% for notification in notifications %}
-    <li data-unseen-comments="{{ notification.getUnseenComments }}">
+    <li class="waves-effect" data-unseen-comments="{{ notification.getUnseenComments }}">
         <div class="row m-0 valign-wrapper">
             <div class="col s10 p-0">
                 <a href="/posts/{{ notification.getPostSlug }}" target="_blank" rel="noopener noreferrer">
@@ -19,7 +19,7 @@
                 </a>
             </div>
             <div class="col s2 p-0 center-align">
-                <i class="material-icons mark-notification-icon teal-text" data-post-id="{{ notification.getPostId }}">done</i>
+                <i class="material-icons mark-notification-icon indigo-text text-darken-2" data-post-id="{{ notification.getPostId }}">done</i>
             </div>
         </div>
     </li>

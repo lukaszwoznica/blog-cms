@@ -43,7 +43,7 @@
                         </div>
                         <p>
                             <label for="radioInactive">
-                                <input type="radio" name="is_active" id="radioInactive" value="0"
+                                <input type="radio" class="with-gap" name="is_active" id="radioInactive" value="0"
                                         {% if user.getIsActive == false %}
                                             checked
                                         {% endif %}>
@@ -52,7 +52,7 @@
                         </p>
                         <p>
                             <label for="radioActive">
-                                <input type="radio" name="is_active" id="radioActive" value="1"
+                                <input type="radio" class="with-gap" name="is_active" id="radioActive" value="1"
                                         {% if user.getIsActive %}
                                             checked
                                         {% endif %}>
@@ -61,7 +61,7 @@
                         </p>
                     </div>
                     <div class="card-action">
-                        <button type="submit" class="waves-effect btn">Save</button>
+                        <button type="submit" class="waves-effect waves-light btn indigo darken-2">Save</button>
                         <a href="/admin/users" class="waves-effect btn red right">Cancel</a>
                     </div>
                 </form>

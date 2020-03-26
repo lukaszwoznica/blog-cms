@@ -90,7 +90,7 @@
                             <label for="selectCategory">Category</label>
                         </div>
                         <div class="file-field input-field">
-                            <div class="btn">
+                            <div class="waves-effect waves-light btn indigo darken-2">
                                 <span>Post image</span>
                                 <input type="file" name="image" accept="image/*">
                             </div>
@@ -104,7 +104,7 @@
                         <div class="center-content" style="margin-top: 2.5rem">
                             <p>
                                 <label for="radioDraft">
-                                    <input type="radio" name="is_published" id="radioDraft" value="0"
+                                    <input type="radio" class="with-gap"  name="is_published" id="radioDraft" value="0"
                                             {% if post.isPublished == false %}
                                                 checked
                                             {% endif %}>
@@ -113,7 +113,7 @@
                             </p>
                             <p style="margin-left: 1rem">
                                 <label for="radioPublish">
-                                    <input type="radio" name="is_published" id="radioPublish" value="1"
+                                    <input type="radio" class="with-gap"  name="is_published" id="radioPublish" value="1"
                                             {% if post.isPublished %}
                                                 checked
                                             {% endif %}>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="card-action">
-                        <button type="submit" class="waves-effect btn">Add post</button>
+                        <button type="submit" class="waves-effect waves-light btn indigo darken-2">Add post</button>
                         <a href="/admin/posts" class="waves-effect btn red right">Back</a>
                     </div>
                 </form>

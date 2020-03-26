@@ -15,4 +15,7 @@ $(document).ready(function () {
     $('.tooltipped').tooltip();
     $('.materialboxed').materialbox();
     $('.modal').modal();
+    AOS.init({
+        once: true
+    });
 });

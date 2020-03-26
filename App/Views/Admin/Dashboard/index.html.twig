@@ -2,8 +2,109 @@
 
 {% block title %} Admin Panel {% endblock %}
 
-{% block page_title %} <h1>Dashboard</h1> {% endblock %}
+{% block page_title %} <h2 class="page-title">Dashboard</h2> {% endblock %}
 
 {% block body %}
-
+    <div class="row">
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="blue-text text-darken-2" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                30
+                            </h5>
+                            <span>Published Posts</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">library_books</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action blue darken-2">
+                    <a href="#" class="valign-wrapper">
+                        Manage posts
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="green-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                8
+                            </h5>
+                            <span>Post Categories</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">category</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action green darken-1">
+                    <a href="#" class="valign-wrapper">
+                        Manage categories
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="orange-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                100
+                            </h5>
+                            <span>Registered Users</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">people_alt</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action orange darken-1">
+                    <a href="#" class="valign-wrapper">
+                        Manage users
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="red-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                353
+                            </h5>
+                            <span>Total Comments</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">comment</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action red darken-1">
+                    <a href="#" class="valign-wrapper">
+                        Manage comments
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

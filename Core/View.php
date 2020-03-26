@@ -57,6 +57,7 @@ class View
             $twig->addGlobal('current_user', Auth::getUser());
             $twig->addGlobal('flash_messages', Flash::getMessages());
             $twig->addGlobal('categories', Category::getTree());
+            $twig->addGlobal('request_uri', $_SERVER['REQUEST_URI']);
         }
 
         try {
