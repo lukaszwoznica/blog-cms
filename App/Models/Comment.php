@@ -240,4 +240,9 @@ class Comment extends Model
     {
         $this->notification_seen = $notification_seen;
     }
+
+    public function getValidationErrors(): array
+    {
+        return $this->validation_errors;
+    }
 }

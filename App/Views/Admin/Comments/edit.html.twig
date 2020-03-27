@@ -6,12 +6,12 @@
 
 {% block body %}
 
-    {% if user.getValidationErrors is not empty %}
+    {% if comment.getValidationErrors is not empty %}
         <div class="row">
             <div class="col s12 m6 offset-m3">
                 <ul class="collection with-header">
-                    <li class="collection-header red lighten-3 center-align"><h5>Errors:</h5></li>
-                    {% for error in user.getValidationErrors %}
+                    <li class="collection-header red lighten-1 white-text center-align"><h5>Errors:</h5></li>
+                    {% for error in comment.getValidationErrors %}
                         <li class="collection-item">{{ error }}</li>
                     {% endfor %}
                 </ul>

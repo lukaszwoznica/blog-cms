@@ -190,6 +190,15 @@ class Category extends Model
         return false;
     }
 
+    public static function getTotal(): int
+    {
+        $db = static::getDatabase();
+        $sql = "SELECT COUNT(*) FROM categories";
+        $stmt = $db->query($sql);
+
+        return $stmt->fetchColumn();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -81,7 +81,7 @@ class Comments extends Admin
                 $this->redirectTo('/admin/comments');
             } else {
                 View::renderTemplate('Admin/Comments/edit.html', [
-                    'category' => $this->comment
+                    'comment' => $this->comment
                 ]);
             }
         } else {

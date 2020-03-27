@@ -13,8 +13,14 @@
     {% for comment in comments %}
         <tr>
             <td></td>
-            <td>{{ comment.getAuthorName }}</td>
-            <td>{{ comment.getContent }}</td>
+            <td style="width: 10%">{{ comment.getAuthorName }}</td>
+            <td style="width: 45%">
+                {% if comment.getContent | length > 250 %}
+                    {{ comment.getContent | slice(0, 250) ~ '...' }}
+                {% else %}
+                    {{ comment.getContent }}
+                {% endif %}
+            </td>
             <td>
                 <a href="/posts/{{ comment.getPostId }}/show" target="_blank" rel="noopener noreferrer">
                     {{ comment.getPostTitle }}
