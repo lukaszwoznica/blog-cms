@@ -14,16 +14,13 @@ class Dashboard extends Admin
 {
     public function indexAction(): void
     {
-        $total_posts = Post::getTotal(false);
-        $total_categories = Category::getTotal();
-        $total_users = User::getTotal();
-        $total_comments = Comment::getTotal();
-
         View::renderTemplate('Admin/Dashboard/index.html', [
-            'total_posts' => $total_posts,
-            'total_categories' => $total_categories,
-            'total_users' => $total_users,
-            'total_comments' => $total_comments
+            'total_posts' => Post::getTotal(false),
+            'total_categories' => Category::getTotal(),
+            'total_users' => User::getTotal(),
+            'total_comments' => Comment::getTotal(),
+            'posts_by_category' => Post::countPostsByCategory(),
+            'comments_by_post' => Comment::countCommentsByPost(5)
         ]);
     }
 }

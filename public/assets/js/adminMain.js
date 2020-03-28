@@ -67,3 +67,48 @@ function deleteNotification(post_id) {
         }
     })
 }
+
+function drawColumnChart(data_array, startup=false) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Post');
+    data.addColumn('number', 'Comments');
+    for (const row of data_array) {
+        data.addRow([row.post, parseInt(row.comments)])
+    }
+
+    var view = new google.visualization.DataView(data);
+    var options = {
+        animation: {
+            startup: startup,
+            easing: 'inAndOut',
+            duration: 3000
+        },
+        chartArea: {'width': '90%', 'height': '80%'},
+        bar: {groupWidth: "15%"},
+        legend: { position: "none" },
+        colors: ['#303f9f']
+    };
+    var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+
+    chart.draw(view, options);
+}
+
+function drawDonutChart(data_array) {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Category');
+    data.addColumn('number', 'Posts');
+    for (const row of data_array) {
+        data.addRow([row.category, parseInt(row.posts)])
+    }
+
+    const options = {
+        pieHole: 0.4,
+        legend: { position: "bottom" },
+        chartArea: {'width': '100%', 'height': '80%'},
+        colors: ['#1976D2', '#E53935' , '#43A047', '#fb8c00', '#8e24aa', '#00897b', '#d81b60'],
+        pieSliceText: 'none'
+    };
+    const chart = new google.visualization.PieChart(document.getElementById('chart2_div'));
+
+    chart.draw(data, options);
+}

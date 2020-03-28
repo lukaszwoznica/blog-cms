@@ -196,6 +196,25 @@ class Comment extends Model
         return $result;
     }
 
+    public static function countCommentsByPost(int $limit): array
+    {
+        $db = static::getDatabase();
+        $sql = 'SELECT posts.title post, COUNT(*) comments 
+                FROM comments 
+                INNER JOIN posts ON comments.post_id = posts.id
+                GROUP BY post_id
+                ORDER BY comments DESC
+                LIMIT :limit';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

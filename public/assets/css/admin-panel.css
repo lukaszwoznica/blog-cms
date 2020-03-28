@@ -173,6 +173,11 @@ nav ul a:hover {
     position: relative;
 }
 
+.sidenav li.active {
+	background-color: rgba(0,0,0,0.15);
+}
+
+
 div.indicator {
     position: absolute;
     width: 8px;
@@ -287,10 +292,6 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 /*
     Dashboard
  */
-
-.stats-card {
-
-}
 
 .stats-card .card-content {
     padding: 1rem 1.5rem 1.5rem 1.5rem;

@@ -272,6 +272,20 @@ class Post extends Model
         return $result;
     }
 
+    public static function countPostsByCategory(): array
+    {
+        $db = static::getDatabase();
+        $sql = "SELECT IFNULL(categories.name, 'Uncategorized') category, COUNT(*) posts
+                FROM posts 
+                LEFT JOIN categories ON posts.category_id = categories.id 
+                GROUP BY category_id";
+        $stmt = $db->query($sql);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
