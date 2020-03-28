@@ -83,6 +83,20 @@ nav .brand-logo {
     font-size: 2rem;
 }
 
+ion-icon {
+    font-size: 1.5rem;
+    margin: 0 .2rem;
+}
+
+.page-footer a {
+    color: #ffffff;
+    transition: color .3s ease-in-out;
+}
+
+.page-footer a:hover {
+    color: #958e8a;
+}
+
 /*
     Alerts
  */

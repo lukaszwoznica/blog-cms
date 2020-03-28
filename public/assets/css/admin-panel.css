@@ -277,6 +277,23 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     color: #303f9f !important;
 }
 
+.switch label input[type="checkbox"]:checked + .lever {
+    background-color: #9fa8da ;
+}
+
+.switch label .lever::before {
+    background-color: rgba(48, 63, 159, 0.15);
+}
+
+input[type="checkbox"]:checked:not(:disabled) ~ .lever:active::before,
+input[type="checkbox"]:checked:not(:disabled).tabbed:focus ~ .lever::before {
+    background-color: #c5cae9;
+}
+
+.switch label input[type="checkbox"]:checked + .lever::after {
+    background-color: #303f9f;
+}
+
 .dropdown-content li > a, .dropdown-content li > span {
     color: #303f9f;
 }
@@ -288,6 +305,8 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 .btn:hover, .btn-large:hover, .btn-small:hover {
     filter: brightness(1.2);
 }
+
+
 
 /*
     Dashboard

@@ -5,7 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
+    <meta type="description" content="{{ site_settings.getBlogDescription }}">
+    <title>{% block title %}{% endblock %} | {{ site_settings.getBlogName }}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -22,7 +23,7 @@
         <nav class="grey darken-4">
             <div class="nav-wrapper container">
                 <ul>
-                    <li><a href="/" class="brand-logo">MyBlogLogo</a></li>
+                    <li><a href="/" class="brand-logo">{{ site_settings.getBlogName }}</a></li>
                     <ul class="hide-on-med-and-down">
                         <li><a href="/">Home</a></li>
                         <li>
@@ -112,14 +113,43 @@
     <div class="container">
         <div class="row">
             <div class="col l6 offset-l3 s12 center-align">
-                <a href="/" class="brand-logo">MyBlogLogo</a>
+                <a href="/" class="brand-logo">{{ site_settings.getBlogName }}</a>
             </div>
         </div>
     </div>
     <div class="footer-copyright grey darken-4">
         <div class="container">
-            © 2019 Copyright
-            <a class="grey-text text-lighten-4 right" href="#!">Social icons</a>
+            <div class="row mb-0">
+                <div class="col s6">
+                    {{ site_settings.getFooterText }}
+                </div>
+                <div class="col s6 right-align">
+                    {% if site_settings.getFacebookProfile %}
+                        <a href="https://www.facebook.com/{{ site_settings.getFacebookProfile }}"
+                           target="_blank" rel="noopener noreferrer">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </a>
+                    {% endif %}
+                    {% if site_settings.getInstagramProfile %}
+                        <a href="https://www.instagram.com/{{ site_settings.getInstagramProfile }}"
+                           target="_blank" rel="noopener noreferrer">
+                            <ion-icon name="logo-instagram"></ion-icon>
+                        </a>
+                    {% endif %}
+                    {% if site_settings.getTwitterProfile %}
+                        <a href="https://twitter.com/{{ site_settings.getTwitterProfile }}"
+                           target="_blank" rel="noopener noreferrer">
+                            <ion-icon name="logo-twitter"></ion-icon>
+                        </a>
+                    {% endif %}
+                    {% if site_settings.getYoutubeProfile %}
+                        <a href="https://www.youtube.com/user/{{ site_settings.getYoutubeProfile }}"
+                           target="_blank" rel="noopener noreferrer">
+                            <ion-icon name="logo-youtube"></ion-icon>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </footer>
@@ -129,6 +159,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 <script src="/assets/js/main.js"></script>
 {% block scripts %}
 {% endblock %}

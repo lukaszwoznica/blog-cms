@@ -96,13 +96,19 @@
             <li class="{{ '/admin/users' in request_uri ? 'active' }}">
                 {{ '/admin/users' in request_uri ? '<div class="indicator"></div>' }}
                 <a href="/admin/users" class="waves-effect waves-light">
-                    <i class="material-icons">people_outline</i>Users
+                    <i class="material-icons">people</i>Users
                 </a>
             </li>
             <li class="{{ '/admin/comments' in request_uri ? 'active' }}">
                 {{ '/admin/comments' in request_uri ? '<div class="indicator"></div>' }}
                 <a href="/admin/comments" class="waves-effect waves-light">
-                    <i class="material-icons">comment_outline</i>Comments
+                    <i class="material-icons">comment</i>Comments
+                </a>
+            </li>
+            <li class="{{ '/admin/settings' in request_uri ? 'active' }}">
+                {{ '/admin/settings' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/settings" class="waves-effect waves-light">
+                    <i class="material-icons">settings</i>Settings
                 </a>
             </li>
         </ul>
