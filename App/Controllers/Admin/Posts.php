@@ -147,7 +147,7 @@ class Posts extends Admin
             } else {
                 if ($post_data['url_slug'] != $this->post->getUrlSlug() && $this->post->getImage() != null) {
                     $img_path = dirname(__DIR__, 3) . '/public' . $this->post->getImage();
-                    if (file_exists($img_path)) {
+                    if (is_file($img_path)) {
                         $extension = pathinfo($img_path, PATHINFO_EXTENSION);
                         $new_filename = $post_data['url_slug'] . '.' . $extension;
                         $new_path = dirname(__DIR__, 3) . '/public/uploads/posts-images/' . $new_filename;
@@ -181,7 +181,7 @@ class Posts extends Admin
         if ($this->post) {
             if ($this->post->delete()) {
                 $img_path = dirname(__DIR__, 3) . '/public' . $this->post->getImage();
-                if (file_exists($img_path)) {
+                if (is_file($img_path)) {
                     unlink($img_path);
                 }
                 Flash::addMessage('Post has been successfully deleted', Flash::SUCCESS);

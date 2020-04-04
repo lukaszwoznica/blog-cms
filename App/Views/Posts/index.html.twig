@@ -16,7 +16,9 @@
             <article>
                 <div class="card card-post center-align z-depth-2 hoverable">
                     <div class="card-image">
-                        <img src="{{ post.getImage | default("/assets/img/post-default.png") }}" alt="Post image">
+                        <a href="/posts/{{ post.getUrlSlug }}">
+                            <img src="{{ post.getImage | default("/assets/img/post-default.png") }}" alt="Post image">
+                        </a>
                     </div>
                     <div class="card-content ">
                         <div class="card-title">

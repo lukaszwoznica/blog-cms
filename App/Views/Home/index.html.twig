@@ -11,8 +11,10 @@
                         <div class="card card-post main-post center-align z-depth-2 hoverable"
                              data-aos="fade" data-aos-duration="1000" data-aos-easing="ease-in-out">
                             <div class="card-image">
-                                <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
-                                     alt="Post image">
+                                <a href="/posts/{{ post.getUrlSlug }}">
+                                    <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
+                                         alt="Post image">
+                                </a>
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
@@ -60,8 +62,10 @@
                     <div data-aos="{{ data_aos }}" data-aos-duration="800" data-aos-easing="ease-in-out">
                         <div class="card card-post center-align z-depth-2 hoverable">
                             <div class="card-image">
-                                <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
-                                     alt="Post image">
+                                <a href="/posts/{{ post.getUrlSlug }}">
+                                    <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
+                                         alt="Post image">
+                                </a>
                             </div>
                             <div class="card-content ">
                                 <div class="card-title">
@@ -100,5 +104,4 @@
     <div class="row center">
         <a href="/posts" class="waves-effect waves-light btn-large orange darken-3">See all posts</a>
     </div>
-
 {% endblock %}

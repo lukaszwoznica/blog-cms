@@ -90,7 +90,7 @@ class Users extends Admin
         if ($this->user) {
             if ($this->user->delete()) {
                 $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
-                if (file_exists($img_path)) {
+                if (is_file($img_path)) {
                     unlink($img_path);
                 }
                 Flash::addMessage('User has been successfully deleted', Flash::SUCCESS);
@@ -123,7 +123,7 @@ class Users extends Admin
 
             if ($post_data['username'] != $this->user->getUsername() && $this->user->getAvatar() != null) {
                 $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
-                if (file_exists($img_path)) {
+                if (is_file($img_path)) {
                     $extension = pathinfo($img_path, PATHINFO_EXTENSION);
                     $new_filename = $post_data['username'] . '.' . $extension;
                     $new_path = dirname(__DIR__, 3) . '/public/uploads/users-avatars/' . $new_filename;

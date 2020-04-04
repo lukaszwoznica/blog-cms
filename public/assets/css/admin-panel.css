@@ -57,7 +57,7 @@ main {
 }
 
 .pagination li.active {
-    background: var(--primary-color);
+    background: var(--admin-primary-color);
 }
 
 .collection.with-header .collection-header {
@@ -66,6 +66,10 @@ main {
 
 .collection.with-header .collection-header > h5 {
     margin: 0;
+}
+
+.page-footer {
+    padding: 0.5rem 0;
 }
 
 /*
@@ -275,7 +279,6 @@ input[type="checkbox"]:checked:not(:disabled).tabbed:focus ~ .lever::before {
 .btn:hover, .btn-large:hover, .btn-small:hover {
     filter: brightness(1.2);
 }
-
 
 
 /*

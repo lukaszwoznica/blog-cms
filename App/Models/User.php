@@ -25,6 +25,7 @@ class User extends Model
     private $is_active = 0;
     private $role_id = 2;
     private $avatar;
+    private $join_date;
 
     public function __construct(array $user_data = [])
     {
@@ -474,6 +475,11 @@ class User extends Model
         return $this->avatar;
     }
 
+    public function getJoinDate(): ?string
+    {
+        return $this->join_date;
+    }
+
     /**
      * Generate a new token for password reset process.
      *
@@ -517,5 +523,4 @@ class User extends Model
 
         Mail::send($this->email, 'Password reset', $html_body, $plaintext_body);
     }
-
 }

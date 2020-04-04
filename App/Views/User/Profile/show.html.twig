@@ -31,6 +31,10 @@
                                         <td class="right-align">Email:</td>
                                         <td>{{ current_user.getEmail }}</td>
                                     </tr>
+                                    <tr>
+                                        <td class="right-align">Join date:</td>
+                                        <td>{{ current_user.getJoinDate | date('d F Y') }}</td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
