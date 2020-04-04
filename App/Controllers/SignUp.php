@@ -25,15 +25,19 @@ class SignUp extends Controller
 
     public function createAction(): void
     {
-        $user = new User($_POST);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user = new User($_POST);
 
-        if ($user->saveToDatabase()) {
-            $user->sendActivationEmail();
-            $this->redirectTo('/signup/success');
+            if ($user->saveToDatabase()) {
+                $user->sendActivationEmail();
+                $this->redirectTo('/signup/success');
+            } else {
+                View::renderTemplate('Signup/new.html', [
+                    'user' => $user
+                ]);
+            }
         } else {
-            View::renderTemplate('Signup/new.html', [
-                'user' => $user
-            ]);
+            $this->redirectTo('/');
         }
     }
 

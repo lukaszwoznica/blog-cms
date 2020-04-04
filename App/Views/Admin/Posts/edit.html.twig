@@ -1,6 +1,6 @@
 {% extends "Admin/base-admin.html.twig" %}
 
-{% block title %} Admin Panel {% endblock %}
+{% block title %} Edit post | {% endblock %}
 
 {% block page_title %} <h3 class="page-title">Edit post</h3> {% endblock %}
 
@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" placeholder="{{ post.getImage }}">
-                                    <span class="helper-text" data-error="wrong" data-success="right">
+                                    <span class="helper-text">
                                         Recommended resolution: 1920x1080px, Max size: 8MB
                                     </span>
                                 </div>

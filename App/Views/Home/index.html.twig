@@ -16,12 +16,13 @@
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
-                                    <h5>{{ post.getTitle }}</h5>
+                                    <h4>{{ post.getTitle }}</h4>
                                 </div>
                                 <div class="row">
                                     <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
                                 </div>
-                                <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
+                                <a href="/posts/{{ post.getUrlSlug }}"
+                                   class="waves-effect waves-light btn orange darken-3">
                                     Read more
                                 </a>
                             </div>
@@ -47,40 +48,43 @@
     <section class="section">
 
         {% for post in posts|slice(1) %}
-            {% set data_aos = 'fade-left' %}
+            {% set data_aos = 'fade-up-left' %}
 
             {% if loop.index0 is divisible by(2) %}
-                {% set data_aos = "fade-right" %}
+                {% set data_aos = "fade-up-right" %}
                 <div class="row">
             {% endif %}
 
             <div class="col m6">
                 <article>
-                    <div class="card card-post center-align z-depth-2 hoverable" data-aos="{{ data_aos }}"
-                         data-aos-duration="800" data-aos-easing="ease-in-out">
-                        <div class="card-image">
-                            <img src="{{ post.getImage | default("/assets/img/post-default.png") }}" alt="Post image">
-                        </div>
-                        <div class="card-content ">
-                            <div class="card-title">
-                                <h5>{{ post.getTitle }}</h5>
+                    <div data-aos="{{ data_aos }}" data-aos-duration="800" data-aos-easing="ease-in-out">
+                        <div class="card card-post center-align z-depth-2 hoverable">
+                            <div class="card-image">
+                                <img src="{{ post.getImage | default("/assets/img/post-default.png") }}"
+                                     alt="Post image">
                             </div>
-                            <div class="row">
-                                <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
+                            <div class="card-content ">
+                                <div class="card-title">
+                                    <h5>{{ post.getTitle }}</h5>
+                                </div>
+                                <div class="row">
+                                    <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
+                                </div>
+                                <a href="/posts/{{ post.getUrlSlug }}"
+                                   class="waves-effect waves-light btn orange darken-3">
+                                    Read more
+                                </a>
                             </div>
-                            <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
-                                Read more
-                            </a>
-                        </div>
-                        <div class="card-action">
+                            <div class="card-action">
                             <span class="post-details">
                                 <i class="material-icons ">edit</i>
                                 {{ post.getAuthorName }}
                             </span>
-                            <span class="post-details">
+                                <span class="post-details">
                                 <i class="material-icons">date_range</i>
                                 {{ post.getCreateTime|date('d/m/Y') }}
                             </span>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -94,7 +98,7 @@
     </section>
 
     <div class="row center">
-        <a href="/posts" class="waves-effect waves-light btn-large">See all posts</a>
+        <a href="/posts" class="waves-effect waves-light btn-large orange darken-3">See all posts</a>
     </div>
 
 {% endblock %}

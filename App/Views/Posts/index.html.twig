@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ post.getTitle }}{% endblock %}
+{% block title %}{{ category_name | default("All posts") }}{% endblock %}
 
 {% block body %}
 
@@ -25,7 +25,7 @@
                         <div class="row">
                             <p>{{ post.getIntroduction|striptags|slice(0,255) }}</p>
                         </div>
-                        <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn">
+                        <a href="/posts/{{ post.getUrlSlug }}" class="waves-effect waves-light btn orange darken-3">
                             Read more
                         </a>
                     </div>

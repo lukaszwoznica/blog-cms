@@ -25,49 +25,89 @@
                 <ul>
                     <li><a href="/" class="brand-logo">{{ site_settings.getBlogName }}</a></li>
                     <ul class="hide-on-med-and-down">
-                        <li><a href="/">Home</a></li>
+                        <li><a href="/" class="waves-effect waves-light">Home</a></li>
                         <li>
-                            <a class="dropdown-trigger" href="" data-target="categoriesDropdown">
+                            <a class="dropdown-trigger waves-effect waves-light" href=""
+                               data-target="categoriesDropdown">
                                 Categories<i class="material-icons right">arrow_drop_down</i>
                             </a>
+                            <ul id="categoriesDropdown" class="dropdown-content">
+                                {% for cat in categories %}
+                                    <li class="text-bold waves-effect"><a
+                                                href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a></li>
+                                    {% for subcategory in cat.getAllDescendantSubcategories %}
+                                        <li class="waves-effect">
+                                            <a href="/categories/{{ subcategory.getUrlSlug }}">
+                                                {%- for i in range(0, subcategory.getLevel) -%}
+                                                    &emsp;
+                                                {%- endfor -%}
+                                                {{ subcategory.getName }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                {% endfor %}
+                            </ul>
                         </li>
-                        <li><a href="">Contact</a></li>
                     </ul>
                 </ul>
                 <ul class="right hide-on-med-and-down">
-                    {% include('Inc/user-nav.html.twig') %}
+                    {% if current_user == null %}
+                        <li><a href="/signup" class="waves-effect waves-light">Sign up</a></li>
+                        <li><a href="/login" class="waves-effect waves-light">Login</a></li>
+                    {% else %}
+                        {% if current_user.getRoleId == 1 %}
+                            <li><a href="/admin/dashboard" class="waves-effect waves-light">Admin Panel</a></li>
+                        {% endif %}
+                        <li>
+                            <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="userDropdown">
+                                <div class="valign-wrapper">
+                                    <img class="user-avatar"
+                                         src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
+                                         alt="User Avatar">
+                                    <i class="material-icons" style="display: inline">arrow_drop_down</i>
+                                </div>
+                            </a>
+                            <ul id="userDropdown" class="dropdown-content">
+                                <li class="dropdown-title" style="text-align: center">
+                                    {{ current_user.getUsername }}
+                                    <span class="grey-text text-darken-4">{{ current_user.getEmail }}</span>
+                                </li>
+                                <li class="divider" tabindex="-1"></li>
+                                <li class="waves-effect">
+                                    <a href="/user/profile/show"><i class="material-icons">account_circle</i>Profile</a>
+                                </li>
+                                <li class="waves-effect">
+                                    <a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
                 </ul>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i
                             class="material-icons">menu</i></a>
             </div>
         </nav>
-        <ul id="categoriesDropdown" class="dropdown-content">
-            {% for cat in categories %}
-                <li class="text-bold"><a href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a></li>
-                {% for subcategory in cat.getAllDescendantSubcategories %}
-                    <li>
-                        <a href="/categories/{{ subcategory.getUrlSlug }}">
-                            {%- for i in range(0, subcategory.getLevel) -%}
-                                &emsp;
-                            {%- endfor -%}
-                            {{ subcategory.getName }}
-                        </a>
-                    </li>
-                {% endfor %}
-                <li class="divider"></li>
-            {% endfor %}
-        </ul>
+
     </div>
     <nav class="sidenav mobile-nav" id="mobile-demo">
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="">Contact</a></li>
-            <li><a class="modal-trigger" href="#categoriesModal">Categories</a></li>
+            <li><a href="/" class="waves-effect waves-light">Home</a></li>
+            <li><a class="modal-trigger waves-effect waves-light" href="#categoriesModal">Categories</a></li>
             <li class="divider"></li>
-            {% include('Inc/user-nav.html.twig') %}
+            {% if current_user == null %}
+                <li><a href="/signup" class="waves-effect waves-light">Sign up</a></li>
+                <li><a href="/login" class="waves-effect waves-light">Login</a></li>
+            {% else %}
+                {% if current_user.getRoleId == 1 %}
+                    <li><a href="/admin/dashboard" class="waves-effect waves-light">Admin Panel</a></li>
+                {% endif %}
+                <li><a href="/user/profile/show" class="waves-effect waves-light">Profile</a></li>
+                <li><a href="/logout" class="waves-effect waves-light">Logout</a></li>
+            {% endif %}
         </ul>
     </nav>
-    <div id="categoriesModal" class="modal">
+    <div id="categoriesModal" class="modal grey lighten-3">
         <button class="modal-close btn-flat">
             <i class="material-icons">close</i>
         </button>
@@ -75,9 +115,10 @@
             <h4 class="center-align">Categories</h4>
             <div class="collection">
                 {% for cat in categories %}
-                    <a class="collection-item text-bold" href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a>
+                    <a class="collection-item text-bold black-text"
+                       href="/categories/{{ cat.getUrlSlug }}">{{ cat.name }}</a>
                     {% for subcategory in cat.getAllDescendantSubcategories %}
-                        <a class="collection-item" href="/categories/{{ subcategory.getUrlSlug }}">
+                        <a class="collection-item black-text" href="/categories/{{ subcategory.getUrlSlug }}">
                             {%- for i in range(0, subcategory.getLevel) -%}
                                 &emsp;
                             {%- endfor -%}

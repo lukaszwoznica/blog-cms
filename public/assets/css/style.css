@@ -1,3 +1,6 @@
+:root {
+    --primary-color: #ef6c00;
+}
 body {
     display: flex;
     min-height: 100vh;
@@ -7,6 +10,7 @@ body {
 main {
     flex: 1 0 auto;
 }
+
 
 /*
     Homepage
@@ -18,6 +22,13 @@ main {
 
 .card-post {
     margin: 3rem 1rem 2rem 0;
+    transition: transform .3s ease-in-out;
+}
+
+.card-post:hover {
+    -webkit-transform: scale(1.02, 1.02);
+    -moz-transform: scale(1.02, 1.02);
+    -ms-transform: scale(1.02, 1.02);
 }
 
 .main-post {
@@ -33,9 +44,53 @@ span.post-details i {
     top: 5px;
 }
 
+.pagination li.active {
+    background: var(--primary-color);
+}
+
+
 /*
     Navbar
  */
+
+img.user-avatar {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+nav .dropdown-trigger {
+    max-height: 64px;
+}
+
+nav .dropdown-content {
+    min-width: 250px;
+}
+
+nav .dropdown-content li > a > i {
+    margin: 0 14px 0 0;
+}
+
+nav ul a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-content li.dropdown-title {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    padding: 1rem;
+    color: var(--primary-color);
+}
+
+.dropdown-content li.dropdown-title span {
+    padding: 0;
+}
+
+.dropdown-content li a {
+    color: #212121;
+}
+
 
 nav .brand-logo {
     position: relative;
@@ -86,15 +141,15 @@ nav .brand-logo {
 ion-icon {
     font-size: 1.5rem;
     margin: 0 .2rem;
+    transition: color .3s ease-in-out;
 }
 
 .page-footer a {
     color: #ffffff;
-    transition: color .3s ease-in-out;
 }
 
-.page-footer a:hover {
-    color: #958e8a;
+.page-footer a:hover > ion-icon {
+    color: var(--primary-color);
 }
 
 /*
@@ -162,7 +217,53 @@ div.invalid {
 }
 
 .password-icon.active {
-    color: #26a69a;
+    color: var(--primary-color);
+}
+
+.input-field input[type=text]:focus + label,
+.input-field input[type=password]:focus + label,
+.input-field input[type=email]:focus + label {
+    color: var(--primary-color)  !important;
+}
+
+.input-field .prefix.active {
+    color: var(--primary-color)  !important;
+}
+
+.input-field input[type="text"]:focus,
+.input-field input[type="email"]:focus,
+.input-field input[type="password"]:focus{
+    border-bottom: 1px solid var(--primary-color)  !important;
+    box-shadow: 0 1px 0 0 var(--primary-color)  !important;
+}
+
+[type="radio"]:checked + span::after, [type="radio"].with-gap:checked + span::after {
+    background-color: var(--primary-color)  !important;
+}
+
+[type="radio"]:checked + span::after,
+[type="radio"].with-gap:checked + span::before,
+[type="radio"].with-gap:checked + span::after {
+    border: 2px solid var(--primary-color) !important;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid var(--primary-color);
+    -webkit-box-shadow: 0 1px 0 0 var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+textarea.materialize-textarea:focus:not([readonly]) + label {
+    color: var(--primary-color) !important;
+}
+
+[type="checkbox"].filled-in:checked + span:not(.lever)::after {
+    border: 2px solid var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    filter: brightness(1.2);
 }
 
 /*

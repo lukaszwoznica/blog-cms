@@ -8,6 +8,9 @@
             .post-page-content {
                 top: 10vh;
             }
+            .page-footer {
+                margin-top: 10rem;
+            }
         </style>
     {% endif %}
 {% endblock %}
@@ -41,9 +44,9 @@
                     </div>
                     <div class="card-action">
             <span>
-                Author: {{ post.getAuthorName }} |
-                Date: {{ post.getCreateTime|date('d F Y') }} |
-                Category: {{ post.getCategoryName }}
+                <span class="text-bold">Author:</span> {{ post.getAuthorName }} |
+                <span class="text-bold">Date:</span> {{ post.getCreateTime|date('d F Y') }} |
+                <span class="text-bold">Category:</span> {{ post.getCategoryName }}
             </span>
                     </div>
                 </div>
@@ -69,7 +72,7 @@
                                     </div>
                                     <div class="col m11 s10">
                                     <textarea id="commentInput" name="content" class="materialize-textarea"
-                                              minlength="1" maxlength="2000" required></textarea>
+                                              minlength="1" maxlength="2000" data-length="2000" required></textarea>
                                         <label for="commentInput">Comment</label>
                                         <input type="hidden" name="post_id" value="{{ post.getId }}">
                                     </div>
@@ -87,7 +90,7 @@
                         </div>
                         {% if current_user %}
                             <div class="card-action right-align">
-                                <button type="submit" class="waves-effect btn">
+                                <button type="submit" class="waves-effect waves-light btn orange darken-3">
                                     Post comment
                                     <i class="material-icons right">send</i>
                                 </button>
@@ -141,4 +144,12 @@
         </section>
     </main>
 
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#commentInput').characterCounter();
+        });
+    </script>
 {% endblock %}
