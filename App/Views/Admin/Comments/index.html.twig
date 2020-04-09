@@ -1,0 +1,34 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Comments | {% endblock %}
+
+{% block page_title %} <h2 class="page-title">Comments management</h2> {% endblock %}
+
+{% block body %}
+    <div class="card-panel z-depth-2">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <label for="searchInput">Search</label>
+            <input type="text" name="search" id="searchInput" placeholder="Search by author, comment or post title"
+                   class="form-control" value="{{ search_query }}">
+        </div>
+        <div id="tableCard">
+            {% include 'Admin/Comments/Inc/table.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').change(function () {
+                let search_query = $(this).val();
+                if (search_query.length > 0) {
+                    searchData('/admin/comments/search', search_query);
+                } else {
+                    searchData('/admin/comments/search');
+                }
+            });
+        });
+    </script>
+{% endblock %}

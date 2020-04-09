@@ -1,0 +1,54 @@
+{% spaceless %}
+    {% if lastPage > 1 %}
+
+        {# the number of first and last pages to be displayed #}
+        {% set extremePagesLimit = 3 %}
+
+        {# the number of pages that are displayed around the active page #}
+        {% set nearbyPagesLimit = 2 %}
+
+        <ul class="pagination">
+            {% if currentPage > 1 %}
+                <li class="waves-effect">
+                    <a href="{{ paginationPath }}{{ currentPage-1 }}"><i class="material-icons">chevron_left</i></a>
+                </li>
+
+                {% for i in range(1, extremePagesLimit) if ( i < currentPage - nearbyPagesLimit ) %}
+                    <li class="waves-effect"><a href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %}
+                    <li class="disabled"><a>...</a></li>
+                {% endif %}
+
+                {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) if ( i > 0 ) %}
+                    <li class="waves-effect"><a href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+            {% elseif showAlwaysFirstAndLast %}
+                <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+
+            <li class="active"><a>{{ currentPage }}</a></li>
+
+            {% if currentPage < lastPage %}
+                {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) if ( i <= lastPage ) %}
+                    <li class="waves-effect"><a href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                {% if  (lastPage - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
+                    <li class="disabled"><a>...</a></li>
+                {% endif %}
+
+                {% for i in range(lastPage - extremePagesLimit+1, lastPage) if ( i > currentPage + nearbyPagesLimit ) %}
+                    <li class="waves-effect"><a href="{{ paginationPath }}{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+
+                <li class="waves-effect">
+                    <a href="{{ paginationPath }}{{ currentPage+1 }}"><i class="material-icons">chevron_right</i></a>
+                </li>
+            {% elseif showAlwaysFirstAndLast %}
+                <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endspaceless %}

@@ -4,15 +4,55 @@
 
 {% block body %}
 
-    <h1>Profile</h1>
+    <h2>My profile</h2>
 
-    <dl>
-        <dt>Username</dt>
-        <dd>{{ current_user.getUsername }}</dd>
-        <dt>Email</dt>
-        <dd>{{ current_user.getEmail }}</dd>
-    </dl>
-
-    <a href="/user/profile/edit">Edit</a>
+    <div class="row">
+        <div class="col l8 m12 offset-l2 user-details">
+            <div class="card z-depth-2">
+                <div class="card-content">
+                    <div class="row" style="margin-bottom: 0">
+                        <div class="col m6 s12">
+                            <div class="user-avatar">
+                                <img src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
+                                     alt="User avatar">
+                            </div>
+                            <div class=" center-align">
+                                <h4>{{ current_user.getUsername }}</h4>
+                            </div>
+                        </div>
+                        <div class="col m6 s12">
+                            <div class="row">
+                                <table>
+                                    <tr>
+                                        <td class="right-align">Username:</td>
+                                        <td>{{ current_user.getUsername }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="right-align">Email:</td>
+                                        <td>{{ current_user.getEmail }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="right-align">Join date:</td>
+                                        <td>{{ current_user.getJoinDate | date('d F Y') }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action right-align hide-on-small-only">
+                    <a href="/user/profile/edit" class="waves-effect waves-light btn orange darken-3">
+                        <i class="material-icons left">edit</i>
+                        <span>Edit profile</span>
+                    </a>
+                </div>
+                <div class="fixed-action-btn hide-on-med-and-up">
+                    <a href="/user/profile/edit" class="btn-floating btn-large orange darken-3">
+                        <i class="large material-icons">edit</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

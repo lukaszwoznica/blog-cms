@@ -2,3 +2,4 @@
 vendor/*
 cache/*
 logs/*
+public/uploads/*

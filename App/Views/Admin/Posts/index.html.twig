@@ -1,53 +1,40 @@
 {% extends "Admin/base-admin.html.twig" %}
 
-{% block title %} Admin Panel {% endblock %}
+{% block title %} Posts | {% endblock %}
 
-{% block page_title %} <h1>Posts management</h1> {% endblock %}
+{% block page_title %} <h2 class="page-title">Posts management</h2> {% endblock %}
 
 {% block body %}
-    <a href="/admin/posts/new">New post</a>
+    <div class="fixed-action-btn">
+        <a href="/admin/posts/new" class="btn-floating btn-large red darken-2 pulse">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Author</th>
-                <th>Create date</th>
-                <th>Last modified</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.getId }}</td>
-                <td>{{ post.getTitle }}</td>
-                <td>
-                    {% if post.getCategoryName %}
-                        {{ post.getCategoryName }}
-                    {% else %}
-                        Uncategorized
-                    {% endif %}
-                </td>
-                <td>{{ post.getAuthorName }}</td>
-                <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
-                <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
-                <td>
-                    {% if post.getIsPublished == 1 %}
-                        Published
-                    {% else %}
-                        Draft
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="/admin/posts/{{ post.getId }}/edit">Edit</a>
-                    <a href="/admin/posts/{{ post.getId }}/destroy">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="card-panel z-depth-2">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <label for="searchInput">Search</label>
+            <input type="text" name="search" id="searchInput" placeholder="Search by title, category or author"
+                   class="form-control">
+        </div>
+        <div id="tableCard">
+            {% include 'Admin/Posts/Inc/table.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').change(function () {
+                let search_query = $(this).val();
+                if (search_query.length > 0) {
+                    searchData('/admin/posts/search', search_query);
+                } else {
+                    searchData('/admin/posts/search');
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,49 +1,40 @@
 {% extends "Admin/base-admin.html.twig" %}
 
-{% block title %} Admin Panel {% endblock %}
+{% block title %} Users | {% endblock %}
 
-{% block page_title %} <h1>Users management</h1> {% endblock %}
+{% block page_title %} <h2 class="page-title">Users management</h2> {% endblock %}
 
 {% block body %}
-    <a href="/admin/users/new">New user</a>
+    <div class="fixed-action-btn">
+        <a href="/admin/users/new" class="btn-floating btn-large red darken-2 pulse">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>E-Mail</th>
-            <th>Active</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.getId }}</td>
-                <td>{{ user.getUsername }}</td>
-                <td>{{ user.getEmail }}</td>
-                <td>
-                    {% if user.getIsActive %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.getRoleId == 1 %}
-                        Administrator
-                    {% else %}
-                        User
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="/admin/users/{{ user.getId }}/edit">Edit</a>
-                    <a href="/admin/users/{{ user.getId }}/destroy">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="card-panel z-depth-2">
+        <div class="input-field">
+            <i class="material-icons prefix">search</i>
+            <label for="searchInput">Search</label>
+            <input type="text" name="search" id="searchInput" placeholder="Search by username or email"
+                   class="form-control" value="{{ search_query }}">
+        </div>
+        <div id="tableCard">
+            {% include 'Admin/Users/Inc/table.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').change(function () {
+                let search_query = $(this).val();
+                if (search_query.length > 0) {
+                    searchData('/admin/users/search', search_query);
+                } else {
+                    searchData('/admin/users/search');
+                }
+            });
+        });
+    </script>
 {% endblock %}

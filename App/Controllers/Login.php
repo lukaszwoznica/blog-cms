@@ -17,37 +17,37 @@ class Login extends Controller
             $this->redirectTo('/');
         }
 
-        View::renderTemplate('Login/login.html');
+        View::renderTemplate('Login/index.html');
     }
 
     public function createAction(): void
     {
-        if (Auth::getUser()) {
-            $this->redirectTo('/');
-        }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user = User::authenticate($_POST['login'], $_POST['password']);
+            $remember_me = isset($_POST['remember_me']);
 
-        $user = User::authenticate($_POST['login'], $_POST['password']);
-        $remember_me = isset($_POST['remember_me']);
-
-        if ($user) {
-            if ($user->getIsActive()) {
-                Auth::login($user, $remember_me);
-                $this->redirectTo(Auth::getReturnPage());
+            if ($user) {
+                if ($user->getIsActive()) {
+                    Auth::login($user, $remember_me);
+                    $this->redirectTo(Auth::getReturnPage());
+                } else {
+                    Flash::addMessage('Before you can login, you must activate your account.',
+                        Flash::ERROR
+                    );
+                    View::renderTemplate('Login/index.html', [
+                        'login' => $_POST['login'],
+                        'remember_me' => $remember_me
+                    ]);
+                }
             } else {
-                Flash::addMessage('Before you can login, you must activate your account.',
-                    Flash::ERROR
-                );
-                View::renderTemplate('Login/login.html', [
+                Flash::addMessage('Incorrect login or password, please try again.', Flash::ERROR);
+                View::renderTemplate('Login/index.html', [
                     'login' => $_POST['login'],
                     'remember_me' => $remember_me
                 ]);
             }
         } else {
-            Flash::addMessage('Incorrect login or password, please try again.', Flash::ERROR);
-            View::renderTemplate('Login/login.html', [
-                'login' => $_POST['login'],
-                'remember_me' => $remember_me
-            ]);
+            $this->redirectTo('/');
         }
     }
 

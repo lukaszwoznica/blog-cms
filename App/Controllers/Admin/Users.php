@@ -6,10 +6,12 @@ namespace App\Controllers\Admin;
 
 use App\Flash;
 use App\Models\User;
+use App\Paginator;
 use Core\View;
 
 class Users extends Admin
 {
+    private $page;
     private $user;
 
     public function __construct(array $route_params)
@@ -19,15 +21,43 @@ class Users extends Admin
         if (isset($route_params['id'])) {
             $this->user = User::findByID($route_params['id']);
         }
+        if (isset($route_params['page'])) {
+            $this->page = (int)$route_params['page'];
+        } else {
+            $this->page = 1;
+        }
     }
 
     public function indexAction(): void
     {
-        $users = User::getAllUsers();
+        $paginator = new Paginator($this->page, 10, User::getTotal());
+        $users = User::getAllUsers($paginator->getOffset(), $paginator->getLimit());
 
         View::renderTemplate('Admin/Users/index.html', [
-            'users' => $users
+            'users' => $users,
+            'page' => $this->page,
+            'total_pages' => $paginator->getTotalPages()
         ]);
+    }
+
+    public function searchAction(): void
+    {
+        if (isset($_GET['search_query'])) {
+            $users = User::getAllUsersContainsFilter($_GET['search_query']);
+
+            View::renderTemplate('Admin/Users/Inc/table.html', [
+                'users' => $users
+            ]);
+        } else {
+            $paginator = new Paginator($this->page, 10, User::getTotal());
+            $users = User::getAllUsers($paginator->getOffset(), $paginator->getLimit());
+
+            View::renderTemplate('Admin/Users/Inc/table.html', [
+                'users' => $users,
+                'page' => $this->page,
+                'total_pages' => $paginator->getTotalPages()
+            ]);
+        }
     }
 
     public function newAction(): void
@@ -59,6 +89,10 @@ class Users extends Admin
     {
         if ($this->user) {
             if ($this->user->delete()) {
+                $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
+                if (is_file($img_path)) {
+                    unlink($img_path);
+                }
                 Flash::addMessage('User has been successfully deleted', Flash::SUCCESS);
             } else {
                 Flash::addMessage('An error occurred while deleting the user', Flash::ERROR);
@@ -85,7 +119,22 @@ class Users extends Admin
     public function updateAction(): void
     {
         if ($this->user && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->user->update($_POST)) {
+            $post_data = $_POST;
+
+            if ($post_data['username'] != $this->user->getUsername() && $this->user->getAvatar() != null) {
+                $img_path = dirname(__DIR__, 3) . '/public' . $this->user->getAvatar();
+                if (is_file($img_path)) {
+                    $extension = pathinfo($img_path, PATHINFO_EXTENSION);
+                    $new_filename = $post_data['username'] . '.' . $extension;
+                    $new_path = dirname(__DIR__, 3) . '/public/uploads/users-avatars/' . $new_filename;
+                    rename($img_path, $new_path);
+                    $post_data['avatar'] = '/uploads/users-avatars/' . $new_filename;
+                }
+            } else {
+                $post_data['avatar'] = $this->user->getAvatar();
+            }
+
+            if ($this->user->update($post_data)) {
                 Flash::addMessage('User has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/users');
             } else {

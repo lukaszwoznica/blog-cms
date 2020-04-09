@@ -2,11 +2,49 @@
 
 {% block title %}Reset password{% endblock %}
 
+{% block body %}
+    <h2 class="center-align">Reset password</h2>
+
+    {% if user.getValidationErrors is not empty %}
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <ul class="collection with-header">
+                    <li class="collection-header red lighten-3 center-align"><h5>Errors:</h5></li>
+                    {% for error in user.getValidationErrors %}
+                        <li class="collection-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card-panel grey lighten-4">
+                <p>
+                    Enter a new password for your account below.
+                </p>
+                <form id="formNewPassword" action="/user/password/reset-password" method="post">
+                    <input type="hidden" name="token" value="{{ token }}">
+                    <div class="input-field">
+                        <i class="material-icons password-icon" id="passwordIcon">visibility</i>
+                        <label for="inputPassword">New password</label>
+                        <input type="password" id="inputPassword" name="password" required/>
+                    </div>
+                    <div class="center-align">
+                        <button type="submit" class="waves-effect waves-light btn-large orange darken-3">Reset password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block scripts %}
-    <script src="/assets/js/hideShowPassword.min.js"></script>
-    <script src="/assets/js/passwordValidationMethod.js"></script>
+    <script src="/assets/js/showHidePassword.js"></script>
+    <script src="/assets/js/customValidationMethods.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#formNewPassword').validate({
                 rules: {
                     password: {
@@ -14,39 +52,10 @@
                         minlength: 6,
                         validPassword: true
                     }
-                }
-            });
-
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
+                },
+                errorElement: 'div',
+                errorClass: 'invalid'
             });
         });
     </script>
-{% endblock %}
-
-{% block body %}
-
-    <h1>Reset password</h1>
-
-    {% if user.getValidationErrors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.getValidationErrors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    <form id="formNewPassword" action="/user/password/reset-password" method="post">
-        <input type="hidden" name="token" value="{{ token }}">
-        <div>
-            <label for="inpPassword">New password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required/>
-        </div>
-
-        <button type="submit">Reset password</button>
-
-    </form>
-
 {% endblock %}

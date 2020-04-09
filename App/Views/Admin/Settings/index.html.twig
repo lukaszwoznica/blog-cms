@@ -1,0 +1,202 @@
+{% extends "Admin/base-admin.html.twig" %}
+
+{% block title %} Blog settings | {% endblock %}
+
+{% block page_title %} <h2 class="page-title">Blog settings</h2> {% endblock %}
+
+{% block body %}
+    {% if errors is not empty %}
+        <div class="row">
+            <div class="col s12 m6 offset-m3">
+                <ul class="collection with-header">
+                    <li class="collection-header red lighten-1 white-text center-align"><h5>Errors:</h5></li>
+                    {% for error in errors %}
+                        <li class="collection-item">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <form action="/admin/settings/update" method="post">
+        <div class="row">
+            <div class="col xl8 offset-xl2 l10 offset-l1 s12">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title">General Settings</span>
+                        <div class="input-field">
+                            <input type="text" id="blogNameInput" name="blog_name" required data-length="50"
+                                   value="{{ site_settings.getBlogName }}">
+                            <label for="blogNameInput">Blog name</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="blogDescInput" name="blog_description" required data-length="100"
+                                   value="{{ site_settings.getBlogDescription }}">
+                            <label for="blogDescInput">Blog description</label>
+                            <span class="helper-text">A few words explaining what this blog is about</span>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="footerTextInput" name="footer_text" required data-length="100"
+                                   value="{{ site_settings.getFooterText }}">
+                            <label for="footerTextInput">Footer text</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col xl8 offset-xl2 l10 offset-l1 s12">
+                <div class="card z-depth-2">
+                    <div class="card-content">
+                        <span class="card-title">Social Media Accounts</span>
+                        <h6>Facebook</h6>
+                        <div class="row valign-wrapper">
+                            <div class="col m3 s4 center-content">
+                                <div class="switch">
+                                    <label>
+                                        Off
+                                        <input type="checkbox" id="fbSwitch"
+                                                {{ site_settings.getFacebookProfile is not empty ? 'checked' }}>
+                                        <span class="lever"></span>
+                                        On
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col m9 s8">
+                                <div class="input-field">
+                                    <input type="text" id="facebookInput" name="facebook_profile" required disabled
+                                           value="{{ site_settings.getFacebookProfile }}">
+                                    <label for="facebookInput">Facebook profile name</label>
+                                    <span class="helper-text">
+                                        https://www.facebook.com/<span class="text-bold">xxxx</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h6>Instagram</h6>
+                        <div class="row valign-wrapper">
+                            <div class="col m3 s4 center-content">
+                                <div class="switch">
+                                    <label>
+                                        Off
+                                        <input type="checkbox" id="igSwitch"
+                                                {{ site_settings.getInstagramProfile is not empty ? 'checked' }}>
+                                        <span class="lever"></span>
+                                        On
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col m9 s8">
+                                <div class="input-field">
+                                    <input type="text" id="instagramInput" name="instagram_profile" required disabled
+                                           value="{{ site_settings.getInstagramProfile }}">
+                                    <label for="instagramInput">Instagram profile name</label>
+                                    <span class="helper-text">
+                                        https://www.instagram.com/<span class="text-bold">xxxx</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h6>Twitter</h6>
+                        <div class="row valign-wrapper">
+                            <div class="col m3 s4 center-content">
+                                <div class="switch">
+                                    <label>
+                                        Off
+                                        <input type="checkbox" id="ttSwitch"
+                                                {{ site_settings.getTwitterProfile is not empty ? 'checked' }}>
+                                        <span class="lever"></span>
+                                        On
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col m9 s8">
+                                <div class="input-field">
+                                    <input type="text" id="twitterInput" name="twitter_profile" required disabled
+                                           value="{{ site_settings.getTwitterProfile }}">
+                                    <label for="twitterInput">Twitter profile name</label>
+                                    <span class="helper-text">
+                                        https://twitter.com/<span class="text-bold">xxxx</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h6>YouTube</h6>
+                        <div class="row valign-wrapper">
+                            <div class="col m3 s4 center-content">
+                                <div class="switch">
+                                    <label>
+                                        Off
+                                        <input type="checkbox" id="ytSwitch"
+                                                {{ site_settings.getYoutubeProfile is not empty ? 'checked' }}>
+                                        <span class="lever"></span>
+                                        On
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col m9 s8">
+                                <div class="input-field">
+                                    <input type="text" id="youtubeInput" name="youtube_profile" required disabled
+                                           value="{{ site_settings.getYoutubeProfile }}">
+                                    <label for="youtubeInput">YouTube channel name</label>
+                                    <span class="helper-text">
+                                        https://www.youtube.com/user/<span class="text-bold">xxxx</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 center-content">
+                <button type="submit" class="waves-effect waves-light btn-large indigo darken-2">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#blogNameInput, #blogDescInput, #footerTextInput').characterCounter();
+
+            const fb_switch = $('#fbSwitch');
+            const fb_input = $('#facebookInput');
+            const ig_switch = $('#igSwitch');
+            const ig_input = $('#instagramInput');
+            const tt_switch = $('#ttSwitch');
+            const tt_input = $('#twitterInput');
+            const yt_switch = $('#ytSwitch');
+            const yt_input = $('#youtubeInput');
+
+            if (fb_switch.is(':checked')) {
+                fb_input.prop('disabled', false)
+            }
+            if (ig_switch.is(':checked')) {
+                ig_input.prop('disabled', false)
+            }
+            if (tt_switch.is(':checked')) {
+                tt_input.prop('disabled', false)
+            }
+            if (yt_switch.is(':checked')) {
+                yt_input.prop('disabled', false)
+            }
+
+            fb_switch.change(function () {
+                fb_input.prop('disabled', (_, val) => !val)
+            });
+            ig_switch.change(function () {
+                ig_input.prop('disabled', (_, val) => !val)
+            });
+            tt_switch.change(function () {
+                tt_input.prop('disabled', (_, val) => !val)
+            });
+            yt_switch.change(function () {
+                yt_input.prop('disabled', (_, val) => !val)
+            })
+        });
+    </script>
+{% endblock %}
+

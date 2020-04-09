@@ -5,43 +5,179 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <title>{% block title %}{% endblock %}Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <link rel="stylesheet" href="/assets/css/admin-panel.css"/>
+    {% block styles %}{% endblock %}
 </head>
+
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/user/profile/show">Profile</a>
-        <a href="/logout">Logout</a>
-    </nav>
+<header>
+    <div class="navbar-fixed z-depth-1">
+        <nav class="indigo">
+            <div class="nav-wrapper">
+                <ul>
+                    <li>
+                        <a href="#" data-target="slide-out" class="sidenav-trigger waves-effect waves-light">
+                            <i class="material-icons">menu</i>
+                        </a>
+                    </li>
+                    <li><a href="/admin/dashboard" class="brand-logo">Admin</a></li>
+                </ul>
+                <ul class="right">
+                    <li><a href="/" class="waves-effect waves-light"><i class="material-icons">home</i></a>
+                    </li>
+                    <li><a class="waves-effect waves-light"><i class="material-icons" data-toggle-fullscreen>settings_overscan</i></a>
+                    </li>
+                    <li id="notificationsItem">
+                        <a id="notificationsDropdownTrigger" class="dropdown-trigger waves-effect waves-light" href="#"
+                           data-target="notificationsDropdown">
+                            <i id="notificationIcon" class="material-icons">notification_important</i>
+                            <i id="newNotificationIcon" class="material-icons red-text text-darken-2">new_releases</i>
+                        </a>
+                        <ul id="notificationsDropdown" class="dropdown-content">
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-trigger waves-effect waves-light" href="#" data-target="userDropdown">
+                            <img class="user-avatar"
+                                 src="{{ current_user.getAvatar | default("/assets/img/avatar-default.png") }}"
+                                 alt="User Avatar">
+                        </a>
+                        <ul id="userDropdown" class="dropdown-content">
+                            <li class="dropdown-title" style="text-align: center">
+                                {{ current_user.getUsername }}
+                                <span class="grey-text text-darken-4">{{ current_user.getEmail }}</span>
+                            </li>
+                            <li class="divider" tabindex="-1"></li>
+                            <li class="waves-effect">
+                                <a href="/user/profile/show"><i class="material-icons">account_circle</i>Profile</a>
+                            </li>
+                            <li class="waves-effect">
+                                <a href="/logout"><i class="material-icons">exit_to_app</i>Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
 
-    {% for message in flash_messages %}
-        <div class="alert alert-{{ message.type }}">
-            {{ message.body }}
-        </div>
-    {% endfor %}
-
-    {% block page_title %}
-    {% endblock %}
-
-    <nav>
-        <ul>
-            <li><a href="/admin/dashboard">Dashboard</a></li>
-            <li><a href="/admin/posts">Posts</a></li>
-            <li><a href="/admin/categories">Categories</a></li>
-            <li><a href="/admin/users">Users</a></li>
+<div class="main-page">
+    <aside>
+        <ul id="slide-out" class="sidenav admin-sidenav sidenav-fixed z-depth-2">
+            <li>
+                <div class="logo-wrapper z-depth-1">
+                    <a href="/admin/dashboard" class="admin-logo">Admin panel</a>
+                </div>
+            </li>
+            <li class="{{ '/admin/dashboard' in request_uri ? 'active' }}">
+                {{ '/admin/dashboard' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/dashboard" class="waves-effect waves-light">
+                    <i class="material-icons-outlined">dashboard</i>Dashboard
+                </a>
+            </li>
+            <li class="{{ '/admin/posts' in request_uri ? 'active' }}">
+                {{ '/admin/posts' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/posts" class="waves-effect waves-light">
+                    <i class="material-icons">library_books</i>Posts
+                </a>
+            </li>
+            <li class="{{ '/admin/categories' in request_uri ? 'active' }}">
+                {{ '/admin/categories' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/categories" class="waves-effect waves-light">
+                    <i class="material-icons-outlined">category</i>Categories
+                </a>
+                </li>
+            <li class="{{ '/admin/users' in request_uri ? 'active' }}">
+                {{ '/admin/users' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/users" class="waves-effect waves-light">
+                    <i class="material-icons">people</i>Users
+                </a>
+            </li>
+            <li class="{{ '/admin/comments' in request_uri ? 'active' }}">
+                {{ '/admin/comments' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/comments" class="waves-effect waves-light">
+                    <i class="material-icons">comment</i>Comments
+                </a>
+            </li>
+            <li class="{{ '/admin/settings' in request_uri ? 'active' }}">
+                {{ '/admin/settings' in request_uri ? '<div class="indicator"></div>' }}
+                <a href="/admin/settings" class="waves-effect waves-light">
+                    <i class="material-icons">settings</i>Settings
+                </a>
+            </li>
         </ul>
-    </nav>
+    </aside>
 
-    {% block body %}
-    {% endblock %}
+    <main>
+        {% for message in flash_messages %}
+            <div class="card alert alert-{{ message.type }}">
+                <div class="card-content">
+                    <p>{{ message.body }}</p>
+                </div>
+                <button class="alert-close-btn" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        {% endfor %}
+        <div class="content-wrapper">
+        </div>
+        <div class="container">
+            <div class="page-title-wrapper">
+                <div data-aos="zoom-out" data-aos-easing="ease-in-out" data-aos-duration="800">
+                    {% block page_title %}
+                    {% endblock %}
+                </div>
+            </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
 
-    {% block scripts %}
-    {% endblock %}
+    <footer class="page-footer grey darken-2">
+        <div class="footer-copyright grey darken-2">
+            <div class="container white-text">
+                {{ site_settings.getFooterText }}
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/toggleFullscreen.js"></script>
+<script src="/assets/js/adminMain.js"></script>
+<script>
+    const user_id = {{ current_user.getId }}
+
+        $(document).ready(function () {
+            loadNotifications(user_id);
+            $('#notificationsDropdownTrigger').dropdown({
+                coverTrigger: false,
+                closeOnClick: false
+            });
+            $('body').on('click', '.mark-notification-icon', function () {
+                const post_id = $(this).data('post-id');
+                deleteNotification(post_id, user_id);
+                $(this).parent().parent().parent().fadeOut(400, function () {
+                    $(this).remove();
+                    $('#notificationsDropdownTrigger').dropdown('recalculateDimensions');
+                })
+            });
+        });
+</script>
+{% block scripts %}
+{% endblock %}
 
 </body>
 </html>

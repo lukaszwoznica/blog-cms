@@ -4,6 +4,7 @@
 namespace App\Controllers\Admin;
 
 
+
 use App\Flash;
 use App\Models\Category;
 use Core\View;
@@ -23,11 +24,7 @@ class Categories extends Admin
 
     public function indexAction(): void
     {
-        $categories = Category::getAllCategories();
-
-        View::renderTemplate('Admin/Categories/index.html', [
-            'categories' => $categories
-        ]);
+        View::renderTemplate('Admin/Categories/index.html');
     }
 
     public function newAction(): void
@@ -38,7 +35,12 @@ class Categories extends Admin
     public function createAction(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $category = new Category($_POST);
+            $post_data = $_POST;
+            if ($post_data['parent_id'] == 0) {
+                $post_data['parent_id'] = null;
+            }
+
+            $category = new Category($post_data);
 
             if ($category->saveToDatabase()) {
                 Flash::addMessage('Category has been successfully added', Flash::SUCCESS);
@@ -84,7 +86,12 @@ class Categories extends Admin
     public function updateAction(): void
     {
         if ($this->category && $_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->category->update($_POST)) {
+            $post_data = $_POST;
+            if($post_data['parent_id'] == 0) {
+                $post_data['parent_id'] = null;
+            }
+
+            if ($this->category->update($post_data)) {
                 Flash::addMessage('Category has been successfully updated', Flash::SUCCESS);
                 $this->redirectTo('/admin/categories');
             } else {
@@ -97,4 +104,15 @@ class Categories extends Admin
         }
     }
 
+    /**
+     * Check if slug is available (AJAX)
+     */
+    public function validateSlugAction(): void
+    {
+        if (isset($_GET['url_slug']) && !empty($_GET['url_slug'])) {
+            $slug_valid = !Category::slugExist($_GET['url_slug'], $_GET['ignore_id'] ?? null);
+            header('Content-Type: application/json');
+            echo json_encode($slug_valid);
+        }
+    }
 }

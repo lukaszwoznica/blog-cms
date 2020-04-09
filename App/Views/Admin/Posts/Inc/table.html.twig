@@ -1,0 +1,57 @@
+<table class="responsive-table highlight serial">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Create date</th>
+        <th>Last modified</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for post in posts %}
+        <tr>
+            <td></td>
+            <td>{{ post.getTitle }}</td>
+            <td>
+                {% if post.getCategoryName %}
+                    {{ post.getCategoryName }}
+                {% else %}
+                    Uncategorized
+                {% endif %}
+            </td>
+            <td>{{ post.getAuthorName }}</td>
+            <td>{{ post.getCreateTime|date("d/m/Y") }}</td>
+            <td>{{ post.getLastModified|date("d/m/Y H:i:s") }}</td>
+            <td>
+                {% if post.getIsPublished == 1 %}
+                    Published
+                {% else %}
+                    Draft
+                {% endif %}
+            </td>
+            <td>
+                <a href="/admin/posts/{{ post.getId }}/edit">
+                    <i class="material-icons blue-text text-darken-2">edit</i>
+                </a>
+                <a href="/admin/posts/{{ post.getId }}/destroy"
+                   onclick="return deleteConfirm('post')">
+                    <i class="material-icons red-text text-darken-2">delete_forever</i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="row center">
+    {% include 'Inc/pagination.html.twig' with {
+        currentPage: page,
+        paginationPath: "/admin/posts/",
+        lastPage: total_pages,
+        showAlwaysFirstAndLast: true
+    } only %}
+</div>

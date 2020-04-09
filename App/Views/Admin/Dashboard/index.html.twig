@@ -1,9 +1,150 @@
 {% extends "Admin/base-admin.html.twig" %}
 
-{% block title %} Admin Panel {% endblock %}
+{% block title %} Dashboard | {% endblock %}
 
-{% block page_title %} <h1>Dashboard</h1> {% endblock %}
+{% block page_title %} <h2 class="page-title">Dashboard</h2> {% endblock %}
 
 {% block body %}
+    <div class="row" style="margin-bottom: 3rem">
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="blue-text text-darken-2" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                {{ total_posts }}
+                            </h5>
+                            <span>Published Posts</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">library_books</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action blue darken-2">
+                    <a href="/admin/posts" class="valign-wrapper">
+                        Manage posts
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="green-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                {{ total_categories }}
+                            </h5>
+                            <span>Post Categories</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">category</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action green darken-1">
+                    <a href="/admin/categories" class="valign-wrapper">
+                        Manage categories
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="orange-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                {{ total_users }}
+                            </h5>
+                            <span>Registered Users</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">people_alt</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action orange darken-1">
+                    <a href="/admin/users" class="valign-wrapper">
+                        Manage users
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col m3 s6">
+            <div class="card stats-card z-depth-2 hoverable" data-aos="zoom-in" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <div class="row mb-0 valign-wrapper">
+                        <div class="col s8">
+                            <h5 class="red-text text-darken-1" data-aos="fade" data-aos-easing="ease-in-out"
+                                data-aos-delay="400" data-aos-duration="700">
+                                {{ total_comments }}
+                            </h5>
+                            <span>Total Comments</span>
+                        </div>
+                        <div class="col s4 right-align">
+                            <i class="material-icons-outlined">comment</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action red darken-1">
+                    <a href="/admin/comments" class="valign-wrapper">
+                        Manage comments
+                        <i class="tiny material-icons-outlined">double_arrow</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col xl4 s12">
+            <div class="card z-depth-2 hoverable" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <span class="card-title">Posts By Category</span>
+                    <div id="chart2_div"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col xl8 s12">
+            <div class="card z-depth-2 hoverable" data-aos="fade-up" data-aos-delay="500" data-aos-duration="1000"
+                 data-aos-easing="ease-in-out">
+                <div class="card-content">
+                    <span class="card-title">Top 5 Commented Posts</span>
+                    <div id="chart_div"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        const posts_by_category = {{ posts_by_category | json_encode | raw  }};
+        const comments_by_post = {{ comments_by_post | json_encode | raw  }};
+
+        google.charts.load("current", {packages:['corechart']});
+        google.charts.setOnLoadCallback(function () {
+            drawDonutChart(posts_by_category);
+            drawColumnChart(comments_by_post, true);
+        });
+        window.addEventListener('resize', function () {
+            drawDonutChart(posts_by_category);
+            drawColumnChart(comments_by_post);
+        }, false);
+    </script>
 {% endblock %}

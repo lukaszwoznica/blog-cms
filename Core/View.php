@@ -4,12 +4,15 @@ namespace Core;
 
 use App\Auth;
 use App\Flash;
+use App\Models\Category;
+use App\Models\Settings;
 use Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 class View
 {
@@ -46,9 +49,17 @@ class View
             $loader = new FilesystemLoader(dirname(__DIR__) . "/App/Views");
             $twig = new Environment($loader);
 
+            $rememberPageFunction = new TwigFunction('rememberRequestedPage', function () {
+                Auth::rememberRequestedPage();
+            });
+            $twig->addFunction($rememberPageFunction);
+
             // Twig globals
             $twig->addGlobal('current_user', Auth::getUser());
             $twig->addGlobal('flash_messages', Flash::getMessages());
+            $twig->addGlobal('categories', Category::getTree());
+            $twig->addGlobal('request_uri', $_SERVER['REQUEST_URI']);
+            $twig->addGlobal('site_settings', new Settings());
         }
 
         try {
