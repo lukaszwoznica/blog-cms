@@ -1,2 +1,1 @@
-* linguist-vendored
-*.twig linguist-vendored=false
+*.twig linguist-language=PHP
