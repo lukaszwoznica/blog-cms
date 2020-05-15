@@ -9,7 +9,7 @@ use App\Models\User;
 use Core\Controller;
 use Core\View;
 
-class SignUp extends Controller
+class Signup extends Controller
 {
     protected function before()
     {

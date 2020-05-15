@@ -30,7 +30,7 @@ class Notification extends Model implements JsonSerializable
                 INNER JOIN posts ON post_id = posts.id
                 WHERE posts.user_id = :user_id
                 AND notification_seen = 0
-                GROUP BY post_id
+                GROUP BY post_id, submit_time
                 ORDER BY submit_time DESC';
 
         $stmt = $db->prepare($sql);

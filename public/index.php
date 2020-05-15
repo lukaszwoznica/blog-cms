@@ -53,7 +53,7 @@ $router->addRoute('categories/{slug:[\da-z-]+}', ['controller' => 'Categories', 
 $router->addRoute('categories/{slug:[\da-z-]+}/page/{page:\d+}', ['controller' => 'Categories', 'action' => 'show']);
 $router->addRoute('posts/page/{page:\d+}', ['controller' => 'Posts', 'action' => 'index']);
 $router->addRoute('posts/{slug:[\da-z-]+}', ['controller' => 'Posts', 'action' => 'show']);
-$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'SignUp', 'action' => 'activate']);
+$router->addRoute('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->addRoute('{controller}', ['action' => 'index']);
 $router->addRoute('{controller}/{action}');
 $router->addRoute('{controller}/{id:\d+}/{action}');
