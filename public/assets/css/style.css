@@ -21,7 +21,7 @@ main {
 }
 
 .card-post {
-    margin: 3rem 1rem 2rem 0;
+    margin: 3rem 1rem 2rem 1rem;
     transition: transform .3s ease-in-out;
 }
 
