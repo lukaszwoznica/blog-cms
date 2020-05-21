@@ -5,7 +5,7 @@
 
 ## General info
 
-Blogs content management system created with custom PHP MVC framework.
+Blog content management system created using a custom PHP MVC framework.
 
 ## Technologies
 * PHP 7.4
